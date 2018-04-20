@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="cormansystem:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="cormansystem.war">
+      <element id="artifact" artifact-name="cormansystem:war exploded" />
+    </root>
+  </artifact>
+</component>
