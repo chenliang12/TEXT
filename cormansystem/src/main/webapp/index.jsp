@@ -18,12 +18,13 @@
 <body>
 <fieldset>
     <legend>登录界面</legend>
-    <form action="login" method="post">
-        账号：<input name="name"><br>
-        密码：<input name="pass"><br>
+    <form action="login.do" method="post">
+        账号：<input name="uname"><br>
+        密码：<input name="upass"><br>
         <input type="submit" value="登录">
     </form>
-    <h4 style="color: red">${error}</h4>
+    <a href="addusers.do">还没有账号？点击此处注册</a>
+    <a href="tourists.do">游客入口</a>
 </fieldset>
 </body>
 </html>

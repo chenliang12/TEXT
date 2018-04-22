@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cl.dao.DeliveryDao">
+    <insert id="addDelivery">
+        INSERT  INTO D_DELIVERY(DE_STATE, DE_RECRUI_ID, DE_USER_ID, DE_POS_ID,DE_RESUME_ID)
+        VALUES (#{de_state,jdbcType=VARCHAR},#{recruitment.r_id,jdbcType=VARCHAR},#{user.u_id,jdbcType=VARCHAR},#{postitions.p_id,jdbcType=VARCHAR},#{resume.r_id})
+    </insert>
+    <update id="updateDelivery">
+
+    </update>
+    <delete id="deleteDelivery">
+
+    </delete>
+    <select id="getDelivery" resultType="com.cl.model.Delivery">
+
+    </select>
+</mapper>

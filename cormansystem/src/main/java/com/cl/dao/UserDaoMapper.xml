@@ -3,7 +3,22 @@
         PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cl.dao.UserDao">
+    <insert id="addUser">
+       INSERT INTO U_USER(UNAME,UPASS,AUTHORITY)VALUES (#{uname},#{upass},#{authority})
+    </insert>
+    <update id="updateUser">
 
+    </update>
+    <delete id="deleteUser">
+
+    </delete>
+
+    <select id="getUser" resultType="com.cl.model.User">
+        SELECT * FROM U_USER WHERE UNAME=#{uname} AND UPASS=#{upass}
+    </select>
+    <select id="getUserbyname" resultType="com.cl.model.User">
+        SELECT *FROM U_USER WHERE  UNAME=#{uname}
+    </select>
 </mapper>
     <!-- Continue going here -->
 

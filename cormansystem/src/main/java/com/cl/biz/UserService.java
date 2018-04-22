@@ -1,13 +1,11 @@
-package com.cl.dao;
+package com.cl.biz;
 
 import com.cl.model.User;
-import org.springframework.stereotype.Repository;
 
 /**
- * Created by one on 2018/4/20.
+ * Created by one on 2018/4/22.
  */
-
-public interface UserDao {
+public interface UserService {
     User getUser(User user);
     User getUserbyname(String name);
     boolean addUser(User user);

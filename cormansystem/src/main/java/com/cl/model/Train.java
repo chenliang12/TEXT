@@ -8,11 +8,11 @@ import java.util.Date;
  */
 public class Train implements Serializable{//培训
     private int t_id;
-    private String title;//培训主题
-    private String content;//培训内容
-    private String address;//培训地点
-    private Date date;//培训时间
-
+    private String t_title;//培训主题
+    private String t_content;//培训内容
+    private String t_address;//培训地点
+    private Date t_date;//培训时间
+    private Department department;
     public Train() {
     }
 
@@ -24,46 +24,46 @@ public class Train implements Serializable{//培训
         this.t_id = t_id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getT_title() {
+        return t_title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setT_title(String t_title) {
+        this.t_title = t_title;
     }
 
-    public String getContent() {
-        return content;
+    public String getT_content() {
+        return t_content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setT_content(String t_content) {
+        this.t_content = t_content;
     }
 
-    public String getAddress() {
-        return address;
+    public String getT_address() {
+        return t_address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setT_address(String t_address) {
+        this.t_address = t_address;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getT_date() {
+        return t_date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setT_date(Date t_date) {
+        this.t_date = t_date;
     }
 
     @Override
     public String toString() {
         return "Train{" +
                 "t_id=" + t_id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", address='" + address + '\'' +
-                ", date=" + date +
+                ", t_title='" + t_title + '\'' +
+                ", t_content='" + t_content + '\'' +
+                ", t_address='" + t_address + '\'' +
+                ", t_date=" + t_date +
                 '}';
     }
 }

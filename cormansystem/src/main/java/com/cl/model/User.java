@@ -9,16 +9,9 @@ public class User implements Serializable{
     private int u_id;
     private String uname;
     private String upass;
-    private String authority;
+    private int authority;
 
     public User() {
-    }
-
-    public User(int u_id, String uname, String upass, String authority) {
-        this.u_id = u_id;
-        this.uname = uname;
-        this.upass = upass;
-        this.authority = authority;
     }
 
     public int getU_id() {
@@ -45,11 +38,11 @@ public class User implements Serializable{
         this.upass = upass;
     }
 
-    public String getAuthority() {
+    public int getAuthority() {
         return authority;
     }
 
-    public void setAuthority(String authority) {
+    public void setAuthority(int authority) {
         this.authority = authority;
     }
 

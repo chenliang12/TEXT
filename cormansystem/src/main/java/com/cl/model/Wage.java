@@ -8,17 +8,16 @@ import java.util.Date;
  */
 public class Wage implements Serializable{
     private int w_id;
-    private int bawage;//基本工资
-    private int performance;//绩效工资
-    private int overrtime;//加班工资
-    private int social;//社保
-    private int reandpun_id;//奖惩工资
+    private int w_bawage;//基本工资
+    private int w_performance;//绩效工资
+    private int w_overrtime;//加班工资
+    private int w_social;//社保
+    private int w_reandpun_id;//奖惩工资
     private User user;
-    private int date;//时间
+    private int w_date;//时间
 
     public Wage() {
     }
-
 
     public int getW_id() {
         return w_id;
@@ -28,45 +27,44 @@ public class Wage implements Serializable{
         this.w_id = w_id;
     }
 
-    public int getBawage() {
-        return bawage;
+    public int getW_bawage() {
+        return w_bawage;
     }
 
-    public void setBawage(int bawage) {
-        this.bawage = bawage;
+    public void setW_bawage(int w_bawage) {
+        this.w_bawage = w_bawage;
     }
 
-    public int getPerformance() {
-        return performance;
+    public int getW_performance() {
+        return w_performance;
     }
 
-    public void setPerformance(int performance) {
-        this.performance = performance;
+    public void setW_performance(int w_performance) {
+        this.w_performance = w_performance;
     }
 
-    public int getOverrtime() {
-        return overrtime;
+    public int getW_overrtime() {
+        return w_overrtime;
     }
 
-    public void setOverrtime(int overrtime) {
-        this.overrtime = overrtime;
+    public void setW_overrtime(int w_overrtime) {
+        this.w_overrtime = w_overrtime;
     }
 
-    public int getSocial() {
-        return social;
+    public int getW_social() {
+        return w_social;
     }
 
-    public void setSocial(int social) {
-        this.social = social;
+    public void setW_social(int w_social) {
+        this.w_social = w_social;
     }
 
-
-    public int getDate() {
-        return date;
+    public int getW_reandpun_id() {
+        return w_reandpun_id;
     }
 
-    public void setDate(int date) {
-        this.date = date;
+    public void setW_reandpun_id(int w_reandpun_id) {
+        this.w_reandpun_id = w_reandpun_id;
     }
 
     public User getUser() {
@@ -77,15 +75,25 @@ public class Wage implements Serializable{
         this.user = user;
     }
 
+    public int getW_date() {
+        return w_date;
+    }
+
+    public void setW_date(int w_date) {
+        this.w_date = w_date;
+    }
+
     @Override
     public String toString() {
         return "Wage{" +
                 "w_id=" + w_id +
-                ", bawage=" + bawage +
-                ", performance=" + performance +
-                ", overrtime=" + overrtime +
-                ", social=" + social +
-                ", date=" + date +
+                ", w_bawage=" + w_bawage +
+                ", w_performance=" + w_performance +
+                ", w_overrtime=" + w_overrtime +
+                ", w_social=" + w_social +
+                ", w_reandpun_id=" + w_reandpun_id +
+                ", user=" + user +
+                ", w_date=" + w_date +
                 '}';
     }
 }

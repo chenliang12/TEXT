@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cl.dao.ResumeDao">
+    <insert id="addResume">
+
+    </insert>
+    <update id="updateResume">
+        UPDATE R_RESUME SET R_NAME=#{r_name},R_AGE=#{r_age},
+        R_ADDRESS=#{r_address},R_CAMPUS=#{r_campus},
+        R_EMAIL=#{r_email},R_EVALUATION=#{r_evaluation},R_FAMILY=#{r_family},
+        R_ORIGIN=#{r_origin},R_PHONE=#{r_phone} WHERE R_USER_ID=#{user.u_id}
+    </update>
+    <delete id="deleteResume">
+
+    </delete>
+    <select id="getResumebyuid" resultType="com.cl.model.Resume">
+        SELECT * FROM R_RESUME WHERE R_USER_ID=#{id}
+    </select>
+</mapper>
