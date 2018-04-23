@@ -16,6 +16,11 @@ public class Delivery implements Serializable{
     public Delivery() {
     }
 
+    public Delivery(int de_id, String de_state) {
+        this.de_id = de_id;
+        this.de_state = de_state;
+    }
+
     public int getDe_id() {
         return de_id;
     }
@@ -69,6 +74,10 @@ public class Delivery implements Serializable{
         return "Delivery{" +
                 "de_id=" + de_id +
                 ", de_state='" + de_state + '\'' +
+                ", postitions=" + postitions +
+                ", recruitment=" + recruitment +
+                ", user=" + user +
+                ", resume=" + resume +
                 '}';
     }
 }

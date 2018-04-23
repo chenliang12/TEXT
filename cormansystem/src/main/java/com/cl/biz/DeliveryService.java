@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface DeliveryService {
     List<Delivery> getDelivery();
+    Delivery getDeliveryByid(int id);
+    List<Delivery> getDeliveryByuid(int id);
     boolean addDelivery(Delivery delivery);
     boolean updateDelivery(Delivery delivery);
     boolean deleteDelivery(Delivery delivery);

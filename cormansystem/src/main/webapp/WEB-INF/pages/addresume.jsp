@@ -20,6 +20,7 @@
     <form method="post" action="addresume.do">
         姓名：<input name="r_name"><br>
         年龄：<input name="r_age"><br>
+        性别：<input name="r_sex"><br>
         籍贯：<input name="r_origin"><br>
         民族：<input name="r_family"><br>
         手机号码：<input name="r_phone"><br>

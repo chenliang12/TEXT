@@ -21,6 +21,16 @@ public class DeliverServiceImpl implements DeliveryService {
     }
 
     @Override
+    public Delivery getDeliveryByid(int id) {
+        return deliveryDao.getDeliveryByid(id);
+    }
+
+    @Override
+    public List<Delivery> getDeliveryByuid(int id) {
+        return deliveryDao.getDeliveryByuid(id);
+    }
+
+    @Override
     public boolean addDelivery(Delivery delivery) {
         return deliveryDao.addDelivery(delivery);
     }

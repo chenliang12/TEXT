@@ -20,5 +20,8 @@ public class HyperlinkController {
     public String saveresume() throws  Exception{
         return "saveresume";
     }
-
+    @RequestMapping("adddepar.do")
+    public String adddepar() throws Exception{
+        return "adddepar";
+    }
 }

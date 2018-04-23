@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cl.dao.EmployeeMapper">
+    <insert id="addEmployee">
+
+    </insert>
+    <update id="updateEmployee">
+
+    </update>
+    <delete id="deleteEmployee">
+
+    </delete>
+    <select id="getEmployeeByid" resultType="com.cl.model.Employee">
+        SELECT * FROM E_EMPLOYEE WHERE E_ID=#{id}
+    </select>
+    <select id="getEmployeeByuid" resultType="com.cl.model.Employee">
+        SELECT *FROM E_EMPLOYEE WHERE E_USER_ID=#{id}
+    </select>
+</mapper>

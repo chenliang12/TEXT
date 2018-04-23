@@ -79,4 +79,14 @@ public class TouristsController {
            return "updateresume";
        }
     }
+    @RequestMapping("resumestate.do")
+    public String resumestate(HttpSession session) throws Exception{
+        User user= (User) session.getAttribute("user");
+        if (deliveryService.getDeliveryByuid(user.getU_id())!=null){
+            List<Delivery> deliveries=deliveryService.getDeliveryByuid(user.getU_id());
+            session.setAttribute("delivery",deliveries);
+            return "resumestate";
+        }
+        return "";
+    }
 }

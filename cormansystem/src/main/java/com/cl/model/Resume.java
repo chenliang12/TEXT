@@ -18,9 +18,18 @@ public class Resume implements Serializable{//简历
     private String r_campus;//教育成都
     private String r_jobs;//工作精力
     private String r_evaluation;
+    private String r_sex;
     private User user;
 
     public Resume() {
+    }
+
+    public String getR_sex() {
+        return r_sex;
+    }
+
+    public void setR_sex(String r_sex) {
+        this.r_sex = r_sex;
     }
 
     public int getR_id() {

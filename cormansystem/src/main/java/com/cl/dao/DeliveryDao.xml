@@ -6,12 +6,53 @@
         VALUES (#{de_state,jdbcType=VARCHAR},#{recruitment.r_id,jdbcType=VARCHAR},#{user.u_id,jdbcType=VARCHAR},#{postitions.p_id,jdbcType=VARCHAR},#{resume.r_id})
     </insert>
     <update id="updateDelivery">
-
+       UPDATE D_DELIVERY SET DE_STATE=#{de_state} where de_id=#{de_id}
     </update>
     <delete id="deleteDelivery">
 
     </delete>
-    <select id="getDelivery" resultType="com.cl.model.Delivery">
 
+    <select id="getDelivery" resultMap="deliverymap">
+     SELECT * FROM D_DELIVERY de,R_RECRUITMENT r,U_USER us,P_POSTITIONS po,
+     R_RESUME re WHERE r.R_ID=de.DE_RECRUI_ID and us.U_ID=de.DE_USER_ID AND
+     po.P_ID=de.DE_POS_ID AND re.R_ID=de.DE_RESUME_ID
     </select>
+    <select id="getDeliveryByid" resultMap="deliverymap">
+         SELECT * FROM D_DELIVERY de,R_RECRUITMENT r,U_USER us,P_POSTITIONS po,
+     R_RESUME re WHERE r.R_ID=de.DE_RECRUI_ID and us.U_ID=de.DE_USER_ID AND
+     po.P_ID=de.DE_POS_ID AND re.R_ID=de.DE_RESUME_ID AND DE_ID=#{id}
+    </select>
+    <select id="getDeliveryByuid" resultMap="deliverymap">
+         SELECT * FROM D_DELIVERY de,R_RECRUITMENT r,U_USER us,P_POSTITIONS po,
+     R_RESUME re WHERE r.R_ID=de.DE_RECRUI_ID and us.U_ID=de.DE_USER_ID AND
+     po.P_ID=de.DE_POS_ID AND re.R_ID=de.DE_RESUME_ID AND de.DE_USER_ID=#{id}
+    </select>
+    <resultMap id="deliverymap" type="Delivery">
+        <id column="de_id" property="de_id"/>
+        <result property="de_state" column="de_state"/>
+        <collection property="recruitment" column="de_recrui_id" ofType="Recruitment">
+            <id column="r_id" property="r_id"/>
+            <result column="r_job" property="r_job"/>
+        </collection>
+        <!--<collection property="postitions" column="de_pos_id" ofType="Postitions">
+            <id column="p_id" property="p_id"/>
+            <result column="department" property="department"/>
+        </collection>-->
+        <collection property="resume" column="de_resume_id" ofType="Resume">
+            <id column="r_id" property="r_id"/>
+            <result column="r_name" property="r_name"/>
+            <result column="r_age" property="r_age"/>
+            <result column="r_address" property="r_address"/>
+            <result column="r_campus" property="r_campus"/>
+            <result column="r_email" property="r_email"/>
+            <result column="r_evaluation" property="r_evaluation"/>
+            <result column="r_family" property="r_family"/>
+            <result column="r_jobs" property="r_jobs"/>
+            <result column="r_origin" property="r_origin"/>
+            <result column="r_phone" property="r_phone"/>
+         </collection>
+        <collection property="user" column="de_user_id" ofType="User">
+            <id column="u_id" property="u_id"/>
+        </collection>
+     </resultMap>
 </mapper>

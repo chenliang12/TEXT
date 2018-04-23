@@ -1,6 +1,8 @@
 package com.cl.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Date;
 
 /**
  * Created by one on 2018/4/22.
@@ -12,8 +14,8 @@ public class Employee implements Serializable{//员工信息
     private String e_origin;//籍贯
     private String e_sex;
     private User user;
-    private int e_idcard;
-    private String e_createtime;//入职时间
+    private BigInteger e_phone;
+    private Date e_createtime;//入职时间
     private String e_state;//状态
     private String e_reason;//离职原因
 
@@ -68,19 +70,19 @@ public class Employee implements Serializable{//员工信息
         this.user = user;
     }
 
-    public int getE_idcard() {
-        return e_idcard;
+    public BigInteger getE_phone() {
+        return e_phone;
     }
 
-    public void setE_idcard(int e_idcard) {
-        this.e_idcard = e_idcard;
+    public void setE_phone(BigInteger e_phone) {
+        this.e_phone = e_phone;
     }
 
-    public String getE_createtime() {
+    public Date getE_createtime() {
         return e_createtime;
     }
 
-    public void setE_createtime(String e_createtime) {
+    public void setE_createtime(Date e_createtime) {
         this.e_createtime = e_createtime;
     }
 
@@ -108,8 +110,9 @@ public class Employee implements Serializable{//员工信息
                 ", e_age=" + e_age +
                 ", e_origin='" + e_origin + '\'' +
                 ", e_sex='" + e_sex + '\'' +
-                ", e_idcard=" + e_idcard +
-                ", e_createtime='" + e_createtime + '\'' +
+                ", user=" + user +
+                ", e_phone=" + e_phone +
+                ", e_createtime=" + e_createtime +
                 ", e_state='" + e_state + '\'' +
                 ", e_reason='" + e_reason + '\'' +
                 '}';

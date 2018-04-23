@@ -10,7 +10,18 @@ public class Postitions implements Serializable{//职位
     private String p_position;
     private User user;
     private Department department;
+    private Employee employee;
+
+
     public Postitions() {
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public int getP_id() {

@@ -30,6 +30,7 @@
 </head>
 <body>
 <a href="saveresume.do">查看简历</a>
+<a href="resumestate.do">查看投递状态</a>
 <div id="d1">
     <c:forEach items="${sessionScope.recruitments}" var="recruitment">
         <table border="1">
