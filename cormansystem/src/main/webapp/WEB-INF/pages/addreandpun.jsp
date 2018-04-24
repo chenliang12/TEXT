@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: one
-  Date: 2018/4/22
-  Time: 20:23
+  Date: 2018/4/24
+  Time: 19:24
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -16,10 +16,14 @@
     <title>标题</title>
 </head>
 <body>
-<a href="saveemploy.do">查看个人信息</a>
-<a href="saveemps.do">查看其他员工信息</a>
-<a href="emsavetrain.do">查看培训信息</a>
-<a href="emsavereandpun.do">查看个人奖惩记录</a>
-<a href="">查看个人薪资记录</a>
+<form method="post" action="adaddreandpun.do">
+    奖惩金额：<input name="money">
+    理由：<input name="explanation">
+    奖惩对象：<input name="ename">
+    所在职位：<input name="postition">
+    奖励：<input type="radio" name="name" value="1">
+    处罚：<input type="radio" name="name" value="0">
+    <input type="submit" value="提交">
+</form>
 </body>
 </html>

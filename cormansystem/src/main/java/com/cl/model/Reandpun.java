@@ -1,6 +1,7 @@
 package com.cl.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by one on 2018/4/20.
@@ -10,7 +11,9 @@ public class Reandpun implements Serializable {//奖惩
     private int re_reward;//奖励金额
     private int re_punishment;//惩罚金额
     private String re_explanation;//原因
-
+    private Employee employee;
+    private Date re_date;
+    private String re_state;
     public Reandpun() {
     }
 
@@ -46,9 +49,33 @@ public class Reandpun implements Serializable {//奖惩
         this.re_explanation = re_explanation;
     }
 
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Date getRe_date() {
+        return re_date;
+    }
+
+    public void setRe_date(Date re_date) {
+        this.re_date = re_date;
+    }
+
+    public String getRe_state() {
+        return re_state;
+    }
+
+    public void setRe_state(String re_state) {
+        this.re_state = re_state;
+    }
+
     @Override
     public String toString() {
-        return "Reandpun{" +
+        return "ReandpunMapper{" +
                 "re_id=" + re_id +
                 ", re_reward=" + re_reward +
                 ", re_punishment=" + re_punishment +

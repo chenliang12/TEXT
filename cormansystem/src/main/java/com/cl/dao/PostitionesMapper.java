@@ -15,4 +15,5 @@ public interface PostitionesMapper {
     boolean deletePostitions(Postitions postitions);
     Postitions getPostitionsbyid(int id);
     Postitions getPostitonsByuid(int id);
+    Postitions getPostitonsByname(String name);
 }

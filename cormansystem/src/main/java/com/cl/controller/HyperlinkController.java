@@ -41,4 +41,8 @@ public class HyperlinkController {
     public String addtrains()throws Exception{
         return "addtrains";
     }
+    @RequestMapping("addreandpun.do")
+    public String addreandpun()throws Exception{
+        return "addreandpun";
+    }
 }

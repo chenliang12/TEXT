@@ -15,19 +15,26 @@
         SELECT *FROM P_POSTITIONS
     </select>
     <select id="getPostitionsbydeid" resultMap="postanduser">
-        SELECT * FROM P_POSTITIONS pp,U_USER us WHERE us.U_ID=pp.P_USER_ID AND P_DEPARTMENT_ID=#{id}
+        SELECT * FROM P_POSTITIONS pp,U_USER us ,E_EMPLOYEE ee WHERE ee.E_ID=pp.P_EMPLOYEE_ID and us.U_ID=pp.P_USER_ID AND P_DEPARTMENT_ID=#{id}
     </select>
     <select id="getPostitionsbyid" resultType="com.cl.model.Postitions">
         SELECT *FROM P_POSTITIONS WHERE P_ID=#{id}
     </select>
-    <select id="getPostitonsByuid" resultType="com.cl.model.Postitions">
+    <select id="getPostitonsByuid" resultMap="postanddep">
         SELECT *FROM P_POSTITIONS pp,D_DEPARTMENT dd WHERE dd.D_ID=pp.P_DEPARTMENT_ID and P_USER_ID=#{id}
+    </select>
+    <select id="getPostitonsByname" resultMap="postanduser">
+         SELECT * FROM P_POSTITIONS pp,U_USER us,E_EMPLOYEE ee WHERE ee.E_ID=pp.P_EMPLOYEE_ID and us.U_ID=pp.P_USER_ID AND P_POSITION=#{name}
     </select>
     <resultMap id="postanduser" type="Postitions">
         <id column="p_id" property="p_id"/>
        <result property="p_position" column="p_position"/>
         <collection property="user" column="p_user_id" ofType="User">
             <id column="u_id" property="u_id"/>
+        </collection>
+        <collection property="employee" column="p_employee.id" ofType="Employee">
+            <id column="e_id" property="e_id"/>
+            <result column="e_name" property="e_name"/>
         </collection>
     </resultMap>
     <resultMap id="postanddep" type="Postitions">

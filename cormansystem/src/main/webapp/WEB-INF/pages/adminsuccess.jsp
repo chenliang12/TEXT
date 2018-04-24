@@ -19,5 +19,6 @@
 <a href="adminsaveresume.do">查看接收的简历</a>
 <a href="savedepartment.do">查看各部门信息</a>
 <a href="adsavetrain.do">安排培训事宜</a>
+<a href="adsavereandpun.do">管理员工奖惩信息</a>
 </body>
 </html>

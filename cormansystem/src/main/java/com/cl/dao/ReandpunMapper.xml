@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cl.dao.ReandpunMapper">
+    <insert id="addReandpun">
+       INSERT INTO R_REANDPUN(RE_REWARD,RE_PUNISHMENT,RE_EMPLOYEE_ID,RE_DATE,RE_EXPLANATION,RE_STATE)
+       VALUES (#{re_reward},#{re_punishment},#{employee.e_id},#{re_date},#{re_explanation},#{re_state})
+    </insert>
+    <update id="updateReandpun">
+       UPDATE R_REANDPUN
+       <set>
+           <if test="re_reward!=0">
+               re_reward=#{re_reward},
+           </if>
+           <if test="re_punishment!=0">
+               re_punishment=#{re_punishment}
+           </if>
+           re_explanation=#{re_explanation}
+       </set>
+        where re_id=#{re_id}
+    </update>
+    <delete id="deleteReandpun">
+
+    </delete>
+    <select id="getReandpun" resultMap="reandpunanduser">
+          SELECT * FROM R_REANDPUN rr,E_EMPLOYEE uu WHERE uu.E_ID=rr.RE_EMPLOYEE_ID
+    </select>
+    <select id="getReandpunByuid" resultMap="reandpunanduser">
+        SELECT * FROM R_REANDPUN rr,E_EMPLOYEE uu WHERE uu.E_ID=rr.RE_EMPLOYEE_ID and rr.RE_EMPLOYEE_ID=#{id}
+    </select>
+    <select id="getReandpunByid" resultMap="reandpunanduser">
+        SELECT * FROM R_REANDPUN rr,E_EMPLOYEE uu WHERE uu.E_ID=rr.RE_EMPLOYEE_ID and rr.RE_ID=#{id}
+    </select>
+    <resultMap id="reandpunanduser" type="Reandpun">
+        <id column="re_id" property="re_id"/>
+        <result column="re_reward" property="re_reward"/>
+        <result column="re_punishment" property="re_punishment"/>
+        <result column="re_explanation" property="re_explanation"/>
+        <result column="re_date" property="re_date"/>
+        <result column="re_state" property="re_state"/>
+        <collection property="employee" column="re_employee_id" ofType="Employee">
+            <id column="e_id" property="e_id"/>
+            <result column="e_name" property="e_name"/>
+        </collection>
+    </resultMap>
+</mapper>

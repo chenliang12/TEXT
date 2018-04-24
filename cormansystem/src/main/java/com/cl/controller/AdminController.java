@@ -10,6 +10,7 @@ import org.springframework.web.portlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,8 @@ public class AdminController {
     private EmployeeService employeeService;
    @Autowired
    private TrainService trainService;
+   @Autowired
+   private ReandpunService reandpunService;
     @RequestMapping("adminsaveresume.do")
     public String adminsaveresume(HttpSession session) throws Exception{
          if (deliveryService.getDelivery()!=null){
@@ -194,7 +197,7 @@ public class AdminController {
        }
        return "";//返回一个爆空页面让其添加
     }
-    @RequestMapping("addtrain.do")
+    @RequestMapping("addtrain.do")//增加培训
     public String addtrain(HttpSession session,Train train,HttpServletRequest request) throws Exception{
         String depat=request.getParameter("depname");
         Department department=new Department();
@@ -209,12 +212,77 @@ public class AdminController {
             return "";//提示部门不存在
         }
     }
-    @RequestMapping("updatetrain.do")
+    @RequestMapping("updatetrain.do")//修改培训
     public String updatetrain(HttpSession session,HttpServletRequest request)throws Exception{
        int id= Integer.parseInt(request.getParameter("id"));
        Train train=trainService.getTrainByid(id);
        train.setT_state("已培训");
        trainService.updateTrain(train);
        return adsavetrain(session);
+    }
+    @RequestMapping("adsavereandpun.do")//查看奖惩
+    public String adsavereandpun(HttpSession session)throws Exception{
+        List<Reandpun> reandpuns=reandpunService.getReandpun();
+        if (reandpuns!=null){
+            session.setAttribute("reandpuns",reandpuns);
+            return "adsavereandpun";
+        }else {
+            return "";//返回提示空界面
+        }
+    }
+    @RequestMapping("adaddreandpun.do")//增加奖惩
+    public String adaddreandpun(HttpSession session, HttpServletRequest request)throws Exception{
+        int i= Integer.parseInt(request.getParameter("name"));
+        int money= Integer.parseInt(request.getParameter("money"));
+        String ename=request.getParameter("ename");
+        String postitions=request.getParameter("postition");
+        String explanation=request.getParameter("explanation");
+        Postitions postitions1=postitionesService.getPostitonsByname(postitions);
+        Date date=new Date();
+        if (postitions1.getEmployee().getE_name().equals(ename)){
+            Reandpun reandpun=new Reandpun();
+            if (i==1){
+                reandpun.setRe_reward(money);
+                reandpun.setRe_punishment(0);
+            }else {
+                reandpun.setRe_reward(0);
+                reandpun.setRe_punishment(money);
+            }
+            reandpun.setRe_state("未结算");
+            reandpun.setRe_explanation(explanation);
+            reandpun.setEmployee(postitions1.getEmployee());
+            reandpun.setRe_date(date);
+            reandpunService.addReandpun(reandpun);
+            return adsavereandpun(session);
+        }
+        return "";
+    }
+    @RequestMapping("updatereandpun.do")//跳转修改奖惩页面
+    public String updatereandpun(HttpSession session,HttpServletRequest request)throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        Reandpun reandpun=reandpunService.getReandpunByid(id);
+        if (reandpun.getRe_state().equals("未结算")){
+            session.setAttribute("reandpun",reandpun);
+            return "updatereandpun";
+        }else {
+            return "";//返回无法修改界面
+        }
+
+    }
+    @RequestMapping("updatereandpuns.do")//修改奖惩
+    public String updatereandpuns(HttpSession session,HttpServletRequest request)throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        int money= Integer.parseInt(request.getParameter("money"));
+        String explanation=request.getParameter("explanation");
+        int num= Integer.parseInt(request.getParameter("num"));
+        Reandpun reandpun=reandpunService.getReandpunByid(id);
+        if (num==1){
+            reandpun.setRe_reward(money);
+        }else {
+            reandpun.setRe_punishment(money);
+        }
+        reandpun.setRe_explanation(explanation);
+        reandpunService.updateReandpun(reandpun);
+        return adsavereandpun(session);
     }
 }

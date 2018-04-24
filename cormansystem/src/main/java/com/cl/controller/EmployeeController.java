@@ -29,6 +29,8 @@ public class EmployeeController {
     private PostitionesService postitionesService;
     @Autowired
     private TrainService trainService;
+    @Autowired
+    private ReandpunService reandpunService;
     @RequestMapping("login.do")//登陆
     public String loginsession(User user,HttpServletRequest request)throws  Exception{
         HttpSession session=request.getSession();
@@ -138,5 +140,16 @@ public class EmployeeController {
        }else {
            return "";//返回提示暂无培训内容
        }
+    }
+    @RequestMapping("emsavereandpun.do")
+    public String emsavereandpun(HttpSession session)throws Exception{
+        User user= (User) session.getAttribute("user");
+        Employee employee=employeeService.getEmployeeByuid(user.getU_id());
+        List<Reandpun> reandpun=reandpunService.getReandpunByuid(employee.getE_id());
+        if (reandpun!=null){
+            session.setAttribute("reandpuns",reandpun);
+            return "emsavereandpun";
+        }
+        return "";//返回空
     }
 }

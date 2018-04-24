@@ -50,4 +50,9 @@ public class PostitionesServiceImpl implements PostitionesService{
     public Postitions getPostitonsByuid(int id) {
         return postitionesMapper.getPostitonsByuid(id);
     }
+
+    @Override
+    public Postitions getPostitonsByname(String name) {
+        return postitionesMapper.getPostitonsByname(name);
+    }
 }
