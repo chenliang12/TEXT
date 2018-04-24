@@ -18,7 +18,6 @@
 <body>
 <form action="addpostitions.do" method="post">
     <input name="p_position">
-    <input hidden>
     <input type="submit" value="创建职位">
 </form>
 </body>

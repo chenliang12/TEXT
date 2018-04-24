@@ -13,4 +13,6 @@ public interface PostitionesService {
     boolean addPostitions(Postitions postitions);
     boolean updatePostitions(Postitions postitions);
     boolean deletePostitions(Postitions postitions);
+    Postitions getPostitionsbyid(int id);
+    Postitions getPostitonsByuid(int id);
 }

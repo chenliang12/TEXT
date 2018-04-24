@@ -7,12 +7,11 @@
        INSERT INTO U_USER(UNAME,UPASS,AUTHORITY)VALUES (#{uname},#{upass},#{authority})
     </insert>
     <update id="updateUser">
-
+       UPDATE U_USER SET AUTHORITY=#{authority} where u_id=#{u_id}
     </update>
     <delete id="deleteUser">
 
     </delete>
-
     <select id="getUser" resultType="com.cl.model.User">
         SELECT * FROM U_USER WHERE UNAME=#{uname} AND UPASS=#{upass}
     </select>

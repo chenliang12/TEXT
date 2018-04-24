@@ -16,6 +16,10 @@
     <title>标题</title>
 </head>
 <body>
-
+<a href="saveemploy.do">查看个人信息</a>
+<a href="saveemps.do">查看其他员工信息</a>
+<a href="emsavetrain.do">查看培训信息</a>
+<a href="">查看个人奖惩记录</a>
+<a href="">查看个人薪资记录</a>
 </body>
 </html>

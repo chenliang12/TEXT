@@ -1,11 +1,12 @@
 <%--
   Created by IntelliJ IDEA.
   User: one
-  Date: 2018/4/22
-  Time: 20:23
+  Date: 2018/4/24
+  Time: 9:52
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -16,8 +17,15 @@
     <title>标题</title>
 </head>
 <body>
-<a href="adminsaveresume.do">查看接收的简历</a>
-<a href="savedepartment.do">查看各部门信息</a>
-<a href="adsavetrain.do">安排培训事宜</a>
+<table border="1">
+    <tr>
+        <td colspan="${sessionScope.size}" align="center">公司部门</td>
+    </tr>
+    <tr>
+        <c:forEach items="${sessionScope.department}" var="de">
+            <td><a href="saveempes.do?id=${de.d_id}">${de.d_depat}</a></td>
+        </c:forEach>
+    </tr>
+</table>
 </body>
 </html>

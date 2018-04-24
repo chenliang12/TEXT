@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: one
-  Date: 2018/4/23
-  Time: 13:49
+  Date: 2018/4/24
+  Time: 9:57
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -15,9 +15,6 @@
 <head>
     <base href="<%=basePath%>"/>
     <title>标题</title>
-    <style>
-
-    </style>
 </head>
 <body>
 <table border="1">
@@ -33,15 +30,14 @@
         <c:forEach items="${sessionScope.postitions}" var="de">
             <c:choose>
                 <c:when test="${de.employee.e_id!=0}">
-                    <td><a href="saveemployee.do?id=${de.employee.e_id}">${de.employee.e_name}</a></td>
+                    <td><a href="saveempess.do?id=${de.employee.e_id}">${de.employee.e_name}</a></td>
                 </c:when>
                 <c:when test="${de.employee.e_id==0}">
-                    <td>${de.employee.e_name}<a href="deletepos.do?id=${de.p_id}">点击删除该职位</a></td>
+                    <td>${de.employee.e_name}</td>
                 </c:when>
             </c:choose>
         </c:forEach>
     </tr>
 </table>
-<a href="addpos.do?id=${sessionScope.did}">添加职位</a>
 </body>
 </html>

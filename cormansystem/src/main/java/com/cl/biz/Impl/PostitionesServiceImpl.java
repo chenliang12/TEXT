@@ -40,4 +40,14 @@ public class PostitionesServiceImpl implements PostitionesService{
     public boolean deletePostitions(Postitions postitions) {
         return postitionesMapper.deletePostitions(postitions);
     }
+
+    @Override
+    public Postitions getPostitionsbyid(int id) {
+        return postitionesMapper.getPostitionsbyid(id);
+    }
+
+    @Override
+    public Postitions getPostitonsByuid(int id) {
+        return postitionesMapper.getPostitonsByuid(id);
+    }
 }

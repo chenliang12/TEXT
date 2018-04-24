@@ -9,7 +9,7 @@
        UPDATE P_POSTITIONS SET P_USER_ID=#{user.u_id} where p_position=#{p_position}
     </update>
     <delete id="deletePostitions">
-      DELETE FROM P_POSTITIONS WHERE P_DEPARTMENT_ID=#{department.d_id}
+      DELETE FROM P_POSTITIONS WHERE P_ID=#{p_id}
     </delete>
     <select id="getPostitions" resultType="com.cl.model.Postitions">
         SELECT *FROM P_POSTITIONS
@@ -17,11 +17,25 @@
     <select id="getPostitionsbydeid" resultMap="postanduser">
         SELECT * FROM P_POSTITIONS pp,U_USER us WHERE us.U_ID=pp.P_USER_ID AND P_DEPARTMENT_ID=#{id}
     </select>
+    <select id="getPostitionsbyid" resultType="com.cl.model.Postitions">
+        SELECT *FROM P_POSTITIONS WHERE P_ID=#{id}
+    </select>
+    <select id="getPostitonsByuid" resultType="com.cl.model.Postitions">
+        SELECT *FROM P_POSTITIONS pp,D_DEPARTMENT dd WHERE dd.D_ID=pp.P_DEPARTMENT_ID and P_USER_ID=#{id}
+    </select>
     <resultMap id="postanduser" type="Postitions">
         <id column="p_id" property="p_id"/>
        <result property="p_position" column="p_position"/>
         <collection property="user" column="p_user_id" ofType="User">
             <id column="u_id" property="u_id"/>
+        </collection>
+    </resultMap>
+    <resultMap id="postanddep" type="Postitions">
+        <id column="p_id" property="p_id"/>
+        <result property="p_position" column="p_position"/>
+        <collection property="department" column="p_departmrnt_id" ofType="Department">
+            <id column="d_id" property="d_id"/>
+            <result property="d_depat" column="d_depat"/>
         </collection>
     </resultMap>
 </mapper>

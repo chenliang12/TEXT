@@ -5,7 +5,7 @@
 
     </insert>
     <update id="updateEmployee">
-
+      UPDATE E_EMPLOYEE SET E_AGE=#{e_age},e_phone=#{e_phone} where E_USER_ID=#{user.u_id}
     </update>
     <delete id="deleteEmployee">
 
@@ -15,5 +15,8 @@
     </select>
     <select id="getEmployeeByuid" resultType="com.cl.model.Employee">
         SELECT *FROM E_EMPLOYEE WHERE E_USER_ID=#{id}
+    </select>
+    <select id="getEmployee" resultType="com.cl.model.Employee">
+        SELECT *FROM E_EMPLOYEE
     </select>
 </mapper>

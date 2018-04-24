@@ -11,8 +11,9 @@ public class Train implements Serializable{//培训
     private String t_title;//培训主题
     private String t_content;//培训内容
     private String t_address;//培训地点
-    private Date t_date;//培训时间
+    private String t_date;//培训时间
     private Department department;
+    private String t_state;
     public Train() {
     }
 
@@ -48,12 +49,28 @@ public class Train implements Serializable{//培训
         this.t_address = t_address;
     }
 
-    public Date getT_date() {
+    public String getT_date() {
         return t_date;
     }
 
-    public void setT_date(Date t_date) {
+    public void setT_date(String t_date) {
         this.t_date = t_date;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public String getT_state() {
+        return t_state;
+    }
+
+    public void setT_state(String t_state) {
+        this.t_state = t_state;
     }
 
     @Override
@@ -63,7 +80,9 @@ public class Train implements Serializable{//培训
                 ", t_title='" + t_title + '\'' +
                 ", t_content='" + t_content + '\'' +
                 ", t_address='" + t_address + '\'' +
-                ", t_date=" + t_date +
+                ", t_date='" + t_date + '\'' +
+                ", department=" + department +
+                ", t_state='" + t_state + '\'' +
                 '}';
     }
 }

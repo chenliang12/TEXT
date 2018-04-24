@@ -1,10 +1,7 @@
 package com.cl.controller;
 
 
-import com.cl.biz.DeliveryService;
-import com.cl.biz.DepartmentService;
-import com.cl.biz.EmployeeService;
-import com.cl.biz.PostitionesService;
+import com.cl.biz.*;
 import com.cl.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +28,8 @@ public class AdminController {
     private DepartmentService departmentService;
     @Autowired
     private EmployeeService employeeService;
+   @Autowired
+   private TrainService trainService;
     @RequestMapping("adminsaveresume.do")
     public String adminsaveresume(HttpSession session) throws Exception{
          if (deliveryService.getDelivery()!=null){
@@ -62,6 +61,8 @@ public class AdminController {
             postitions.setP_position(delivery1.getRecruitment().getR_job());
             postitionesService.updatePostitions(postitions);
             delivery.setDe_state("已录用");
+            User user= (User) session.getAttribute("user");
+            user.setAuthority(2);
             //添加将简历信息转移到员工信息上
             Employee employee=new Employee();
             Date date=new Date();
@@ -121,6 +122,7 @@ public class AdminController {
             int size=postitions.size();
             session.setAttribute("size",size);
             session.setAttribute("postitions",postitions);
+            session.setAttribute("did",id);
             return "savepostitions";
         }
         return "";//返回一个没有职位的显示网址
@@ -156,10 +158,13 @@ public class AdminController {
         employee.setE_id(0);
         postitions.setEmployee(employee);
         postitionesService.addPostitions(postitions);
-        return "";//弹到提示成功页面，让其进入主页查看部门查看
+        return savedepartment(session);//弹到提示成功页面，让其进入主页查看部门查看
     }
     @RequestMapping("deletedepart.do")
-    public String deletedepart(HttpSession session,Department department) throws Exception{
+    public String deletedepart(HttpSession session,HttpServletRequest request) throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        Department department=new Department();
+        department.setD_id(id);
         System.out.println(department.getD_id());
         List<Postitions> postitions=postitionesService.getPostitionsbydeid(department.getD_id());
         for (Postitions postitions1:postitions){
@@ -172,5 +177,44 @@ public class AdminController {
         postitionesService.deletePostitions(postitions1);
         departmentService.deleteDepartment(department);
         return savedepartment(session);
+    }
+    @RequestMapping("deletepos.do")
+    public String deletepos(HttpServletRequest request,HttpSession session)throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        Postitions postitions=postitionesService.getPostitionsbyid(id);
+        postitionesService.deletePostitions(postitions);
+        return savedepartment(session);
+    }
+    @RequestMapping("adsavetrain.do")//管理员查询培训信息
+    public String adsavetrain(HttpSession session) throws Exception{
+       List<Train> trains=trainService.getTrains();
+       if (trains!=null){
+           session.setAttribute("trains",trains);
+           return "adsavetrains";
+       }
+       return "";//返回一个爆空页面让其添加
+    }
+    @RequestMapping("addtrain.do")
+    public String addtrain(HttpSession session,Train train,HttpServletRequest request) throws Exception{
+        String depat=request.getParameter("depname");
+        Department department=new Department();
+        department.setD_depat(depat);
+        if (departmentService.getDepartmentBydeid(department)!=null){
+            Department department1=departmentService.getDepartmentBydeid(department);
+            train.setDepartment(department1);
+            train.setT_state("未培训");
+            trainService.addTrain(train);
+            return adsavetrain(session);
+        }else {
+            return "";//提示部门不存在
+        }
+    }
+    @RequestMapping("updatetrain.do")
+    public String updatetrain(HttpSession session,HttpServletRequest request)throws Exception{
+       int id= Integer.parseInt(request.getParameter("id"));
+       Train train=trainService.getTrainByid(id);
+       train.setT_state("已培训");
+       trainService.updateTrain(train);
+       return adsavetrain(session);
     }
 }
