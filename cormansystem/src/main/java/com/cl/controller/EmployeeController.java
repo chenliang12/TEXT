@@ -1,8 +1,10 @@
 package com.cl.controller;
 
+import com.cl.biz.EmployeeService;
 import com.cl.biz.RecruitmentService;
 import com.cl.biz.ResumeService;
 import com.cl.biz.UserService;
+import com.cl.model.Employee;
 import com.cl.model.Recruitment;
 import com.cl.model.Resume;
 import com.cl.model.User;
@@ -27,6 +29,9 @@ public class EmployeeController {
     private RecruitmentService recruitmentService;
     @Autowired
     private ResumeService resumeService;
+    @Autowired
+    private EmployeeService employeeService;
+
     @RequestMapping("login.do")//登陆
     public String loginsession(User user,HttpServletRequest request)throws  Exception{
         HttpSession session=request.getSession();
@@ -40,6 +45,8 @@ public class EmployeeController {
                session.setAttribute("resume",resume);
                return "success";
            }else if(user1.getAuthority()==2){
+               session.setAttribute("user",user1);
+
                 return "employsuccess";
            }else{
                return  "adminsuccess";
@@ -59,7 +66,7 @@ public class EmployeeController {
             return "adduser";
         }
     }
-    @RequestMapping("checkname.do")
+    @RequestMapping("checkname.do")//注册账号验证ajax
     private String checkname(String uname)throws Exception{
         User user=new User();
         user.setUname(uname);
@@ -71,5 +78,16 @@ public class EmployeeController {
 
         }*/
 
+    }
+    @RequestMapping("saveemploy.do")
+    public String saveemploy(HttpSession session) throws Exception{
+        User user= (User) session.getAttribute("user");
+        Employee employee=employeeService.getEmployeeByuid(user.getU_id());
+        session.setAttribute("employee",employee);
+        return "saveemployee1";
+    }
+    @RequestMapping("updateemployee.do")
+    public String updateemployee(HttpSession session) throws Exception{
+        return "";
     }
 }
