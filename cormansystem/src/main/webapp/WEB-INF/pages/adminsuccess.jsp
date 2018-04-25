@@ -16,6 +16,7 @@
     <title>标题</title>
 </head>
 <body>
+<a href="adminsaverecrui.do">查看发布的招聘信息</a>
 <a href="adminsaveresume.do">查看接收的简历</a>
 <a href="savedepartment.do">查看各部门信息</a>
 <a href="adsavetrain.do">安排培训事宜</a>

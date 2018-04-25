@@ -6,6 +6,7 @@ import com.cl.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -20,7 +21,8 @@ import java.util.List;
  */
 @Controller
 public class AdminController {
-
+    @Autowired
+    private UserService userService;
     @Autowired
     private DeliveryService deliveryService;
     @Autowired
@@ -33,17 +35,18 @@ public class AdminController {
    private TrainService trainService;
    @Autowired
    private ReandpunService reandpunService;
+   @Autowired
+   private RecruitmentService recruitmentService;
     @RequestMapping("adminsaveresume.do")
     public String adminsaveresume(HttpSession session) throws Exception{
-         if (deliveryService.getDelivery()!=null){
-             List<Delivery> deliveries=deliveryService.getDelivery();
+        List<Delivery> deliveries=deliveryService.getDelivery();
+         if (deliveries!=null&&deliveries.size()!=0){//消除已经同意和回绝的简历
              session.setAttribute("delivery",deliveries);
-             for (Delivery delivery:deliveries){
-                 System.out.println(delivery);
-             }
              return"adsaveresume";
          }
-         return "";
+         String prompt="暂时无人投递简历";
+         session.setAttribute("prompt",prompt);
+         return "promptinterface";
     }
     @RequestMapping("updateresume1.do")//简历录用管理
     public String updateresume1(HttpSession session, HttpServletRequest request) throws Exception{
@@ -62,11 +65,9 @@ public class AdminController {
             Postitions postitions=new Postitions();
             postitions.setUser(delivery1.getUser());
             postitions.setP_position(delivery1.getRecruitment().getR_job());
-            postitionesService.updatePostitions(postitions);
             delivery.setDe_state("已录用");
-            User user= (User) session.getAttribute("user");
+            User user=userService.getUserByid(delivery1.getUser().getU_id());
             user.setAuthority(2);
-            //添加将简历信息转移到员工信息上
             Employee employee=new Employee();
             Date date=new Date();
             employee.setE_age(delivery1.getResume().getR_age());
@@ -76,12 +77,19 @@ public class AdminController {
             employee.setE_state("实习");
             employee.setE_phone(delivery1.getResume().getR_phone());
             employee.setE_sex(delivery1.getResume().getR_sex());
+            employee.setUser(user);
+            employeeService.addEmployee(employee);
+            Employee employee1=employeeService.getEmployeeByuid(user.getU_id());
+            postitions.setEmployee(employee1);
             deliveryService.updateDelivery(delivery);
+            postitionesService.updatePostitions(postitions);
             List<Delivery> deliveries=deliveryService.getDelivery();
             session.setAttribute("delivery",deliveries);
             return"adsaveresume";
         }else {
-            return "";//返回一个错误界面
+            String prompt="操作无效请确认操作是否正确";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//返回一个错误界面
         }
     }
     @RequestMapping("updateresume2.do")
@@ -91,7 +99,9 @@ public class AdminController {
         Delivery delivery=new Delivery();
         delivery.setDe_id(id);
         if (state.equals("已录用")){
-            return "";//返回一个错误界面
+            String prompt="员工已经录用，无效操作";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//返回一个错误界面
         }else {
             delivery.setDe_state("已拒绝");
             deliveryService.updateDelivery(delivery);
@@ -102,22 +112,25 @@ public class AdminController {
     }
     @RequestMapping("savedepartment.do")//查看部门
     public String savedepartment(HttpSession session)throws Exception{
-        if (departmentService.getDepartment()!=null){
-            List<Department> department=departmentService.getDepartment();
+        List<Department> department=departmentService.getDepartment();
+        if (department!=null&&department.size()!=0){
             int size=department.size();
             session.setAttribute("size",size);
             session.setAttribute("department",department);
             return "savepepartment";
         }
-        return "";//返回一个错误网址
+        String prompt="公司目前没有部门创建";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";//返回一个错误网址
     }
     @RequestMapping("savepostitions.do")
     public String savepostitions(HttpSession session,HttpServletRequest request) throws Exception{
         int id= Integer.parseInt(request.getParameter("id"));
+        session.setAttribute("did",id);
         Department department=departmentService.getDepartmentbyid(id);
         session.setAttribute("department",department);
         List<Postitions> postitions=postitionesService.getPostitionsbydeid(id);
-        if (postitions!=null){
+        if (postitions!=null&&postitions.size()!=0){
             for (Postitions postitions1:postitions){
                 Employee employee=employeeService.getEmployeeByuid(postitions1.getUser().getU_id());
                 postitions1.setEmployee(employee);
@@ -125,10 +138,11 @@ public class AdminController {
             int size=postitions.size();
             session.setAttribute("size",size);
             session.setAttribute("postitions",postitions);
-            session.setAttribute("did",id);
             return "savepostitions";
         }
-        return "";//返回一个没有职位的显示网址
+        String prompt="该部门目前没有职位";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";//返回一个没有职位的显示网址
     }
     @RequestMapping("saveemployee.do")//从详细部门进入到员工信息
     public String saveemployee(HttpSession session,HttpServletRequest request)throws Exception{
@@ -140,7 +154,9 @@ public class AdminController {
     @RequestMapping("addddepartment.do")//添加部门
     public String addddepartment(HttpSession session,Department department) throws Exception {
         if (departmentService.getDepartmentBydeid(department)!=null){
-            return "";//弹到错误界面
+            String prompt="该部门已经存在";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//弹到错误界面
         }else {
             departmentService.addDepartment(department);
             Department department1=departmentService.getDepartmentBydeid(department);
@@ -168,11 +184,17 @@ public class AdminController {
         int id= Integer.parseInt(request.getParameter("id"));
         Department department=new Department();
         department.setD_id(id);
-        System.out.println(department.getD_id());
         List<Postitions> postitions=postitionesService.getPostitionsbydeid(department.getD_id());
         for (Postitions postitions1:postitions){
             if (postitions1.getUser().getU_id()!=0){
-                return "";//跳转错误界面
+                String prompt="该部门下目前有人就职，无法删除";
+                session.setAttribute("prompt",prompt);
+                return "promptinterface";//跳转错误界面
+            }
+            if (recruitmentService.getRecruitmentByjob(postitions1.getP_position())==null){
+                String prompt="该部门目前没有职位";
+                session.setAttribute("prompt",prompt);
+                return "promptinterface";//跳转到提示有招聘信息没有删除
             }
         }
         Postitions postitions1=new Postitions();
@@ -185,6 +207,9 @@ public class AdminController {
     public String deletepos(HttpServletRequest request,HttpSession session)throws Exception{
         int id= Integer.parseInt(request.getParameter("id"));
         Postitions postitions=postitionesService.getPostitionsbyid(id);
+        if (recruitmentService.getRecruitmentByjob(postitions.getP_position())==null){
+            return "";//跳转到提示有招聘信息没有删除
+        }
         postitionesService.deletePostitions(postitions);
         return savedepartment(session);
     }
@@ -284,5 +309,66 @@ public class AdminController {
         reandpun.setRe_explanation(explanation);
         reandpunService.updateReandpun(reandpun);
         return adsavereandpun(session);
+    }
+    @RequestMapping("adminsaverecrui.do")
+    public String adminsaverecrui(HttpSession session) throws Exception{
+        List<Recruitment> recruitments=recruitmentService.getRecruitment();
+        if (recruitments!=null){
+            session.setAttribute("recruitments",recruitments);
+            return "adminsaverecrui";
+        }
+        return "";
+    }
+    @RequestMapping("addrecruiment.do")
+    public String addrecruiment(HttpSession session,Recruitment recruitment) throws Exception{
+        Date date=new Date();
+        if (postitionesService.getPostitonsBynamenoemploy(recruitment.getR_job())!=null){
+            recruitment.setR_createtime(date);
+            recruitment.setR_state("未招满");
+            recruitmentService.addRecruitment(recruitment);
+            return adminsaverecrui(session);
+        }else {
+            return "";//提示没有该职位请先添加该职位
+        }
+    }
+    @RequestMapping("deleterecru.do")
+    public String deletetecru(HttpSession session,HttpServletRequest request)throws  Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        Recruitment recruitment=new Recruitment();
+        recruitment.setR_id(id);
+        recruitmentService.deleteRecruitment(recruitment);
+        return adminsaverecrui(session);
+    }
+    @RequestMapping("moveofpersonnel.do")
+    public String moveofpersonnel(HttpSession session)throws Exception{
+        List<Department> departments=departmentService.getDepartment();
+        session.setAttribute("departmentList",departments);
+        return "moveofpersonnel";
+    }
+    @RequestMapping("moveofpersonnelajax.do")//人员调动采用二级联动
+    public @ResponseBody List<Postitions> moveofpersonnelajax(int depid) throws Exception{
+        List<Postitions> postitions=postitionesService.getPostitionsbydeid(depid);
+        return postitions;
+    }
+    @RequestMapping("replace.do")
+    public String replace(HttpSession session,HttpServletRequest request) throws Exception{
+        int dep= Integer.parseInt(request.getParameter("depid"));
+        int pos= Integer.parseInt(request.getParameter("posid"));
+        int eid= Integer.parseInt(request.getParameter("eid"));
+        Employee employee=employeeService.getEmployeeByid(eid);
+        System.out.println(employee);
+        Postitions postition=postitionesService.getPostitonsByuid(employee.getUser().getU_id());
+        User user=new User();
+        user.setU_id(0);
+        postition.setUser(user);
+        Employee employee1=new Employee();
+        employee1.setE_id(0);
+        postition.setEmployee(employee1);
+        postitionesService.updatePostitionsByuande(postition);
+        Postitions postition1=postitionesService.getPostitionsbyid(pos);
+        postition1.setEmployee(employee);
+        postition1.setUser(employee.getUser());
+        postitionesService.updatePostitionsByuande(postition1);
+        return "";
     }
 }

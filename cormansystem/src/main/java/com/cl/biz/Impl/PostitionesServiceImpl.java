@@ -55,4 +55,14 @@ public class PostitionesServiceImpl implements PostitionesService{
     public Postitions getPostitonsByname(String name) {
         return postitionesMapper.getPostitonsByname(name);
     }
+
+    @Override
+    public Postitions getPostitonsBynamenoemploy(String name) {
+        return postitionesMapper.getPostitonsBynamenoemploy(name);
+    }
+
+    @Override
+    public boolean updatePostitionsByuande(Postitions postitions) {
+        return postitionesMapper.updatePostitionsByuande(postitions);
+    }
 }

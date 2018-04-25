@@ -1,6 +1,7 @@
 package com.cl.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by one on 2018/4/20.
@@ -13,7 +14,7 @@ public class Recruitment implements Serializable {//招聘信息
     private String r_treatment;//待遇
     private String r_workplace;//工作地点
     private String r_state;//状态
-    private String r_createtime;//发布时间
+    private Date r_createtime;//发布时间
 
     public Recruitment() {
     }
@@ -74,11 +75,11 @@ public class Recruitment implements Serializable {//招聘信息
         this.r_state = r_state;
     }
 
-    public String getR_createtime() {
+    public Date getR_createtime() {
         return r_createtime;
     }
 
-    public void setR_createtime(String r_createtime) {
+    public void setR_createtime(Date r_createtime) {
         this.r_createtime = r_createtime;
     }
 

@@ -14,5 +14,5 @@ public interface RecruitmentDao {
     boolean addRecruitment(Recruitment recruitment);
     boolean updateRecruitment(Recruitment recruitment);
     boolean deleteRecruitment(Recruitment recruitment);
-
+    Recruitment getRecruitmentByjob(String job);
 }

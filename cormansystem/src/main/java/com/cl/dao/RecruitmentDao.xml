@@ -2,15 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cl.dao.RecruitmentDao">
     <insert id="addRecruitment">
-
+      INSERT INTO R_RECRUITMENT(R_CREATETIME,R_DEMAND,R_JOB,R_STATE,R_TREATMENT,R_WAGE,R_WORKPLACE)
+      VALUES (#{r_createtime},#{r_demand},#{r_job},#{r_state},#{r_treatment},#{r_wage},#{r_workplace})
     </insert>
     <update id="updateRecruitment">
 
     </update>
     <delete id="deleteRecruitment">
-
+       DELETE FROM R_RECRUITMENT WHERE R_ID=#{r_id}
     </delete>
     <select id="getRecruitment" resultType="com.cl.model.Recruitment">
         SELECT * FROM R_RECRUITMENT
+    </select>
+    <select id="getRecruitmentByjob" resultType="com.cl.model.Recruitment">
+        SELECT * FROM R_RECRUITMENT WHERE R_JOB=#{job}
     </select>
 </mapper>

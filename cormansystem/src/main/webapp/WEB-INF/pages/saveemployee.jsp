@@ -49,6 +49,10 @@
         <td>离职原因</td>
         <td>${sessionScope.employee.e_reason}</td>
     </tr>
+    <tr>
+        <td>人事调动</td>
+        <td><a href="moveofpersonnel.do?id=${sessionScope.employee.e_id}">员工调动安排</a></td>
+    </tr>
 </table>
 </body>
 </html>

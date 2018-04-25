@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface UserDao {
     User getUser(User user);
     User getUserbyname(String name);
+    User getUserByid(int id);
     boolean addUser(User user);
     boolean updateUser(User user);
     boolean deleteUser(User user);

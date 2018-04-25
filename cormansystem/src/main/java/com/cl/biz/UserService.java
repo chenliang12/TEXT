@@ -11,4 +11,5 @@ public interface UserService {
     boolean addUser(User user);
     boolean updateUser(User user);
     boolean deleteUser(User user);
+    User getUserByid(int id);
 }

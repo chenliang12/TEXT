@@ -12,8 +12,10 @@ public interface PostitionesMapper {
     List<Postitions> getPostitionsbydeid(int id);
     boolean addPostitions(Postitions postitions);
     boolean updatePostitions(Postitions postitions);
+    boolean updatePostitionsByuande(Postitions postitions);
     boolean deletePostitions(Postitions postitions);
     Postitions getPostitionsbyid(int id);
     Postitions getPostitonsByuid(int id);
     Postitions getPostitonsByname(String name);
+    Postitions getPostitonsBynamenoemploy(String name);
 }

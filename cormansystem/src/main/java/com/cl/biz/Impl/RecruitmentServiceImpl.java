@@ -36,4 +36,9 @@ public class RecruitmentServiceImpl implements RecruitmentService{
     public boolean deleteRecruitment(Recruitment recruitment) {
         return recruitmentDao.deleteRecruitment(recruitment);
     }
+
+    @Override
+    public Recruitment getRecruitmentByjob(String job) {
+        return recruitmentDao.getRecruitmentByjob(job);
+    }
 }

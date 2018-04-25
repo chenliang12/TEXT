@@ -16,4 +16,6 @@ public interface PostitionesService {
     Postitions getPostitionsbyid(int id);
     Postitions getPostitonsByuid(int id);
     Postitions getPostitonsByname(String name);
+    Postitions getPostitonsBynamenoemploy(String name);
+    boolean updatePostitionsByuande(Postitions postitions);
 }

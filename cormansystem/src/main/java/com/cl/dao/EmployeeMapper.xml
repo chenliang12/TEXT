@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cl.dao.EmployeeMapper">
     <insert id="addEmployee">
-
+      INSERT INTO E_EMPLOYEE(E_NAME, E_AGE, E_ORIGIN, E_SEX, E_USER_ID, E_PHONE, E_CREATETIME, E_STATE)
+      VALUES (#{e_name},#{e_age},#{e_origin},#{e_sex},#{user.u_id},#{e_phone},#{e_createtime},#{e_state})
     </insert>
     <update id="updateEmployee">
       UPDATE E_EMPLOYEE SET E_AGE=#{e_age},e_phone=#{e_phone} where E_USER_ID=#{user.u_id}
@@ -10,8 +11,8 @@
     <delete id="deleteEmployee">
 
     </delete>
-    <select id="getEmployeeByid" resultType="com.cl.model.Employee">
-        SELECT * FROM E_EMPLOYEE WHERE E_ID=#{id}
+    <select id="getEmployeeByid" resultMap="empanduser">
+        SELECT * FROM E_EMPLOYEE ee,U_USER uu WHERE uu.U_ID=ee.E_USER_ID and E_ID=#{id}
     </select>
     <select id="getEmployeeByuid" resultType="com.cl.model.Employee">
         SELECT *FROM E_EMPLOYEE WHERE E_USER_ID=#{id}
@@ -19,4 +20,18 @@
     <select id="getEmployee" resultType="com.cl.model.Employee">
         SELECT *FROM E_EMPLOYEE
     </select>
+    <resultMap id="empanduser" type="Employee">
+        <id column="e_id" property="e_id"/>
+        <result column="e_name" property="e_name"/>
+        <result column="e_age" property="e_age"/>
+        <result column="e_createtime" property="e_createtime"/>
+        <result column="e_origin" property="e_origin"/>
+        <result column="e_phone" property="e_phone"/>
+        <result column="e_reason" property="e_reason"/>
+        <result column="e_sex" property="e_sex"/>
+        <result column="e_state" property="e_state"/>
+        <collection property="user" column="e_user_id" ofType="User">
+            <id column="u_id" property="u_id"/>
+        </collection>
+    </resultMap>
 </mapper>
