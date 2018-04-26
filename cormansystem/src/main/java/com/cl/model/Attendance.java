@@ -8,9 +8,10 @@ import java.util.Date;
  */
 public class Attendance implements Serializable{//考勤
     private int a_id;
-    private Date a_starttime;
-    private Date a_offtime;
-    private String a_state;
+    private Date a_starttime;//上班时间
+    private Date a_offtime;//下班时间
+    private String a_state;//状态
+    private Date a_date;
     private User user;
 
     public Attendance() {
@@ -56,9 +57,17 @@ public class Attendance implements Serializable{//考勤
         this.user = user;
     }
 
+    public Date getA_date() {
+        return a_date;
+    }
+
+    public void setA_date(Date a_date) {
+        this.a_date = a_date;
+    }
+
     @Override
     public String toString() {
-        return "Attendance{" +
+        return "AttendanceMapper{" +
                 "a_id=" + a_id +
                 ", a_starttime=" + a_starttime +
                 ", a_offtime=" + a_offtime +

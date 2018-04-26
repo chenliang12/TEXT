@@ -192,7 +192,7 @@ public class AdminController {
                 return "promptinterface";//跳转错误界面
             }
             if (recruitmentService.getRecruitmentByjob(postitions1.getP_position())==null){
-                String prompt="该部门目前没有职位";
+                String prompt="该部门下有职位的招聘信息，请先删除掉招聘信息";
                 session.setAttribute("prompt",prompt);
                 return "promptinterface";//跳转到提示有招聘信息没有删除
             }
@@ -208,7 +208,9 @@ public class AdminController {
         int id= Integer.parseInt(request.getParameter("id"));
         Postitions postitions=postitionesService.getPostitionsbyid(id);
         if (recruitmentService.getRecruitmentByjob(postitions.getP_position())==null){
-            return "";//跳转到提示有招聘信息没有删除
+            String prompt="该职位的招聘信息，请先删除掉招聘信息";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//跳转到提示有招聘信息没有删除
         }
         postitionesService.deletePostitions(postitions);
         return savedepartment(session);
@@ -216,11 +218,13 @@ public class AdminController {
     @RequestMapping("adsavetrain.do")//管理员查询培训信息
     public String adsavetrain(HttpSession session) throws Exception{
        List<Train> trains=trainService.getTrains();
-       if (trains!=null){
+       if (trains!=null&&trains.size()==0){
            session.setAttribute("trains",trains);
            return "adsavetrains";
        }
-       return "";//返回一个爆空页面让其添加
+        String prompt="目前没有培训信息";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";//返回一个爆空页面让其添加
     }
     @RequestMapping("addtrain.do")//增加培训
     public String addtrain(HttpSession session,Train train,HttpServletRequest request) throws Exception{
@@ -234,7 +238,9 @@ public class AdminController {
             trainService.addTrain(train);
             return adsavetrain(session);
         }else {
-            return "";//提示部门不存在
+            String prompt="您输入的部门不存在，无法添加培训内容";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//提示部门不存在
         }
     }
     @RequestMapping("updatetrain.do")//修改培训
@@ -248,11 +254,13 @@ public class AdminController {
     @RequestMapping("adsavereandpun.do")//查看奖惩
     public String adsavereandpun(HttpSession session)throws Exception{
         List<Reandpun> reandpuns=reandpunService.getReandpun();
-        if (reandpuns!=null){
+        if (reandpuns!=null&&reandpuns.size()!=0){
             session.setAttribute("reandpuns",reandpuns);
             return "adsavereandpun";
         }else {
-            return "";//返回提示空界面
+            String prompt="目前没有奖惩记录";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//返回提示空界面
         }
     }
     @RequestMapping("adaddreandpun.do")//增加奖惩
@@ -280,7 +288,9 @@ public class AdminController {
             reandpunService.addReandpun(reandpun);
             return adsavereandpun(session);
         }
-        return "";
+        String prompt="您输入的职位或者人员不存在，请检查后重新输入";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";
     }
     @RequestMapping("updatereandpun.do")//跳转修改奖惩页面
     public String updatereandpun(HttpSession session,HttpServletRequest request)throws Exception{
@@ -290,7 +300,9 @@ public class AdminController {
             session.setAttribute("reandpun",reandpun);
             return "updatereandpun";
         }else {
-            return "";//返回无法修改界面
+            String prompt="已经结算奖惩，无法进行修改";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//返回无法修改界面
         }
 
     }
@@ -313,11 +325,13 @@ public class AdminController {
     @RequestMapping("adminsaverecrui.do")
     public String adminsaverecrui(HttpSession session) throws Exception{
         List<Recruitment> recruitments=recruitmentService.getRecruitment();
-        if (recruitments!=null){
+        if (recruitments!=null&&recruitments.size()!=0){
             session.setAttribute("recruitments",recruitments);
             return "adminsaverecrui";
         }
-        return "";
+        String prompt="暂时没有招聘信息";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";
     }
     @RequestMapping("addrecruiment.do")
     public String addrecruiment(HttpSession session,Recruitment recruitment) throws Exception{
@@ -328,7 +342,9 @@ public class AdminController {
             recruitmentService.addRecruitment(recruitment);
             return adminsaverecrui(session);
         }else {
-            return "";//提示没有该职位请先添加该职位
+            String prompt="招聘的职位暂时没有添加，请先添加职位信息";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//提示没有该职位请先添加该职位
         }
     }
     @RequestMapping("deleterecru.do")
@@ -369,6 +385,6 @@ public class AdminController {
         postition1.setEmployee(employee);
         postition1.setUser(employee.getUser());
         postitionesService.updatePostitionsByuande(postition1);
-        return "";
+        return savedepartment(session);
     }
 }

@@ -49,5 +49,8 @@ public class HyperlinkController {
     public String addrecruiments() throws Exception{
         return "addrecruiments";
     }
-
+@RequestMapping("attendance.do")
+    public String attendance() throws Exception{
+        return "attendance";
+}
 }

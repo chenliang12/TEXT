@@ -87,6 +87,8 @@ public class TouristsController {
             session.setAttribute("delivery",deliveries);
             return "resumestate";
         }
-        return "";
+        String prompt="目前暂无简历投递";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";
     }
 }

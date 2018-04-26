@@ -45,4 +45,14 @@ public class ReandpunSerciceImpl implements ReandpunService {
     public Reandpun getReandpunByid(int id) {
         return reandpunMapper.getReandpunByid(id);
     }
+
+    @Override
+    public Reandpun getReanddpunByatt(Reandpun reandpun) {
+        return reandpunMapper.getReanddpunByatt(reandpun);
+    }
+
+    @Override
+    public boolean updateReandpunByexpl(Reandpun reandpun) {
+        return reandpunMapper.updateReandpunByexpl(reandpun);
+    }
 }

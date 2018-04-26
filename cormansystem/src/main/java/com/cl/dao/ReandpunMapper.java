@@ -12,6 +12,8 @@ public interface ReandpunMapper {
     List<Reandpun> getReandpunByuid(int id);
     boolean addReandpun(Reandpun reandpun);
     boolean updateReandpun(Reandpun reandpun);
+    boolean updateReandpunByexpl(Reandpun reandpun);
     boolean deleteReandpun(Reandpun reandpun);
     Reandpun getReandpunByid(int id);
+    Reandpun getReanddpunByatt(Reandpun reandpun);
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cl.dao.AttendanceMapper">
+    <insert id="addAttendance">
+
+    </insert>
+    <update id="updateAttendance">
+        UPDATE A_ATTENDANCE SET A_OFFTIME=#{a_offtime},a_state=#{a_state} where a_id=#{a_id}
+    </update>
+    <delete id="deleteAttendance">
+
+    </delete>
+    <select id="getAttendanceByuid" resultMap="attendanduser">
+      SELECT * FROM A_ATTENDANCE aa,U_USER uu WHERE uu.U_ID=aa.A_USER_ID AND aa.A_USER_ID=#{id}
+    </select>
+    <select id="getAttendanceByuidanddate" resultMap="attendanduser">
+SELECT * FROM A_ATTENDANCE aa,U_USER uu WHERE uu.U_ID=aa.A_USER_ID AND aa.A_USER_ID=#{id}
+AND aa.a_date=#{date}
+    </select>
+    <resultMap id="attendanduser" type="Attendance">
+        <id column="a_id" property="a_id"/>
+        <result column="a_date" property="a_date"/>
+        <result column="a_offtime" property="a_offtime"/>
+        <result column="a_starttime" property="a_starttime"/>
+        <result column="a_state" property="a_state"/>
+        <collection property="user" column="a_user_id" ofType="User">
+            <id column="u_id" property="u_id"/>
+        </collection>
+    </resultMap>
+</mapper>

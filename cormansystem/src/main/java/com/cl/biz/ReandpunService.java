@@ -14,4 +14,6 @@ public interface ReandpunService {
     boolean updateReandpun(Reandpun reandpun);
     boolean deleteReandpun(Reandpun reandpun);
     Reandpun getReandpunByid(int id);
+    Reandpun getReanddpunByatt(Reandpun reandpun);
+    boolean updateReandpunByexpl(Reandpun reandpun);
 }

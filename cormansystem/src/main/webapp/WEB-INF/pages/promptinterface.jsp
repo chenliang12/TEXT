@@ -30,6 +30,12 @@
         <c:if test="${sessionScope.prompt=='该部门目前没有职位'}">
             <a href="addpos.do?id=${sessionScope.did}">添加职位</a>
         </c:if>
+        <c:if test="${sessionScope.prompt=='目前没有培训信息'}">
+            <a href="addtrains.do">添加培训计划</a>
+        </c:if>
+        <c:if test="${sessionScope.prompt=='目前没有奖惩记录'}">
+            <a href="addreandpun.do">增加奖惩信息</a>
+        </c:if>
 </div>
 </body>
 </html>

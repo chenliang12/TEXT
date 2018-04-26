@@ -18,6 +18,10 @@
        </set>
         where re_id=#{re_id}
     </update>
+    <update id="updateReandpunByexpl">
+        UPDATE R_REANDPUN SET RE_PUNISHMENT=#{re_punishment},re_explanation=#{re_explanation}
+        where re_id=#{re_id}
+    </update>
     <delete id="deleteReandpun">
 
     </delete>
@@ -29,6 +33,10 @@
     </select>
     <select id="getReandpunByid" resultMap="reandpunanduser">
         SELECT * FROM R_REANDPUN rr,E_EMPLOYEE uu WHERE uu.E_ID=rr.RE_EMPLOYEE_ID and rr.RE_ID=#{id}
+    </select>
+    <select id="getReanddpunByatt" resultType="com.cl.model.Reandpun">
+        SELECT *FROM R_REANDPUN WHERE RE_EXPLANATION=#{re_explanation} AND
+        re_date=#{re_date} AND re_employee_id=#{employee.e_id}
     </select>
     <resultMap id="reandpunanduser" type="Reandpun">
         <id column="re_id" property="re_id"/>
