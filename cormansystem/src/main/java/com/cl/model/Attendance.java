@@ -12,6 +12,8 @@ public class Attendance implements Serializable{//考勤
     private Date a_offtime;//下班时间
     private String a_state;//状态
     private Date a_date;
+    private int year;
+    private int month;
     private User user;
 
     public Attendance() {
@@ -63,6 +65,22 @@ public class Attendance implements Serializable{//考勤
 
     public void setA_date(Date a_date) {
         this.a_date = a_date;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
     }
 
     @Override

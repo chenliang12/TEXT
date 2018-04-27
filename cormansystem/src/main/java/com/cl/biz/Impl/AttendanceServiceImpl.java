@@ -40,4 +40,9 @@ public class AttendanceServiceImpl implements AttendanceService {
     public boolean deleteAttendance(Attendance attendance) {
         return attendanceMapper.deleteAttendance(attendance);
     }
+
+    @Override
+    public List<Attendance> getAttendance(int year, int month, int uid) {
+        return attendanceMapper.getAttendance(year,month,uid);
+    }
 }

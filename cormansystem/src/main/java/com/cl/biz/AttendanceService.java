@@ -2,6 +2,7 @@ package com.cl.biz;
 
 import com.cl.dao.AttendanceMapper;
 import com.cl.model.Attendance;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -15,4 +16,5 @@ public interface AttendanceService {
     boolean addAttendance(Attendance attendance);
     boolean updateAttendance(Attendance attendance);
     boolean deleteAttendance(Attendance attendance);
+    List<Attendance> getAttendance(@Param("year") int year, @Param("month") int month, @Param("uid") int uid);
 }

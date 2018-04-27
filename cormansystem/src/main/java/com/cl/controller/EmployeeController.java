@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -172,9 +173,12 @@ public class EmployeeController {
         Employee employee=employeeService.getEmployeeByuid(user.getU_id());
         Reandpun reandpun=new Reandpun();
         Date date=new Date();
+        Calendar cal=Calendar.getInstance();
+        int year=cal.get(Calendar.YEAR);//获取年份
+        int month=cal.get(Calendar.MONTH)+1;//获取月份
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
         SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
-        String time=sdf1.format(date)+"09:00";//定的上班时间
+        String time=sdf1.format(date)+" 09:00";//定的上班时间
         Date date1=sdf.parse(time);
         String time1=sdf1.format(date);//打卡当时的日期
         Date date2=sdf1.parse(time1);
@@ -183,6 +187,8 @@ public class EmployeeController {
         Attendance attendance1=attendanceService.getAttendanceByuidanddate(user.getU_id(),date2);
         if (attendance1==null){
             attendance.setA_starttime(date);//存入打卡的具体时间
+            attendance.setYear(year);
+            attendance.setMonth(month);
             if (date.getTime()-date1.getTime()>600000){
                 attendance.setA_state("矿工");//打卡状态
                 reandpun.setRe_punishment(200);
@@ -193,7 +199,9 @@ public class EmployeeController {
                 reandpun.setEmployee(employee);
                 reandpunService.addReandpun(reandpun);//增加惩罚
                 attendanceService.addAttendance(attendance);//添加当天打卡时间
-                return""; //跳转提示已经计算矿工
+                String prompt="您已迟到10分钟以上，记为旷工，如有疑问请联系管理员";
+                session.setAttribute("prompt",prompt);
+                return "promptinterface"; //跳转提示已经计算矿工
             }else if(date.getTime()-date1.getTime()>0){
                 attendance.setA_state("迟到");//打卡状态
                 reandpun.setRe_punishment(20);
@@ -204,14 +212,20 @@ public class EmployeeController {
                 reandpun.setEmployee(employee);
                 reandpunService.addReandpun(reandpun);//增加惩罚
                 attendanceService.addAttendance(attendance);//添加当天打卡时间
-                return""; //跳转提示已经计算迟到
+                String prompt="您已迟到，如有疑问请联系管理员";
+                session.setAttribute("prompt",prompt);
+                return "promptinterface"; //跳转提示已经计算迟到
             }else {
                 attendance.setA_state("正常");//打卡状态
                 attendanceService.addAttendance(attendance);//添加当天打卡时间
-                return""; //跳转提示恭喜成功打卡
+                String prompt="恭喜您成功签到";
+                session.setAttribute("prompt",prompt);
+                return "promptinterface"; //跳转提示恭喜成功打卡
             }
         }else {
-            return "";//跳转已经打过上班卡了
+            String prompt="您当日已经签过到了，请忽重复签到";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//跳转已经打过上班卡了
         }
     }
     @RequestMapping("offtime.do")
@@ -223,7 +237,7 @@ public class EmployeeController {
         Date date=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
         SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
-        String time=sdf1.format(date)+"18:00";//定的下班时间
+        String time=sdf1.format(date)+" 18:00";//定的下班时间
         Date date1=sdf.parse(time);
         String time1=sdf1.format(date);//打卡当时的日期
         Date date2=sdf1.parse(time1);
@@ -233,49 +247,109 @@ public class EmployeeController {
         if (attendance1!=null&&attendance1.getA_offtime()==null){//检测是否打了上班卡
             attendance1.setA_offtime(date);//存入打卡的具体时间
             if (date1.getTime()-date.getTime()>600000){//检测是否提前10分钟之前下的班
-                if (attendance1.getA_state().equals("迟到")){//如果白天已经记了迟到，修改惩罚表状态
+                if (attendance1.getA_state().equals("正常")){
+                    reandpun.setEmployee(employee);
+                    reandpun.setRe_date(date2);
+                    reandpun.setRe_punishment(200);
+                    reandpun.setRe_reward(0);
+                    reandpun.setRe_state("未结算");
+                    reandpun.setRe_explanation("提前10分钟以上下班，记旷工");
+                    reandpunService.addReandpun(reandpun);
+                } else {//如果白天已经记了迟到，修改惩罚表状态
                     reandpun.setEmployee(employee);
                     reandpun.setRe_date(date2);
                     reandpun.setRe_explanation("上班迟到");
                     Reandpun reandpun1=reandpunService.getReanddpunByatt(reandpun);
-                    reandpun1.setRe_explanation("提前10分钟以上下班，记旷工");
-                    reandpun1.setRe_punishment(200);
-                }else if (attendance1.getA_state().equals("正常")){
-                    reandpun.setEmployee(employee);
-                    reandpun.setRe_date(date2);
-                    reandpun.setRe_punishment(200);
+                    if (reandpun1==null){
+                        reandpun.setRe_explanation("上班迟到10分钟以上");
+                        reandpun1=reandpunService.getReanddpunByatt(reandpun);
+                        reandpun1.setRe_explanation("上下班打卡均超时10分钟，记旷工");
+                        reandpun1.setRe_punishment(200);
+                        reandpunService.updateReandpunByexpl(reandpun1);
+                    }else {
+                        reandpun1.setRe_explanation("提前10分钟以上下班，记旷工");
+                        reandpun1.setRe_punishment(200);
+                        reandpunService.updateReandpunByexpl(reandpun1);
+                    }
                 }
                 attendance1.setA_state("矿工");//打卡状态
-                reandpunService.updateReandpunByexpl(reandpun);
-                attendanceService.updateAttendance(attendance);//添加当天打卡时间
-                return""; //跳转提示已经计算矿工
+                attendanceService.updateAttendance(attendance1);//添加当天打卡时间
+                String prompt="您早退10分钟以上，记为旷工，如有疑问请联系管理员";
+                session.setAttribute("prompt",prompt);
+                return "promptinterface"; //跳转提示已经计算矿工
             }else if(date1.getTime()-date.getTime()>0){
-                if (attendance1.getA_state().equals("迟到")){//如果白天已经记了迟到，修改惩罚表状态
+                if(attendance1.getA_state().equals("正常")) {
+                    attendance1.setA_state("早退");//打卡状态
+                    reandpun.setEmployee(employee);
+                    reandpun.setRe_date(date2);
+                    reandpun.setRe_punishment(20);
+                    reandpun.setRe_reward(0);
+                    reandpun.setRe_explanation("早退");
+                    reandpunService.addReandpun(reandpun);
+                    attendanceService.updateAttendance(attendance1);
+                    String prompt="您早退打卡，如有疑问请联系管理员";
+                    session.setAttribute("prompt",prompt);
+                    return "promptinterface";
+                }else {//如果白天已经记了迟到，修改惩罚表状态
                     attendance1.setA_state("矿工");//打卡状态
                     reandpun.setEmployee(employee);
                     reandpun.setRe_date(date2);
                     reandpun.setRe_explanation("上班迟到");
                     Reandpun reandpun1=reandpunService.getReanddpunByatt(reandpun);
-                    reandpun1.setRe_explanation("迟到+早退，记旷工");
-                    reandpun1.setRe_punishment(200);
-                }else if (attendance1.getA_state().equals("正常")){
-                    attendance1.setA_state("早退");//打卡状态
-                    reandpun.setEmployee(employee);
-                    reandpun.setRe_date(date2);
-                    reandpun.setRe_punishment(20);
+                    if (reandpun1==null){
+                        reandpun.setRe_explanation("上班迟到10分钟以上");
+                        reandpun1=reandpunService.getReanddpunByatt(reandpun);
+                        reandpun1.setRe_explanation("迟到+早退，记旷工");
+                        reandpun1.setRe_punishment(200);
+                        reandpunService.updateReandpunByexpl(reandpun1);
+                    }else {
+                        reandpun1.setRe_explanation("提前10分钟以上下班，记旷工");
+                        reandpun1.setRe_punishment(200);
+                        reandpunService.updateReandpunByexpl(reandpun1);
+                    }
                 }
-                reandpunService.updateReandpunByexpl(reandpun);
-                attendanceService.updateAttendance(attendance);//添加当天打卡时间
-                return""; //跳转提示已经计算矿工
+                    attendanceService.updateAttendance(attendance1);
+                    String prompt="您早退，加上白天迟到，已经记为矿工，如有疑问请联系管理员";
+                    session.setAttribute("prompt",prompt);
+                    return "promptinterface";
             }else {
                 attendance.setA_state("正常");//打卡状态
-                attendanceService.updateAttendance(attendance);//添加当天打卡时间
-                return""; //跳转提示恭喜成功打卡
+                attendanceService.updateAttendance(attendance1);//添加当天打卡时间
+                String prompt="恭喜您成功签到";
+                session.setAttribute("prompt",prompt);
+                return "promptinterface";  //跳转提示恭喜成功打卡
             }
         }else if (attendance1==null){
-            return "";//跳转上班卡没有打
+            String prompt="您上班签到还没有打";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//跳转上班卡没有打
         }else {
-            return "";//跳转提示下班卡已经打过了
+            String prompt="您下班卡已经打过了，请互重复打卡";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//跳转提示下班卡已经打过了
         }
+    }
+    @RequestMapping("saveattendance.do")
+    public String saveattendance(HttpSession session)throws Exception{
+        User user= (User) session.getAttribute("user");
+        Calendar cal=Calendar.getInstance();
+        int year=cal.get(Calendar.YEAR);
+        int month=cal.get(Calendar.MONTH)+1;
+        List<Attendance> attendances=attendanceService.getAttendance(year,month,user.getU_id());
+        session.setAttribute("attendances",attendances);
+        List years=new ArrayList();
+        for (int i=0;i<20;i++){
+            years.add(year);
+            year=year-1;
+        }
+        session.setAttribute("years",years);
+        return "emsaveatt";
+    }
+    @RequestMapping("saveattendance1.do")
+    public String saveattendance1(HttpSession session,int year,int month) throws Exception{
+        User user= (User) session.getAttribute("user");
+        List<Attendance> attendances=attendanceService.getAttendance(year,month,user.getU_id());
+        session.setAttribute("attendances",attendances);
+        return "emsaveatt";
     }
 }
