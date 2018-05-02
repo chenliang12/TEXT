@@ -17,7 +17,6 @@
     <title>标题</title>
 </head>
 <body>
-<%SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");%>
 <table border="1">
     <tr>
         <td>编号</td>
@@ -26,6 +25,7 @@
         <td>惩罚</td>
         <td>理由</td>
         <td>时间</td>
+        <td>对此处罚有异议</td>
     </tr>
     <c:forEach items="${sessionScope.reandpuns}" var="reandpun">
         <tr>
@@ -35,6 +35,18 @@
             <td>${reandpun.re_punishment}</td>
             <td>${reandpun.re_explanation}</td>
             <td>${reandpun.date}</td>
+            <td>
+                <c:if test="${reandpun.re_state=='未结算'}">
+                    <form action="adddissent.do" method="post">
+                        <input name="reason">
+                        <input type="hidden" name="id" value="${reandpun.re_id}">
+                        <input type="submit" value="提交">
+                    </form>
+                </c:if>
+                <c:if test="${reandpun.re_state=='已结算'}">
+                    <a>已经结算，无法提异</a>
+                </c:if>
+            </td>
         </tr>
     </c:forEach>
 </table>

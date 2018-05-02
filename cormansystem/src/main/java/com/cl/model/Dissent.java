@@ -10,8 +10,8 @@ import java.io.Serializable;
 public class Dissent implements Serializable {//工资异议
     private int d_id;
     private String d_reason;//原因
-    private User user;
-    private Wage wage;
+    private Employee employee;
+    private Reandpun reandpun;
     private String d_state;
 
     public Dissent() {
@@ -33,20 +33,20 @@ public class Dissent implements Serializable {//工资异议
         this.d_reason = d_reason;
     }
 
-    public User getUser() {
-        return user;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
-    public Wage getWage() {
-        return wage;
+    public Reandpun getReandpun() {
+        return reandpun;
     }
 
-    public void setWage(Wage wage) {
-        this.wage = wage;
+    public void setReandpun(Reandpun reandpun) {
+        this.reandpun = reandpun;
     }
 
     public String getD_state() {
@@ -62,6 +62,8 @@ public class Dissent implements Serializable {//工资异议
         return "Dissent{" +
                 "d_id=" + d_id +
                 ", d_reason='" + d_reason + '\'' +
+                ", employee=" + employee +
+                ", reandpun=" + reandpun +
                 ", d_state='" + d_state + '\'' +
                 '}';
     }

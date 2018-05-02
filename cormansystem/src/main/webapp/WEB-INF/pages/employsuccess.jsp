@@ -22,5 +22,6 @@
 <a href="emsavereandpun.do">查看个人奖惩记录</a>
 <a href="emsavewages.do">查看个人薪资记录</a>
 <a href="attendance.do">签到</a>
+<a href="emsavedissent.do">查看奖惩异议处理进度</a>
 </body>
 </html>

@@ -15,8 +15,8 @@ public class Attendance implements Serializable{//考勤
     private String a_state;//状态
     private Date a_date;
     private String date;
-    private int year;
-    private int month;
+    private int a_year;
+    private int a_month;
     private Employee employee;
 
     public Attendance() {
@@ -70,20 +70,20 @@ public class Attendance implements Serializable{//考勤
         this.a_date = a_date;
     }
 
-    public int getYear() {
-        return year;
+    public int getA_year() {
+        return a_year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setA_year(int a_year) {
+        this.a_year = a_year;
     }
 
-    public int getMonth() {
-        return month;
+    public int getA_month() {
+        return a_month;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
+    public void setA_month(int a_month) {
+        this.a_month = a_month;
     }
 
     public String getStarttime() {

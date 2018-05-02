@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cl.dao.ReandpunMapper">
     <insert id="addReandpun">
-       INSERT INTO R_REANDPUN(RE_REWARD,RE_PUNISHMENT,RE_EMPLOYEE_ID,RE_DATE,RE_EXPLANATION,RE_STATE)
-       VALUES (#{re_reward},#{re_punishment},#{employee.e_id},#{re_date},#{re_explanation},#{re_state})
+       INSERT INTO R_REANDPUN(RE_REWARD,RE_PUNISHMENT,RE_EMPLOYEE_ID,RE_DATE,RE_EXPLANATION,RE_STATE,RE_YEAR,RE_MONTH)
+       VALUES (#{re_reward},#{re_punishment},#{employee.e_id},#{re_date},#{re_explanation},#{re_state},#{re_year},#{re_month})
     </insert>
     <update id="updateReandpun">
        UPDATE R_REANDPUN

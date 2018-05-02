@@ -35,7 +35,7 @@
         <td>${reandpun.re_reward}</td>
         <td>${reandpun.re_punishment}</td>
         <td>${reandpun.re_explanation}</td>
-        <td>${reandpun.re_date}</td>
+        <td>${reandpun.date}</td>
         <td>
             <form action="updatereandpun.do" method="post">
                 <input type="hidden" name="id" value="${reandpun.re_id}">

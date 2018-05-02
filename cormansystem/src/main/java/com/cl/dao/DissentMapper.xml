@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cl.dao.DissentMapper">
+    <insert id="addDissent">
+      INSERT INTO D_DISSENT(D_REASON,D_STATE,D_EMPLOYEE_ID,D_REANDPUN_ID)
+      VALUES (#{d_reason},#{d_state},#{employee.e_id},#{reandpun.re_id})
+    </insert>
+    <update id="updateDissent">
+
+    </update>
+    <delete id="deleteDissent">
+
+    </delete>
+    <select id="getDissentbyeid" resultMap="dissandre">
+       SELECT * FROM D_DISSENT dd,R_REANDPUN rr,E_EMPLOYEE ee
+       where rr.RE_EMPLOYEE_ID=dd.D_EMPLOYEE_ID and ee.E_ID=dd.D_EMPLOYEE_ID
+       AND  dd.D_ID=#{id}
+    </select>
+    <select id="getDissents" resultMap="dissandre">
+      SELECT * FROM D_DISSENT dd,R_REANDPUN rr,E_EMPLOYEE ee
+       where rr.RE_EMPLOYEE_ID=dd.D_EMPLOYEE_ID and ee.E_ID=dd.D_EMPLOYEE_ID
+    </select>
+    <resultMap id="dissandre" type="Dissent">
+        <id column="d_id" property="d_id"/>
+        <result property="d_reason" column="d_reason"/>
+        <result property="d_state" column="d_state"/>
+        <collection property="reandpun" column="d_reandpun_id" ofType="Reandpun">
+            <id column="re_id" property="re_id"/>
+            <result column="re_date" property="re_date"/>
+            <result column="re_explanation" property="re_explanation"/>
+        </collection>
+        <collection property="employee" column="d_employee" ofType="Employee">
+            <id column="e_id" property="e_id"/>
+            <result column="e_name" property="e_name"/>
+            <result column="e_age" property="e_age"/>
+            <result column="e_createtime" property="e_createtime"/>
+            <result column="e_origin" property="e_origin"/>
+            <result column="e_phone" property="e_phone"/>
+            <result column="e_reason" property="e_reason"/>
+            <result column="e_sex" property="e_sex"/>
+            <result column="e_state" property="e_state"/>
+        </collection>
+    </resultMap>
+</mapper>

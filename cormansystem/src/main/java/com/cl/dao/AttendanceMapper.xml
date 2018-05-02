@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cl.dao.AttendanceMapper">
     <insert id="addAttendance">
-      INSERT INTO A_ATTENDANCE(A_STARTTIME,A_STATE,A_DATE,A_USER_ID)VALUES
-      (#{a_starttime},#{a_state},#{a_date},#{user.u_id})
+      INSERT INTO A_ATTENDANCE(A_STARTTIME,A_STATE,A_DATE,A_EMPLOYEE_ID,A_YEAR,A_MONTH)VALUES
+      (#{a_starttime},#{a_state},#{a_date},#{employee.e_id},#{a_year},#{a_month})
     </insert>
     <update id="updateAttendance">
         UPDATE A_ATTENDANCE SET A_OFFTIME=#{a_offtime},a_state=#{a_state} where a_id=#{a_id}

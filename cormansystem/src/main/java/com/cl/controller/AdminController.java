@@ -44,6 +44,8 @@ public class AdminController {
    private AttendanceService attendanceService;
    @Autowired
    private WageService wageService;
+   @Autowired
+   private DissentService dissentService;
     @RequestMapping("adminsaveresume.do")
     public String adminsaveresume(HttpSession session) throws Exception{
         List<Delivery> deliveries=deliveryService.getDelivery();
@@ -264,6 +266,10 @@ public class AdminController {
     public String adsavereandpun(HttpSession session)throws Exception{
         List<Reandpun> reandpuns=reandpunService.getReandpun();
         if (reandpuns!=null&&reandpuns.size()!=0){
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            for (Reandpun reandpun:reandpuns){
+                reandpun.setDate(sdf.format(reandpun.getRe_date()));
+            }
             session.setAttribute("reandpuns",reandpuns);
             return "adsavereandpun";
         }else {
@@ -335,7 +341,7 @@ public class AdminController {
     public String adminsaverecrui(HttpSession session) throws Exception{
         List<Recruitment> recruitments=recruitmentService.getRecruitment();
         if (recruitments!=null&&recruitments.size()!=0){
-            SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
             for (Recruitment recruitment:recruitments){
                 recruitment.setCreatetime(sdf1.format(recruitment.getR_createtime()));
             }
@@ -486,8 +492,12 @@ public class AdminController {
         wage.setW_performance(performance);
         List<Reandpun> reandpuns=reandpunService.getReandpunBydate(wage.getW_year(),wage.getW_month(),wage.getEmployee().getE_id());
         for (Reandpun reandpun:reandpuns){
+            if (reandpun.getRe_state().equals("有异议")){
+                String prompt="该员工对奖惩信息有异议，请先处理";
+                session.setAttribute("prompt",prompt);
+                return "promptinterface";
+            }
             reandpun.setRe_state("已结算");
-            System.out.println(reandpun);
             reandpunService.updateReandpunBystate(reandpun);
         }
         double wages=wage.getW_bawage()+wage.getW_performance()+wage.getW_reandpun()-wage.getW_social();
@@ -503,5 +513,10 @@ public class AdminController {
         List<Wage> wage=wageService.getWageByuid(id);
         session.setAttribute("wage",wage);
         return "adsavewage";
+    }
+    @RequestMapping("adsavedissents.do")
+    public String adsavedissents(HttpSession session) throws Exception{
+
+        return "adsavedissents";
     }
 }

@@ -39,6 +39,8 @@ public class EmployeeController {
     private AttendanceService attendanceService;
     @Autowired
     private WageService wageService;
+    @Autowired
+    private DissentService dissentService;
     @RequestMapping("login.do")//登陆
     public String loginsession(User user,HttpServletRequest request)throws  Exception{
         HttpSession session=request.getSession();
@@ -196,8 +198,8 @@ public class EmployeeController {
         Attendance attendance1=attendanceService.getAttendanceByuidanddate(user.getU_id(),date2);
         if (attendance1==null){
             attendance.setA_starttime(date);//存入打卡的具体时间
-            attendance.setYear(year);
-            attendance.setMonth(month);
+            attendance.setA_year(year);
+            attendance.setA_month(month);
             if (date.getTime()-date1.getTime()>600000){
                 attendance.setA_state("矿工");//打卡状态
                 reandpun.setRe_punishment(200);
@@ -206,6 +208,8 @@ public class EmployeeController {
                 reandpun.setRe_state("未结算");
                 reandpun.setRe_explanation("上班迟到10分钟以上");
                 reandpun.setEmployee(employee);
+                reandpun.setRe_year(year);
+                reandpun.setRe_month(month);
                 reandpunService.addReandpun(reandpun);//增加惩罚
                 attendanceService.addAttendance(attendance);//添加当天打卡时间
                 String prompt="您已迟到10分钟以上，记为旷工，如有疑问请联系管理员";
@@ -219,6 +223,8 @@ public class EmployeeController {
                 reandpun.setRe_state("未结算");
                 reandpun.setRe_explanation("上班迟到");
                 reandpun.setEmployee(employee);
+                reandpun.setRe_year(year);
+                reandpun.setRe_month(month);
                 reandpunService.addReandpun(reandpun);//增加惩罚
                 attendanceService.addAttendance(attendance);//添加当天打卡时间
                 String prompt="您已迟到，如有疑问请联系管理员";
@@ -263,6 +269,8 @@ public class EmployeeController {
                     reandpun.setRe_reward(0);
                     reandpun.setRe_state("未结算");
                     reandpun.setRe_explanation("提前10分钟以上下班，记旷工");
+                    reandpun.setRe_year(attendance1.getA_year());
+                    reandpun.setRe_month(attendance1.getA_month());
                     reandpunService.addReandpun(reandpun);
                 } else {//如果白天已经记了迟到，修改惩罚表状态
                     reandpun.setEmployee(employee);
@@ -294,6 +302,8 @@ public class EmployeeController {
                     reandpun.setRe_punishment(20);
                     reandpun.setRe_reward(0);
                     reandpun.setRe_explanation("早退");
+                    reandpun.setRe_year(attendance1.getA_year());
+                    reandpun.setRe_month(attendance1.getA_month());
                     reandpunService.addReandpun(reandpun);
                     attendanceService.updateAttendance(attendance1);
                     String prompt="您早退打卡，如有疑问请联系管理员";
@@ -331,6 +341,8 @@ public class EmployeeController {
                     reandpun.setRe_punishment(0);
                     reandpun.setRe_reward(20*num);
                     reandpun.setRe_explanation("加班");
+                    reandpun.setRe_year(attendance1.getA_year());
+                    reandpun.setRe_month(attendance1.getA_month());
                     reandpunService.addReandpun(reandpun);
                     attendanceService.updateAttendance(attendance1);
                     String prompt="已登记加班"+num+"小时";
@@ -404,5 +416,41 @@ public class EmployeeController {
         List<Wage> wage=wageService.getWageByuid(employee.getE_id());
         session.setAttribute("wage",wage);
         return "emsavewages";
+    }
+    @RequestMapping("adddissent.do")
+    public String adddissent(HttpSession session,HttpServletRequest request) throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        String reason=request.getParameter("reason");
+        User user= (User) session.getAttribute("user");
+        Employee employee=employeeService.getEmployeeByuid(user.getU_id());
+        Reandpun reandpun=reandpunService.getReandpunByid(id);
+        reandpun.setRe_state("有异议");
+        reandpunService.updateReandpunBystate(reandpun);
+        Dissent dissent=new Dissent();
+        dissent.setD_reason(reason);
+        dissent.setD_state("未解决");
+        dissent.setEmployee(employee);
+        dissent.setReandpun(reandpun);
+        dissentService.addDissent(dissent);
+        String prompt="已经提交，可以在首页进入查看页面，查看处理进度";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";
+    }
+    @RequestMapping("emsavedissent.do")
+    public String emsavedissent(HttpSession session) throws Exception{
+        User user= (User) session.getAttribute("user");
+        Employee employee=employeeService.getEmployeeByuid(user.getU_id());
+        List<Dissent> dissents=dissentService.getDissentbyeid(employee.getE_id());
+        if (dissents!=null&&dissents.size()!=0){
+            SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+            for (Dissent dissent:dissents){
+               dissent.getReandpun().setDate(sdf1.format(dissent.getReandpun().getRe_date()));
+            }
+            session.setAttribute("dissents",dissents);
+            return "emsavedissent";
+        }
+        String prompt="目前没有异常记录";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";
     }
 }
