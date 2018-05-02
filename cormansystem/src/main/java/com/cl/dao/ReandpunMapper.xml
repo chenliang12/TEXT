@@ -22,6 +22,9 @@
         UPDATE R_REANDPUN SET RE_PUNISHMENT=#{re_punishment},re_explanation=#{re_explanation}
         where re_id=#{re_id}
     </update>
+    <update id="updateReandpunBystate">
+        UPDATE R_REANDPUN set RE_STATE=#{re_state} where re_id=#{re_id}
+    </update>
     <delete id="deleteReandpun">
 
     </delete>
@@ -37,6 +40,9 @@
     <select id="getReanddpunByatt" resultType="com.cl.model.Reandpun">
         SELECT *FROM R_REANDPUN WHERE RE_EXPLANATION=#{re_explanation} AND
         re_date=#{re_date} AND re_employee_id=#{employee.e_id}
+    </select>
+    <select id="getReandpunBydate" resultType="com.cl.model.Reandpun">
+        SELECT * FROM  R_REANDPUN WHERE  RE_YEAR=#{year} and re_month=#{month} and re_employee_id=#{eid}
     </select>
     <resultMap id="reandpunanduser" type="Reandpun">
         <id column="re_id" property="re_id"/>

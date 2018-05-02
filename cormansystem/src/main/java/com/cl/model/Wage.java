@@ -10,12 +10,12 @@ public class Wage implements Serializable{
     private int w_id;
     private int w_bawage;//基本工资
     private int w_performance;//绩效工资
-    private int w_overrtime;//加班工资
-    private int w_social;//社保
-    private int w_reandpun_id;//奖惩工资
-    private User user;
-    private int w_date;//时间
-
+    private double w_social;//社保
+    private int w_reandpun;//奖惩工资
+    private double w_wages;
+    private Employee employee;
+    private int w_year;//时间
+    private int w_month;
     public Wage() {
     }
 
@@ -43,44 +43,52 @@ public class Wage implements Serializable{
         this.w_performance = w_performance;
     }
 
-    public int getW_overrtime() {
-        return w_overrtime;
-    }
-
-    public void setW_overrtime(int w_overrtime) {
-        this.w_overrtime = w_overrtime;
-    }
-
-    public int getW_social() {
+    public double getW_social() {
         return w_social;
     }
 
-    public void setW_social(int w_social) {
+    public void setW_social(double w_social) {
         this.w_social = w_social;
     }
 
-    public int getW_reandpun_id() {
-        return w_reandpun_id;
+    public double getW_wages() {
+        return w_wages;
     }
 
-    public void setW_reandpun_id(int w_reandpun_id) {
-        this.w_reandpun_id = w_reandpun_id;
+    public void setW_wages(double w_wages) {
+        this.w_wages = w_wages;
     }
 
-    public User getUser() {
-        return user;
+    public int getW_reandpun() {
+        return w_reandpun;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setW_reandpun(int w_reandpun) {
+        this.w_reandpun = w_reandpun;
     }
 
-    public int getW_date() {
-        return w_date;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setW_date(int w_date) {
-        this.w_date = w_date;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public int getW_year() {
+        return w_year;
+    }
+
+    public void setW_year(int w_year) {
+        this.w_year = w_year;
+    }
+
+    public int getW_month() {
+        return w_month;
+    }
+
+    public void setW_month(int w_month) {
+        this.w_month = w_month;
     }
 
     @Override
@@ -89,11 +97,11 @@ public class Wage implements Serializable{
                 "w_id=" + w_id +
                 ", w_bawage=" + w_bawage +
                 ", w_performance=" + w_performance +
-                ", w_overrtime=" + w_overrtime +
                 ", w_social=" + w_social +
-                ", w_reandpun_id=" + w_reandpun_id +
-                ", user=" + user +
-                ", w_date=" + w_date +
+                ", w_reandpun=" + w_reandpun +
+                ", w_wages=" + w_wages +
+                ", w_year=" + w_year +
+                ", w_month=" + w_month +
                 '}';
     }
 }

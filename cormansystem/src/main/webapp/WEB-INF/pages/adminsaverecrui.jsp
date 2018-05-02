@@ -42,7 +42,7 @@
             <td class="t">${recruitment.r_treatment}</td>
             <td class="t">${recruitment.r_workplace}</td>
             <td class="t">${recruitment.r_state}</td>
-            <td class="t">${recruitment.r_createtime}</td>
+            <td class="t">${recruitment.createtime}</td>
             <td class="t">
                 <form method="post" action="deleterecru.do">
                     <input type="hidden" name="id" value="${recruitment.r_id}">

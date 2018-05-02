@@ -1,6 +1,7 @@
 package com.cl.dao;
 
 import com.cl.model.Reandpun;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface ReandpunMapper {
     boolean deleteReandpun(Reandpun reandpun);
     Reandpun getReandpunByid(int id);
     Reandpun getReanddpunByatt(Reandpun reandpun);
+    boolean  updateReandpunBystate(Reandpun  reandpun);
+    List<Reandpun> getReandpunBydate(@Param("year") int year, @Param("month") int month, @Param("eid") int eid);
 }

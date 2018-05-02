@@ -8,6 +8,9 @@
     <update id="updateEmployee">
       UPDATE E_EMPLOYEE SET E_AGE=#{e_age},e_phone=#{e_phone} where E_USER_ID=#{user.u_id}
     </update>
+    <update id="updateEmployeebystate">
+        UPDATE E_EMPLOYEE SET E_USER_ID=#{user.u_id},e_state=#{e_state} where e_id=#{e_id}
+    </update>
     <delete id="deleteEmployee">
 
     </delete>

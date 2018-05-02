@@ -13,5 +13,6 @@ public interface EmployeeMapper {
     List<Employee> getEmployee();
     boolean addEmployee(Employee employee);
     boolean updateEmployee(Employee employee);
+    boolean updateEmployeebystate(Employee employee);
     boolean deleteEmployee(Employee employee);
 }

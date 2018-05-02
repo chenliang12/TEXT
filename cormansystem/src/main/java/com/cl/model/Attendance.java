@@ -9,12 +9,15 @@ import java.util.Date;
 public class Attendance implements Serializable{//考勤
     private int a_id;
     private Date a_starttime;//上班时间
+    private String starttime;
     private Date a_offtime;//下班时间
+    private String offtime;
     private String a_state;//状态
     private Date a_date;
+    private String date;
     private int year;
     private int month;
-    private User user;
+    private Employee employee;
 
     public Attendance() {
     }
@@ -51,12 +54,12 @@ public class Attendance implements Serializable{//考勤
         this.a_state = a_state;
     }
 
-    public User getUser() {
-        return user;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public Date getA_date() {
@@ -81,6 +84,30 @@ public class Attendance implements Serializable{//考勤
 
     public void setMonth(int month) {
         this.month = month;
+    }
+
+    public String getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(String starttime) {
+        this.starttime = starttime;
+    }
+
+    public String getOfftime() {
+        return offtime;
+    }
+
+    public void setOfftime(String offtime) {
+        this.offtime = offtime;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     @Override

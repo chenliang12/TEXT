@@ -1,4 +1,4 @@
-package com.cl.dao;
+package com.cl.biz;
 
 import com.cl.model.Wage;
 import org.apache.ibatis.annotations.Param;
@@ -6,9 +6,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Created by one on 2018/4/23.
+ * Created by one on 2018/4/30.
  */
-public interface WageMapper {
+public interface WageService {
     List<Wage> getWages();
     List<Wage> getWageByuid(int id);
     boolean addWage(Wage wage);

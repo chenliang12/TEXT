@@ -18,6 +18,7 @@ public class Employee implements Serializable{//员工信息
     private Date e_createtime;//入职时间
     private String e_state;//状态
     private String e_reason;//离职原因
+    private String date;
 
     public Employee() {
     }
@@ -100,6 +101,14 @@ public class Employee implements Serializable{//员工信息
 
     public void setE_reason(String e_reason) {
         this.e_reason = e_reason;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     @Override

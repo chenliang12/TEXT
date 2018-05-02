@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.text.SimpleDateFormat" %><%--
   Created by IntelliJ IDEA.
   User: one
   Date: 2018/4/24
@@ -17,6 +17,7 @@
     <title>标题</title>
 </head>
 <body>
+<%SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");%>
 <table border="1">
     <tr>
         <td>编号</td>
@@ -33,7 +34,7 @@
             <td>${reandpun.re_reward}</td>
             <td>${reandpun.re_punishment}</td>
             <td>${reandpun.re_explanation}</td>
-            <td>${reandpun.re_date}</td>
+            <td>${reandpun.date}</td>
         </tr>
     </c:forEach>
 </table>

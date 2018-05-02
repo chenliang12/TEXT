@@ -39,4 +39,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean deleteEmployee(Employee employee) {
         return employeeMapper.updateEmployee(employee);
     }
+
+    @Override
+    public boolean updateEmployeebystate(Employee employee) {
+        return employeeMapper.updateEmployeebystate(employee);
+    }
 }

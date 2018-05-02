@@ -39,7 +39,7 @@
     </tr>
     <tr><!--date日期转化年月日-->
         <td>入职时间</td>
-        <td>${sessionScope.employee.e_createtime}</td>
+        <td>${sessionScope.employee.date}</td>
     </tr>
     <tr>
         <td>状态</td>

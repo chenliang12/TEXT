@@ -18,6 +18,7 @@
 <body>
 <form action="addpostitions.do" method="post">
     <input name="p_position">
+    <input name="p_wage">
     <input type="submit" value="创建职位">
 </form>
 </body>

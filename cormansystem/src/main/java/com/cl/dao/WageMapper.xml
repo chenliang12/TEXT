@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cl.dao.WageMapper">
     <insert id="addWage">
-
+       INSERT INTO W_WAGE(W_BAWAGE,W_EMPLOYEE_ID,W_MONTH,W_PERFORMANCE,W_REANDPUN,W_SOCIAL,W_WAGES,W_YEAR)
+       VALUES (#{w_bawage},#{employee.e_id},#{w_month},#{w_performance},#{w_reandpun},#{w_social},#{w_wages},#{w_year})
     </insert>
     <update id="updateWage">
 
@@ -11,6 +12,12 @@
 
     </delete>
     <select id="getWageByuid" resultType="com.cl.model.Wage">
+        SELECT * FROM W_WAGE WHERE W_EMPLOYEE_ID=#{id}
+    </select>
+    <select id="getWages" resultType="com.cl.model.Wage">
 
+    </select>
+    <select id="getWage" resultType="com.cl.model.Wage">
+        SELECT * FROM W_WAGE WHERE W_YEAR=#{year} and w_month=#{month} and w_employee_id=#{eid}
     </select>
 </mapper>

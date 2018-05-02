@@ -11,7 +11,7 @@ public class Postitions implements Serializable{//职位
     private User user;
     private Department department;
     private Employee employee;
-
+    private int p_wage;
 
     public Postitions() {
     }
@@ -54,6 +54,14 @@ public class Postitions implements Serializable{//职位
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public int getP_wage() {
+        return p_wage;
+    }
+
+    public void setP_wage(int p_wage) {
+        this.p_wage = p_wage;
     }
 
     @Override

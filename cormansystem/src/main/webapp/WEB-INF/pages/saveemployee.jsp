@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -39,19 +40,45 @@
     </tr>
     <tr><!--date日期转化年月日-->
         <td>入职时间</td>
-        <td>${sessionScope.employee.e_createtime}</td>
+        <td>${sessionScope.employee.date}</td>
     </tr>
     <tr>
         <td>状态</td>
-        <td>${sessionScope.employee.e_state}</td>
+        <td>${sessionScope.employee.e_state}
+            <c:if test="${sessionScope.employee.e_state=='实习'}">
+                <form method="post" action="upemployee.do">
+                    <input type="hidden" name="id" value="${sessionScope.employee.e_id}">
+                    <input type="submit" value="转正">
+                </form>
+            </c:if>
+            <c:if test="${sessionScope.employee.e_state=='正式工'}">
+                <form method="post" action="upemployee.do">
+                    <input type="hidden" name="id" value="${sessionScope.employee.e_id}">
+                    <input type="submit" value="辞退">
+                </form>
+            </c:if></td>
     </tr>
     <tr>
         <td>离职原因</td>
-        <td>${sessionScope.employee.e_reason}</td>
+        <td>${sessionScope.employee.e_reason}
+
+        </td>
     </tr>
     <tr>
         <td>人事调动</td>
         <td><a href="moveofpersonnel.do?id=${sessionScope.employee.e_id}">员工调动安排</a></td>
+    </tr>
+    <tr>
+        <td>查看打卡记录</td>
+        <td><a href="saveatt.do?id=${sessionScope.employee.e_id}">查看员工打卡记录</a></td>
+    </tr>
+    <tr>
+        <td>薪资结算</td>
+        <td><a href="settwage.do?id=${sessionScope.employee.e_id}">结算上月工资</a></td>
+    </tr>
+    <tr>
+        <td>查看薪资记录</td>
+        <td><a href="savewage.do?id=${sessionScope.employee.e_id}">查询</a></td>
     </tr>
 </table>
 </body>

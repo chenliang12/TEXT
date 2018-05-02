@@ -12,14 +12,14 @@
 
     </delete>
     <select id="getAttendanceByuid" resultMap="attendanduser">
-      SELECT * FROM A_ATTENDANCE aa,U_USER uu WHERE uu.U_ID=aa.A_USER_ID AND aa.A_USER_ID=#{id}
+      SELECT * FROM A_ATTENDANCE aa,E_EMPLOYEE ee WHERE ee.e_ID=aa.a_employee_id AND aa.a_employee_id=#{id}
     </select>
     <select id="getAttendanceByuidanddate" resultMap="attendanduser">
-SELECT * FROM A_ATTENDANCE aa,U_USER uu WHERE uu.U_ID=aa.A_USER_ID AND aa.A_USER_ID=#{id}
+SELECT * FROM A_ATTENDANCE aa,E_EMPLOYEE ee WHERE ee.e_ID=aa.a_employee_id AND aa.a_employee_id=#{id}
 AND aa.a_date=#{date}
     </select>
     <select id="getAttendance" resultType="com.cl.model.Attendance">
-        SELECT * FROM A_ATTENDANCE WHERE A_YEAR=#{year} and a_month=#{month} and a_user_id=#{uid}
+        SELECT * FROM A_ATTENDANCE WHERE A_YEAR=#{year} and a_month=#{month} and a_employee_id=#{uid}
     </select>
     <resultMap id="attendanduser" type="Attendance">
         <id column="a_id" property="a_id"/>
@@ -27,8 +27,8 @@ AND aa.a_date=#{date}
         <result column="a_offtime" property="a_offtime"/>
         <result column="a_starttime" property="a_starttime"/>
         <result column="a_state" property="a_state"/>
-        <collection property="user" column="a_user_id" ofType="User">
-            <id column="u_id" property="u_id"/>
+        <collection property="employee" column="a_employee_id" ofType="Employee">
+            <id column="e_id" property="e_id"/>
         </collection>
     </resultMap>
 </mapper>

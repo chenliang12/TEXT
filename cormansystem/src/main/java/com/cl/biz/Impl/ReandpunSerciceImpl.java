@@ -52,7 +52,17 @@ public class ReandpunSerciceImpl implements ReandpunService {
     }
 
     @Override
+    public boolean updateReandpunBystate(Reandpun reandpun) {
+        return reandpunMapper.updateReandpunBystate(reandpun);
+    }
+
+    @Override
     public boolean updateReandpunByexpl(Reandpun reandpun) {
         return reandpunMapper.updateReandpunByexpl(reandpun);
+    }
+
+    @Override
+    public List<Reandpun> getReandpunBydate(int year, int month, int eid) {
+        return reandpunMapper.getReandpunBydate(year,month,eid);
     }
 }

@@ -23,10 +23,10 @@
         <td>职位</td>
         <td><input name="r_job"></td>
     </tr>
-    <tr>
+    <!--<tr>
         <td>基本工资</td>
         <td><input name="r_wage"></td>
-    </tr>
+    </tr>-->
     <tr>
         <td>工作要求</td>
         <td><input name="r_demand"></td>

@@ -57,9 +57,9 @@
         </tr>
         <c:forEach items="${sessionScope.attendances}" var="attendance">
             <tr>
-                <td>${attendance.a_date}</td>
-                <td>${attendance.a_starttime}</td>
-                <td>${attendance.a_offtime}</td>
+                <td>${attendance.date}</td>
+                <td>${attendance.starttime}</td>
+                <td>${attendance.offtime}</td>
                 <td>${attendance.a_state}</td>
             </tr>
         </c:forEach>

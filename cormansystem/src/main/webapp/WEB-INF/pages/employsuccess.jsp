@@ -20,7 +20,7 @@
 <a href="saveemps.do">查看其他员工信息</a>
 <a href="emsavetrain.do">查看培训信息</a>
 <a href="emsavereandpun.do">查看个人奖惩记录</a>
-<a href="">查看个人薪资记录</a>
+<a href="emsavewages.do">查看个人薪资记录</a>
 <a href="attendance.do">签到</a>
 </body>
 </html>

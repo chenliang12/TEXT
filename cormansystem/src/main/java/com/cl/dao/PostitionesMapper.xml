@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cl.dao.PostitionesMapper">
     <insert id="addPostitions">
-       INSERT  INTO P_POSTITIONS(P_POSITION,P_DEPARTMENT_ID,P_USER_ID,P_EMPLOYEE_ID)
-        VALUES(#{p_position},#{department.d_id},#{user.u_id},#{employee.e_id})
+       INSERT  INTO P_POSTITIONS(P_POSITION,P_DEPARTMENT_ID,P_USER_ID,P_EMPLOYEE_ID,P_WAGE)
+        VALUES(#{p_position},#{department.d_id},#{user.u_id},#{employee.e_id},#{p_wage})
     </insert>
     <update id="updatePostitions">
        UPDATE P_POSTITIONS SET P_USER_ID=#{user.u_id},P_EMPLOYEE_ID=#{employee.e_id} where p_position=#{p_position}
@@ -34,6 +34,7 @@
     </select>
     <resultMap id="postanduser" type="Postitions">
         <id column="p_id" property="p_id"/>
+        <result property="p_wage" column="p_wage"/>
        <result property="p_position" column="p_position"/>
         <collection property="user" column="p_user_id" ofType="User">
             <id column="u_id" property="u_id"/>
@@ -45,6 +46,7 @@
     </resultMap>
     <resultMap id="postanddep" type="Postitions">
         <id column="p_id" property="p_id"/>
+        <result property="p_wage" column="p_wage"/>
         <result property="p_position" column="p_position"/>
         <collection property="department" column="p_departmrnt_id" ofType="Department">
             <id column="d_id" property="d_id"/>

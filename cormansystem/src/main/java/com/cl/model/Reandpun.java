@@ -14,6 +14,10 @@ public class Reandpun implements Serializable {//奖惩
     private Employee employee;
     private Date re_date;
     private String re_state;
+    private int re_year;
+    private int re_month;
+    private String date;
+
     public Reandpun() {
     }
 
@@ -73,13 +77,41 @@ public class Reandpun implements Serializable {//奖惩
         this.re_state = re_state;
     }
 
+    public int getRe_year() {
+        return re_year;
+    }
+
+    public void setRe_year(int re_year) {
+        this.re_year = re_year;
+    }
+
+    public int getRe_month() {
+        return re_month;
+    }
+
+    public void setRe_month(int re_month) {
+        this.re_month = re_month;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
-        return "ReandpunMapper{" +
+        return "Reandpun{" +
                 "re_id=" + re_id +
                 ", re_reward=" + re_reward +
                 ", re_punishment=" + re_punishment +
                 ", re_explanation='" + re_explanation + '\'' +
+                ", re_date=" + re_date +
+                ", re_state='" + re_state + '\'' +
+                ", re_year=" + re_year +
+                ", re_month=" + re_month +
                 '}';
     }
 }

@@ -13,6 +13,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +40,10 @@ public class AdminController {
    private ReandpunService reandpunService;
    @Autowired
    private RecruitmentService recruitmentService;
+   @Autowired
+   private AttendanceService attendanceService;
+   @Autowired
+   private WageService wageService;
     @RequestMapping("adminsaveresume.do")
     public String adminsaveresume(HttpSession session) throws Exception{
         List<Delivery> deliveries=deliveryService.getDelivery();
@@ -148,6 +155,8 @@ public class AdminController {
     public String saveemployee(HttpSession session,HttpServletRequest request)throws Exception{
         int id= Integer.parseInt(request.getParameter("id"));
         Employee employee=employeeService.getEmployeeByid(id);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        employee.setDate(sdf.format(employee.getE_createtime()));
         session.setAttribute("employee",employee);
         return "saveemployee";
     }
@@ -218,7 +227,7 @@ public class AdminController {
     @RequestMapping("adsavetrain.do")//管理员查询培训信息
     public String adsavetrain(HttpSession session) throws Exception{
        List<Train> trains=trainService.getTrains();
-       if (trains!=null&&trains.size()==0){
+       if (trains!=null&&trains.size()!=0){
            session.setAttribute("trains",trains);
            return "adsavetrains";
        }
@@ -326,6 +335,10 @@ public class AdminController {
     public String adminsaverecrui(HttpSession session) throws Exception{
         List<Recruitment> recruitments=recruitmentService.getRecruitment();
         if (recruitments!=null&&recruitments.size()!=0){
+            SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            for (Recruitment recruitment:recruitments){
+                recruitment.setCreatetime(sdf1.format(recruitment.getR_createtime()));
+            }
             session.setAttribute("recruitments",recruitments);
             return "adminsaverecrui";
         }
@@ -336,7 +349,10 @@ public class AdminController {
     @RequestMapping("addrecruiment.do")
     public String addrecruiment(HttpSession session,Recruitment recruitment) throws Exception{
         Date date=new Date();
-        if (postitionesService.getPostitonsBynamenoemploy(recruitment.getR_job())!=null){
+        Postitions postitions=
+                postitionesService.getPostitonsBynamenoemploy(recruitment.getR_job());
+        if (postitions!=null){
+            recruitment.setR_wage(postitions.getP_wage());
             recruitment.setR_createtime(date);
             recruitment.setR_state("未招满");
             recruitmentService.addRecruitment(recruitment);
@@ -386,5 +402,106 @@ public class AdminController {
         postition1.setUser(employee.getUser());
         postitionesService.updatePostitionsByuande(postition1);
         return savedepartment(session);
+    }
+    @RequestMapping("saveatt.do")
+    public String  saveatt(HttpSession session,HttpServletRequest request) throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        Employee employee=employeeService.getEmployeeByid(id);
+        Calendar cal=Calendar.getInstance();
+        int year=cal.get(Calendar.YEAR);
+        int month=cal.get(Calendar.MONTH)+1;
+        List<Attendance> attendances=attendanceService.getAttendance(year,month,employee.getUser().getU_id());
+        session.setAttribute("attendances",attendances);
+        List years=new ArrayList();
+        for (int i=0;i<20;i++){
+            years.add(year);
+            year=year-1;
+        }
+        session.setAttribute("years",years);
+        return "emsaveatt";
+    }
+    @RequestMapping("upemployee.do")//员工升职，辞退操作
+    public String upemployee(HttpSession session,HttpServletRequest request) throws Exception {
+        int id= Integer.parseInt(request.getParameter("id"));
+        Employee employee=employeeService.getEmployeeByid(id);
+        if (employee.getE_state().equals("实习")){
+            employee.setE_state("正式工");
+            employeeService.updateEmployeebystate(employee);
+        }else if (employee.getE_state().equals("正式工")){
+            employee.setE_state("已辞退");
+            User user=new User();
+            user.setU_id(0);
+            Postitions postitions=postitionesService.getPostitonsByuid(employee.getUser().getU_id());
+            Employee employee1=new Employee();
+            employee1.setE_id(0);
+            postitions.setEmployee(employee1);
+            postitions.setUser(user);
+            postitionesService.updatePostitions(postitions);//消除职位信息
+            employee.setUser(user);
+            employeeService.updateEmployeebystate(employee);//消除账号和员工表的联系
+            User user1=employee.getUser();
+            user1.setAuthority(1);
+            userService.updateUser(user);//修改账号权限
+        }
+        return savedepartment(session);
+    }
+    @RequestMapping("settwage.do")//工资结算
+    public String settwage(HttpSession session,HttpServletRequest request) throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        Employee employee=employeeService.getEmployeeByid(id);//查询出要统计薪资的人
+        Calendar cal=Calendar.getInstance();
+        int year=cal.get(Calendar.YEAR);
+        int month=cal.get(Calendar.MONTH);//获取上个月的年月
+        Wage wages=wageService.getWage(year,month,id);
+        if (wages!=null){
+            String prompt="上个月工资已经结算，可以进查询页面查看";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";
+        }
+        if (month==0){
+            month=12;
+        }
+        List<Reandpun> reandpuns=reandpunService.getReandpunBydate(year,month,id);
+        int num=0;
+        for (Reandpun reandpun:reandpuns){
+            if (reandpun.getRe_state().equals("未结算")){
+                num=num+reandpun.getRe_reward()-reandpun.getRe_punishment();
+            }
+        }
+        Postitions postitions=postitionesService.getPostitonsByuid(id);
+        Wage wage=new Wage();
+        wage.setW_reandpun(num);
+        wage.setEmployee(employee);
+        wage.setW_bawage(postitions.getP_wage());
+        wage.setW_social(postitions.getP_wage()*0.15);
+        wage.setW_year(year);
+        wage.setW_month(month);
+        session.setAttribute("wage",wage);
+        return "settwage";
+    }
+    @RequestMapping("settwage1.do")
+    public String settwage1(HttpSession session,HttpServletRequest request) throws Exception{
+        int performance= Integer.parseInt(request.getParameter("w_performance"));
+        Wage wage= (Wage) session.getAttribute("wage");
+        wage.setW_performance(performance);
+        List<Reandpun> reandpuns=reandpunService.getReandpunBydate(wage.getW_year(),wage.getW_month(),wage.getEmployee().getE_id());
+        for (Reandpun reandpun:reandpuns){
+            reandpun.setRe_state("已结算");
+            System.out.println(reandpun);
+            reandpunService.updateReandpunBystate(reandpun);
+        }
+        double wages=wage.getW_bawage()+wage.getW_performance()+wage.getW_reandpun()-wage.getW_social();
+        wage.setW_wages(wages);
+        wageService.addWage(wage);
+        String prompt="已结算完成，可以到员工信息中查询";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";
+    }
+    @RequestMapping("savewage.do")
+    public  String savewage(HttpSession session,HttpServletRequest request) throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        List<Wage> wage=wageService.getWageByuid(id);
+        session.setAttribute("wage",wage);
+        return "adsavewage";
     }
 }

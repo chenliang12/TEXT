@@ -37,6 +37,8 @@ public class EmployeeController {
     private ReandpunService reandpunService;
     @Autowired
     private AttendanceService attendanceService;
+    @Autowired
+    private WageService wageService;
     @RequestMapping("login.do")//登陆
     public String loginsession(User user,HttpServletRequest request)throws  Exception{
         HttpSession session=request.getSession();
@@ -88,6 +90,8 @@ public class EmployeeController {
     public String saveemploy(HttpSession session) throws Exception{
         User user= (User) session.getAttribute("user");
         Employee employee=employeeService.getEmployeeByuid(user.getU_id());
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        employee.setDate(sdf.format(employee.getE_createtime()));
         session.setAttribute("employee",employee);
         return "saveemployee1";
     }
@@ -159,6 +163,11 @@ public class EmployeeController {
         Employee employee=employeeService.getEmployeeByuid(user.getU_id());
         List<Reandpun> reandpun=reandpunService.getReandpunByuid(employee.getE_id());
         if (reandpun!=null&&reandpun.size()!=0){
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            for (Reandpun reandpun1:reandpun){
+                String time=sdf.format(reandpun1.getRe_date());
+                reandpun1.setDate(time);
+            }
             session.setAttribute("reandpuns",reandpun);
             return "emsavereandpun";
         }
@@ -183,7 +192,7 @@ public class EmployeeController {
         String time1=sdf1.format(date);//打卡当时的日期
         Date date2=sdf1.parse(time1);
         attendance.setA_date(date2);//存入打开的日期
-        attendance.setUser(user);
+        attendance.setEmployee(employee);
         Attendance attendance1=attendanceService.getAttendanceByuidanddate(user.getU_id(),date2);
         if (attendance1==null){
             attendance.setA_starttime(date);//存入打卡的具体时间
@@ -242,7 +251,7 @@ public class EmployeeController {
         String time1=sdf1.format(date);//打卡当时的日期
         Date date2=sdf1.parse(time1);
         attendance.setA_date(date2);//存入打开的日期
-        attendance.setUser(user);
+        attendance.setEmployee(employee);
         Attendance attendance1=attendanceService.getAttendanceByuidanddate(user.getU_id(),date2);
         if (attendance1!=null&&attendance1.getA_offtime()==null){//检测是否打了上班卡
             attendance1.setA_offtime(date);//存入打卡的具体时间
@@ -312,6 +321,26 @@ public class EmployeeController {
                     String prompt="您早退，加上白天迟到，已经记为矿工，如有疑问请联系管理员";
                     session.setAttribute("prompt",prompt);
                     return "promptinterface";
+            }else if (date.getTime()-date1.getTime()>3600000){
+                if(attendance1.getA_state().equals("正常")) {
+                    attendance1.setA_state("加班");//打卡状态
+                    reandpun.setEmployee(employee);
+                    reandpun.setRe_date(date2);
+                    int t= (int) (date.getTime()-date1.getTime());
+                    int num=t/3600000;
+                    reandpun.setRe_punishment(0);
+                    reandpun.setRe_reward(20*num);
+                    reandpun.setRe_explanation("加班");
+                    reandpunService.addReandpun(reandpun);
+                    attendanceService.updateAttendance(attendance1);
+                    String prompt="已登记加班"+num+"小时";
+                    session.setAttribute("prompt",prompt);
+                    return "promptinterface";
+                }else {
+                    String prompt="上班打卡迟到，不计入加班工时";
+                    session.setAttribute("prompt",prompt);
+                    return "promptinterface";
+                }
             }else {
                 attendance.setA_state("正常");//打卡状态
                 attendanceService.updateAttendance(attendance1);//添加当天打卡时间
@@ -332,10 +361,18 @@ public class EmployeeController {
     @RequestMapping("saveattendance.do")
     public String saveattendance(HttpSession session)throws Exception{
         User user= (User) session.getAttribute("user");
+        Employee employee=employeeService.getEmployeeByuid(user.getU_id());
         Calendar cal=Calendar.getInstance();
         int year=cal.get(Calendar.YEAR);
         int month=cal.get(Calendar.MONTH)+1;
-        List<Attendance> attendances=attendanceService.getAttendance(year,month,user.getU_id());
+        List<Attendance> attendances=attendanceService.getAttendance(year,month,employee.getE_id());
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+        for (Attendance attendance:attendances){
+            attendance.setDate(sdf1.format(attendance.getA_date()));
+            attendance.setStarttime(sdf.format(attendance.getA_starttime()));
+            attendance.setOfftime(sdf.format(attendance.getA_offtime()));
+        }
         session.setAttribute("attendances",attendances);
         List years=new ArrayList();
         for (int i=0;i<20;i++){
@@ -343,13 +380,29 @@ public class EmployeeController {
             year=year-1;
         }
         session.setAttribute("years",years);
+        session.setAttribute("employee",employee);
         return "emsaveatt";
     }
     @RequestMapping("saveattendance1.do")
     public String saveattendance1(HttpSession session,int year,int month) throws Exception{
-        User user= (User) session.getAttribute("user");
-        List<Attendance> attendances=attendanceService.getAttendance(year,month,user.getU_id());
+        Employee employee= (Employee) session.getAttribute("employee");
+        List<Attendance> attendances=attendanceService.getAttendance(year,month,employee.getE_id());
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+        for (Attendance attendance:attendances){
+            attendance.setDate(sdf1.format(attendance.getA_date()));
+            attendance.setStarttime(sdf.format(attendance.getA_starttime()));
+            attendance.setOfftime(sdf.format(attendance.getA_offtime()));
+        }
         session.setAttribute("attendances",attendances);
         return "emsaveatt";
+    }
+    @RequestMapping("emsavewages.do")
+    public String emsavewages(HttpSession session) throws Exception{
+        User user= (User) session.getAttribute("user");
+        Employee employee=employeeService.getEmployeeByuid(user.getU_id());
+        List<Wage> wage=wageService.getWageByuid(employee.getE_id());
+        session.setAttribute("wage",wage);
+        return "emsavewages";
     }
 }

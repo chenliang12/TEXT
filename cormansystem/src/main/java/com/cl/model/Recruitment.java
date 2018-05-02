@@ -15,7 +15,7 @@ public class Recruitment implements Serializable {//招聘信息
     private String r_workplace;//工作地点
     private String r_state;//状态
     private Date r_createtime;//发布时间
-
+    private String createtime;
     public Recruitment() {
     }
 
@@ -81,6 +81,14 @@ public class Recruitment implements Serializable {//招聘信息
 
     public void setR_createtime(Date r_createtime) {
         this.r_createtime = r_createtime;
+    }
+
+    public String getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(String createtime) {
+        this.createtime = createtime;
     }
 
     @Override

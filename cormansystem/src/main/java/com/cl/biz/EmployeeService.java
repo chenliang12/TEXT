@@ -11,4 +11,5 @@ public interface EmployeeService {
     boolean addEmployee(Employee employee);
     boolean updateEmployee(Employee employee);
     boolean deleteEmployee(Employee employee);
+    boolean updateEmployeebystate(Employee employee);
 }
