@@ -1,11 +1,12 @@
 <%--
   Created by IntelliJ IDEA.
   User: one
-  Date: 2018/4/23
-  Time: 12:49
+  Date: 2018/4/25
+  Time: 9:35
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -14,25 +15,10 @@
 <head>
     <base href="<%=basePath%>"/>
     <title>标题</title>
-    <script>
-        function checkjob() {
-            var check=false;
-            var job=document.getElementById("in1").value;
-        if (job.length==0){
-            document.getElementById("s1").innerHTML="此选项不能为空";
-            document.getElementById("s1").style.color='red';
-            check=false;
-        }else {
-             check=true;
-         }
-        return check;
-        }
-        function check() {
-            var check=checkjob();
-            return check;
-        }
-    </script>
     <style>
+        .t{
+            width: 300px;
+        }
         #d1{
             width: 1000px;
             height: 10000px;
@@ -68,9 +54,10 @@
         </table>
     </div>
     <div id="d3">
-        <form action="addddepartment.do" method="post" onsubmit="return check()">
-            部门：<input id="in1" name="d_depat" onchange="checkjob()"><span id="s1"></span><br>
-            <input type="submit" value="创建">
+        <form action="addpostitions.do" method="post">
+            职位名称：<input name="p_position"><br>
+            岗位基本工资：<input name="p_wage" onkeyup="value=value.replace(/[^\d]/g,'')"><br>
+            <input type="submit" value="创建职位">
         </form>
     </div>
 </div>

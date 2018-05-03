@@ -26,7 +26,7 @@
         UPDATE R_REANDPUN set RE_STATE=#{re_state} where re_id=#{re_id}
     </update>
     <delete id="deleteReandpun">
-
+        DELETE FROM R_REANDPUN WHERE RE_ID=#{re_id}
     </delete>
     <select id="getReandpun" resultMap="reandpunanduser">
           SELECT * FROM R_REANDPUN rr,E_EMPLOYEE uu WHERE uu.E_ID=rr.RE_EMPLOYEE_ID

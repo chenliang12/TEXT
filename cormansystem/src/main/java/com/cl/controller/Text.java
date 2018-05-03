@@ -12,11 +12,7 @@ import java.util.List;
  */
 public class Text {
     public static void main(String[] args) {
-        ReandpunService reandpunService=new ReandpunSerciceImpl();
-        List<Reandpun> reandpuns=reandpunService.getReandpunBydate(2018,4,1);
-        for (Reandpun reandpun:reandpuns){
-            reandpun.setRe_state("已结算");
-            reandpunService.updateReandpunBystate(reandpun);
-        }
+       String s="1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+       System.out.println(s.length());
     }
 }

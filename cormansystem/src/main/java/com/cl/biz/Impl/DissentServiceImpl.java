@@ -39,4 +39,9 @@ public class DissentServiceImpl implements DissentService{
     public List<Dissent> getDissents() {
         return dissentMapper.getDissents();
     }
+
+    @Override
+    public Dissent getDissentByid(int id) {
+        return dissentMapper.getDissentByid(id);
+    }
 }

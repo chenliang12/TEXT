@@ -42,6 +42,7 @@
             <id column="r_id" property="r_id"/>
             <result column="r_name" property="r_name"/>
             <result column="r_age" property="r_age"/>
+            <result column="r_sex" property="r_sex"/>
             <result column="r_address" property="r_address"/>
             <result column="r_campus" property="r_campus"/>
             <result column="r_email" property="r_email"/>

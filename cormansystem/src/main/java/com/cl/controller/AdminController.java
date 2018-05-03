@@ -50,7 +50,19 @@ public class AdminController {
     public String adminsaveresume(HttpSession session) throws Exception{
         List<Delivery> deliveries=deliveryService.getDelivery();
          if (deliveries!=null&&deliveries.size()!=0){//消除已经同意和回绝的简历
-             session.setAttribute("delivery",deliveries);
+             List<Delivery> deliveries1=new ArrayList<>();
+             for (Delivery delivery:deliveries){
+                 if (delivery.getDe_state().equals("已录用")||delivery.getDe_state().equals("已回绝")){
+                 }else {
+                     deliveries1.add(delivery);
+                 }
+             }
+             if (deliveries1.size()==0){
+                 String prompt="暂时无人投递简历";
+                 session.setAttribute("prompt",prompt);
+                 return "promptinterface";
+             }
+             session.setAttribute("delivery",deliveries1);
              return"adsaveresume";
          }
          String prompt="暂时无人投递简历";
@@ -112,7 +124,7 @@ public class AdminController {
             session.setAttribute("prompt",prompt);
             return "promptinterface";//返回一个错误界面
         }else {
-            delivery.setDe_state("已拒绝");
+            delivery.setDe_state("已回绝");
             deliveryService.updateDelivery(delivery);
             List<Delivery> deliveries=deliveryService.getDelivery();
             session.setAttribute("delivery",deliveries);
@@ -516,7 +528,34 @@ public class AdminController {
     }
     @RequestMapping("adsavedissents.do")
     public String adsavedissents(HttpSession session) throws Exception{
-
-        return "adsavedissents";
+        List<Dissent> dissents=dissentService.getDissents();
+        if(dissents.size()!=0&&dissents!=null){
+            SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+            for (Dissent dissent:dissents){
+                dissent.getReandpun().setDate(sdf1.format(dissent.getReandpun().getRe_date()));
+            }
+            session.setAttribute("dissents",dissents);
+            return "adsavedissents";
+        }
+        String prompt="目前没有提交的疑问";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";
+    }
+    @RequestMapping("updatedissents.do")
+    public String updatedissents(HttpSession session,HttpServletRequest request) throws Exception{
+        int num= Integer.parseInt(request.getParameter("num"));
+        int id= Integer.parseInt(request.getParameter("id"));
+        Dissent dissent=dissentService.getDissentByid(id);
+        if (num==1){
+            dissent.setD_state("已解决");
+            Reandpun reandpun=dissent.getReandpun();
+            dissentService.updateDissent(dissent);
+            reandpunService.deleteReandpun(reandpun);//同意解决，奖励做删除处理
+            return adsavedissents(session);
+        }else {
+            dissent.setD_state("驳回");
+            dissentService.updateDissent(dissent);
+            return adsavedissents(session);
+        }
     }
 }

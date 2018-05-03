@@ -13,4 +13,5 @@ public interface DissentMapper {
     boolean updateDissent(Dissent dissent);
     boolean deleteDissent(Dissent dissent);
     List<Dissent> getDissents();
+    Dissent getDissentByid(int id);
 }

@@ -6,7 +6,8 @@
       VALUES (#{d_reason},#{d_state},#{employee.e_id},#{reandpun.re_id})
     </insert>
     <update id="updateDissent">
-
+      UPDATE D_DISSENT SET D_STATE=#{d_state} where
+      d_id=#{d_id}
     </update>
     <delete id="deleteDissent">
 
@@ -14,11 +15,16 @@
     <select id="getDissentbyeid" resultMap="dissandre">
        SELECT * FROM D_DISSENT dd,R_REANDPUN rr,E_EMPLOYEE ee
        where rr.RE_EMPLOYEE_ID=dd.D_EMPLOYEE_ID and ee.E_ID=dd.D_EMPLOYEE_ID
-       AND  dd.D_ID=#{id}
+       AND  dd.D_EMPLOYEE_ID=#{id}
     </select>
     <select id="getDissents" resultMap="dissandre">
       SELECT * FROM D_DISSENT dd,R_REANDPUN rr,E_EMPLOYEE ee
        where rr.RE_EMPLOYEE_ID=dd.D_EMPLOYEE_ID and ee.E_ID=dd.D_EMPLOYEE_ID
+    </select>
+    <select id="getDissentByid" resultMap="dissandre">
+        SELECT * FROM D_DISSENT dd,R_REANDPUN rr,E_EMPLOYEE ee
+       where rr.RE_EMPLOYEE_ID=dd.D_EMPLOYEE_ID and ee.E_ID=dd.D_EMPLOYEE_ID
+       AND  dd.D_ID=#{id}
     </select>
     <resultMap id="dissandre" type="Dissent">
         <id column="d_id" property="d_id"/>

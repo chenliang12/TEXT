@@ -14,17 +14,43 @@
 <head>
     <base href="<%=basePath%>"/>
     <title></title>
+    <style>
+        #d1{
+            height: 600px;
+            width:  500px;
+            position: fixed;
+            left: 1000px;
+            bottom: 100px;
+        }
+        body {
+            background: url('images/bg1.jpg')top center no-repeat;
+            background-size:cover;
+        }
+        .a1{
+           font-size: 30px;
+        }
+        .in1{
+            height: 50px;
+            width: 300px;
+        }
+        .in2{
+            height: 50px;
+            width: 50px;
+        }
+    </style>
 </head>
 <body>
-<fieldset>
-    <legend>登录界面</legend>
-    <form action="login.do" method="post">
-        账号：<input name="uname"><br>
-        密码：<input name="upass"><br>
-        <input type="submit" value="登录">
-    </form>
-    <a href="addusers.do">还没有账号？点击此处注册</a>
-    <a href="tourists.do">游客入口</a>
-</fieldset>
+<div id="d1">
+    <fieldset>
+        <legend class="a1">登录界面</legend>
+        <form action="login.do" method="post">
+            <a class="a1">账号：</a><input class="in1" name="uname"><br>
+            <a class="a1">密码：</a><input class="in1" type="password" name="upass">
+            <input class="in2" type="submit" value="登录">
+        </form>
+        <a class="a1" href="addusers.do">还没有账号？点击此处注册</a>
+        <a class="a1" href="tourists.do">游客入口</a>
+    </fieldset>
+</div>
 </body>
 </html>
