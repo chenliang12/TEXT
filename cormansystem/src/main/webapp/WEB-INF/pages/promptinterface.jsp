@@ -16,14 +16,45 @@
     <base href="<%=basePath%>"/>
     <title>标题</title>
     <style>
+        .t{
+            width: 300px;
+        }
         #d1{
-            align-content: center;
+            width: 1000px;
+            height: 10000px;
+            position: fixed;
+            background-color:bisque;
+            left: 450px;
+        }
+        #d2{
+            width: 1000px;
+            background-color:chartreuse;
+            position: fixed;
+            top: 150px;
+        }
+        #d3{
+            width: 1000px;
+            position: fixed;
+            top: 200px;
         }
     </style>
 </head>
 <body>
 <div id="d1">
-    ${sessionScope.prompt}
+    <div id="d2" align="center">
+        <table>
+            <tr>
+                <td><a href="adminsaverecrui.do">查看发布的招聘信息</a></td>
+                <td><a href="adminsaveresume.do">查看接收的简历</a></td>
+                <td><a href="savedepartment.do">查看各部门信息</a></td>
+                <td><a href="adsavetrain.do">安排培训事宜</a></td>
+                <td><a href="adsavereandpun.do">管理员工奖惩信息</a></td>
+                <td><a href="adsavedissents.do">查看奖惩异议信息</a> </td>
+            </tr>
+        </table>
+    </div>
+    <div id="d3">
+        ${sessionScope.prompt}
         <c:if test="${sessionScope.prompt=='公司目前没有部门创建'}">
             <a href="adddepar.do">添加部门</a>
         </c:if>
@@ -36,6 +67,7 @@
         <c:if test="${sessionScope.prompt=='目前没有奖惩记录'}">
             <a href="addreandpun.do">增加奖惩信息</a>
         </c:if>
+    </div>
 </div>
 </body>
 </html>

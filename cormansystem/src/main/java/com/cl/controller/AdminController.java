@@ -429,6 +429,12 @@ public class AdminController {
         int year=cal.get(Calendar.YEAR);
         int month=cal.get(Calendar.MONTH)+1;
         List<Attendance> attendances=attendanceService.getAttendance(year,month,employee.getUser().getU_id());
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        for (Attendance attendance:attendances){
+            attendance.setDate(sdf.format(attendance.getA_date()));
+            attendance.setOfftime(sdf.format(attendance.getA_offtime()));
+            attendance.setStarttime(sdf.format(attendance.getA_starttime()));
+        }
         session.setAttribute("attendances",attendances);
         List years=new ArrayList();
         for (int i=0;i<20;i++){
@@ -447,8 +453,18 @@ public class AdminController {
             employeeService.updateEmployeebystate(employee);
         }else if (employee.getE_state().equals("正式工")){
             employee.setE_state("已辞退");
+            Reandpun reandpun=reandpunService.getReandpunByeid(id);
+            reandpun.setRe_state("已辞退");
+            reandpunService.updateReandpunBystate(reandpun);//修改掉奖惩记录
+            User user1=employee.getUser();
+            user1.setAuthority(1);
+            Delivery delivery=new Delivery();
+            delivery.setUser(user1);
+            deliveryService.deleteDelivery(delivery);//删除投递记录
+            userService.updateUser(user1);//修改账号权限
             User user=new User();
-            user.setU_id(0);
+            int num=-1;
+            user.setU_id(num);
             Postitions postitions=postitionesService.getPostitonsByuid(employee.getUser().getU_id());
             Employee employee1=new Employee();
             employee1.setE_id(0);
@@ -457,9 +473,6 @@ public class AdminController {
             postitionesService.updatePostitions(postitions);//消除职位信息
             employee.setUser(user);
             employeeService.updateEmployeebystate(employee);//消除账号和员工表的联系
-            User user1=employee.getUser();
-            user1.setAuthority(1);
-            userService.updateUser(user);//修改账号权限
         }
         return savedepartment(session);
     }

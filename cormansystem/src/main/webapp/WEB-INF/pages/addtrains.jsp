@@ -75,38 +75,79 @@
             }
             return check;
         }
+        function check() {
+            var check=checkaddress()&&checkcontent()&&checkdate()&&checkdepname()&&checktitle()
+            return check;
+        }
     </script>
+    <style>
+
+        #d1{
+            width: 1000px;
+            height: 10000px;
+            position: fixed;
+            background-color:bisque;
+            left: 450px;
+        }
+        #d2{
+            width: 1000px;
+            background-color:chartreuse;
+            position: fixed;
+            top: 150px;
+        }
+        #d3{
+            width: 1000px;
+            position: fixed;
+            top: 200px;
+        }
+    </style>
 </head>
 <body>
-<form method="post" action="addtrain.do">
-    <table >
-        <tr>
-            <td>培训主题</td>
-            <td><input id="in1" name="t_title"></td>
-            <td><span id="s1"></span></td>
-        </tr>
-        <tr>
-            <td>培训内容</td>
-            <td><input id="in2" name="t_content"></td>
-            <td><span id="s2"></span></td>
-        </tr>
-        <tr>
-            <td>培训地点</td>
-            <td><input id="in3" name="t_address"></td>
-            <td><span id="s3"></span></td>
-        </tr>
-        <tr>
-            <td>培训时间</td>
-            <td><input id="in4" name="t_date"></td>
-            <td><span id="s4"></span></td>
-        </tr>
-        <tr>
-            <td>培训部门</td>
-            <td><input id="in5" name="depname"></td>
-            <td><span id="s5"></span></td>
-        </tr>
-    </table>
-    <input type="submit" value="创建培训">
-</form>
+<div id="d1">
+    <div id="d2" align="center">
+        <table>
+            <tr>
+                <td><a href="adminsaverecrui.do">查看发布的招聘信息</a></td>
+                <td><a href="adminsaveresume.do">查看接收的简历</a></td>
+                <td><a href="savedepartment.do">查看各部门信息</a></td>
+                <td><a href="adsavetrain.do">安排培训事宜</a></td>
+                <td><a href="adsavereandpun.do">管理员工奖惩信息</a></td>
+                <td><a href="adsavedissents.do">查看奖惩异议信息</a> </td>
+            </tr>
+        </table>
+    </div>
+    <div id="d3">
+        <form method="post" action="addtrain.do" onsubmit="return check()">
+            <table >
+                <tr>
+                    <td>培训主题</td>
+                    <td><input id="in1" name="t_title" onchange="checktitle()"></td>
+                    <td><span id="s1"></span></td>
+                </tr>
+                <tr>
+                    <td>培训内容</td>
+                    <td><input id="in2" name="t_content" onchange="checkcontent()"></td>
+                    <td><span id="s2"></span></td>
+                </tr>
+                <tr>
+                    <td>培训地点</td>
+                    <td><input id="in3" name="t_address" onchange="checkaddress()"></td>
+                    <td><span id="s3"></span></td>
+                </tr>
+                <tr>
+                    <td>培训时间</td>
+                    <td><input id="in4" name="t_date" onchange="checkdate()"></td>
+                    <td><span id="s4"></span></td>
+                </tr>
+                <tr>
+                    <td>培训部门</td>
+                    <td><input id="in5" name="depname" onchange="checkdepname()"></td>
+                    <td><span id="s5"></span></td>
+                </tr>
+            </table>
+            <input type="submit" value="创建培训">
+        </form>
+    </div>
+</div>
 </body>
 </html>

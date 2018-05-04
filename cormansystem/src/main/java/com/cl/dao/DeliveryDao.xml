@@ -9,7 +9,7 @@
        UPDATE D_DELIVERY SET DE_STATE=#{de_state} where de_id=#{de_id}
     </update>
     <delete id="deleteDelivery">
-
+       DELETE FROM D_DELIVERY WHERE DE_USER_ID=#{user.u_id}
     </delete>
 
     <select id="getDelivery" resultMap="deliverymap">

@@ -16,32 +16,65 @@
     <base href="<%=basePath%>"/>
     <title>标题</title>
     <style>
-
+        #d1{
+            width: 1000px;
+            height: 10000px;
+            position: fixed;
+            background-color:bisque;
+            left: 450px;
+        }
+        #d2{
+            width: 1000px;
+            background-color:chartreuse;
+            position: fixed;
+            top: 150px;
+        }
+        #d3{
+            width: 1000px;
+            position: fixed;
+            top: 200px;
+        }
     </style>
 </head>
 <body>
-<table border="1">
-    <tr>
-        <td colspan="${sessionScope.size}" align="center">${sessionScope.department.d_depat}</td>
-    </tr>
-    <tr>
-        <c:forEach items="${sessionScope.postitions}" var="de">
-            <td>${de.p_position}</td>
-        </c:forEach>
-    </tr>
-    <tr>
-        <c:forEach items="${sessionScope.postitions}" var="de">
-            <c:choose>
-                <c:when test="${de.employee.e_id!=0}">
-                    <td><a href="saveemployee.do?id=${de.employee.e_id}">${de.employee.e_name}</a></td>
-                </c:when>
-                <c:when test="${de.employee.e_id==0}">
-                    <td>${de.employee.e_name}<a href="deletepos.do?id=${de.p_id}">点击删除该职位</a></td>
-                </c:when>
-            </c:choose>
-        </c:forEach>
-    </tr>
-</table>
-<a href="addpos.do?id=${sessionScope.did}">添加职位</a>
+<div id="d1">
+    <div id="d2" align="center">
+        <table>
+            <tr>
+                <td><a href="adminsaverecrui.do">查看发布的招聘信息</a></td>
+                <td><a href="adminsaveresume.do">查看接收的简历</a></td>
+                <td><a href="savedepartment.do">查看各部门信息</a></td>
+                <td><a href="adsavetrain.do">安排培训事宜</a></td>
+                <td><a href="adsavereandpun.do">管理员工奖惩信息</a></td>
+                <td><a href="adsavedissents.do">查看奖惩异议信息</a> </td>
+            </tr>
+        </table>
+    </div>
+    <div id="d3">
+        <table border="1">
+            <tr>
+                <td colspan="${sessionScope.size}" align="center">${sessionScope.department.d_depat}</td>
+            </tr>
+            <tr>
+                <c:forEach items="${sessionScope.postitions}" var="de">
+                    <td>${de.p_position}</td>
+                </c:forEach>
+            </tr>
+            <tr>
+                <c:forEach items="${sessionScope.postitions}" var="de">
+                    <c:choose>
+                        <c:when test="${de.employee.e_id!=0}">
+                            <td><a href="saveemployee.do?id=${de.employee.e_id}">${de.employee.e_name}</a></td>
+                        </c:when>
+                        <c:when test="${de.employee.e_id==0}">
+                            <td>${de.employee.e_name}<a href="deletepos.do?id=${de.p_id}">点击删除该职位</a></td>
+                        </c:when>
+                    </c:choose>
+                </c:forEach>
+            </tr>
+        </table>
+        <a href="addpos.do?id=${sessionScope.did}">添加职位</a>
+    </div>
+</div>
 </body>
 </html>

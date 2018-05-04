@@ -15,23 +15,59 @@
 <head>
     <base href="<%=basePath%>"/>
     <title>标题</title>
+    <style>
+        #d1{
+            width: 1000px;
+            height: 10000px;
+            position: fixed;
+            background-color:bisque;
+            left: 450px;
+        }
+        #d2{
+            width: 1000px;
+            background-color:chartreuse;
+            position: fixed;
+            top: 150px;
+        }
+        #d3{
+            width: 1000px;
+            position: fixed;
+            top: 200px;
+        }
+    </style>
 </head>
 <body>
-<table border="1">
-    <tr>
-        <td colspan="${sessionScope.size}" align="center">公司部门</td>
-    </tr>
-    <tr>
-        <c:forEach items="${sessionScope.department}" var="de">
-            <td><a href="savepostitions.do?id=${de.d_id}">${de.d_depat}</a></td>
-        </c:forEach>
-    </tr>
-    <tr>
-        <c:forEach items="${sessionScope.department}" var="de">
-            <td><a href="deletedepart.do?id=${de.d_id}">删除部门</a></td>
-        </c:forEach>
-    </tr>
-</table>
-<a href="adddepar.do">添加部门</a>
+<div id="d1">
+    <div id="d2" align="center">
+        <table>
+            <tr>
+                <td><a href="adminsaverecrui.do">查看发布的招聘信息</a></td>
+                <td><a href="adminsaveresume.do">查看接收的简历</a></td>
+                <td><a href="savedepartment.do">查看各部门信息</a></td>
+                <td><a href="adsavetrain.do">安排培训事宜</a></td>
+                <td><a href="adsavereandpun.do">管理员工奖惩信息</a></td>
+                <td><a href="adsavedissents.do">查看奖惩异议信息</a> </td>
+            </tr>
+        </table>
+    </div>
+    <div id="d3">
+        <table border="1">
+            <tr>
+                <td colspan="${sessionScope.size}" align="center">公司部门</td>
+            </tr>
+            <tr>
+                <c:forEach items="${sessionScope.department}" var="de">
+                    <td><a href="savepostitions.do?id=${de.d_id}">${de.d_depat}</a></td>
+                </c:forEach>
+            </tr>
+            <tr>
+                <c:forEach items="${sessionScope.department}" var="de">
+                    <td><a href="deletedepart.do?id=${de.d_id}">删除部门</a></td>
+                </c:forEach>
+            </tr>
+        </table>
+        <a href="adddepar.do">添加部门</a>
+    </div>
+</div>
 </body>
 </html>

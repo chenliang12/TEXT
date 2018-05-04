@@ -44,21 +44,37 @@
     <div id="d2" align="center">
         <table>
             <tr>
-                <td><a href="adminsaverecrui.do">查看发布的招聘信息</a></td>
-                <td><a href="adminsaveresume.do">查看接收的简历</a></td>
-                <td><a href="savedepartment.do">查看各部门信息</a></td>
-                <td><a href="adsavetrain.do">安排培训事宜</a></td>
-                <td><a href="adsavereandpun.do">管理员工奖惩信息</a></td>
-                <td><a href="adsavedissents.do">查看奖惩异议信息</a> </td>
+                <td><a href="saveemploy.do">查看个人信息</a></td>
+                <td><a href="saveemps.do">查看其他员工信息</a></td>
+                <td><a href="emsavetrain.do">查看培训信息</a></td>
+                <td><a href="emsavereandpun.do">查看个人奖惩记录</a></td>
+                <td><a href="emsavewages.do">查看个人薪资记录</a></td>
+                <td><a href="attendance.do">签到</a></td>
+                <td><a href="emsavedissent.do">查看奖惩异议处理进度</a></td>
             </tr>
         </table>
     </div>
     <div id="d3">
-        <form action="addpostitions.do" method="post">
-            职位名称：<input name="p_position"><br>
-            岗位基本工资：<input name="p_wage" onkeyup="value=value.replace(/[^\d]/g,'')"><br>
-            <input type="submit" value="创建职位">
-        </form>
+        <table border="1">
+            <tr>
+                <td>编号</td>
+                <td>奖惩记录编号</td>
+                <td>奖惩记录时间</td>
+                <td>奖惩记录原因</td>
+                <td>异议内容</td>
+                <td>状态</td>
+            </tr>
+            <c:forEach items="${sessionScope.dissents}" var="dissent">
+                <tr>
+                    <td>${dissent.d_id}</td>
+                    <td>${dissent.reandpun.re_id}</td>
+                    <td>${dissent.reandpun.date}</td>
+                    <td>${dissent.reandpun.re_explanation}</td>
+                    <td>${dissent.d_reason}</td>
+                    <td>${dissent.d_state}</td>
+                </tr>
+            </c:forEach>
+        </table>
     </div>
 </div>
 </body>

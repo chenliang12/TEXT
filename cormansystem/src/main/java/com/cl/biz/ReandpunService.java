@@ -18,5 +18,6 @@ public interface ReandpunService {
     Reandpun getReanddpunByatt(Reandpun reandpun);
     boolean  updateReandpunBystate(Reandpun  reandpun);
     boolean updateReandpunByexpl(Reandpun reandpun);
+    Reandpun getReandpunByeid(int id);
     List<Reandpun> getReandpunBydate(@Param("year") int year, @Param("month") int month, @Param("eid") int eid);
 }

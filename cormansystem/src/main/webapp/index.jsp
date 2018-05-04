@@ -20,7 +20,7 @@
             width:  500px;
             position: fixed;
             left: 1000px;
-            bottom: 100px;
+            top: 200px;
         }
         body {
             background: url('images/bg1.jpg')top center no-repeat;

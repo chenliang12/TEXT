@@ -44,6 +44,9 @@
     <select id="getReandpunBydate" resultType="com.cl.model.Reandpun">
         SELECT * FROM  R_REANDPUN WHERE  RE_YEAR=#{year} and re_month=#{month} and re_employee_id=#{eid}
     </select>
+    <select id="getReandpunByeid" resultType="com.cl.model.Reandpun">
+        SELECT * FROM  R_REANDPUN WHERE  RE_EMPLOYEE_ID=#{id}
+    </select>
     <resultMap id="reandpunanduser" type="Reandpun">
         <id column="re_id" property="re_id"/>
         <result column="re_reward" property="re_reward"/>
