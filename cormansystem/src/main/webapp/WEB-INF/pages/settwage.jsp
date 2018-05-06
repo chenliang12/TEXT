@@ -14,36 +14,71 @@
 <head>
     <base href="<%=basePath%>"/>
     <title>标题</title>
+    <style>
+        #d1{
+            width: 1000px;
+            height: 10000px;
+            position: fixed;
+            background-color:bisque;
+            left: 450px;
+        }
+        #d2{
+            width: 1000px;
+            background-color:chartreuse;
+            position: fixed;
+            top: 150px;
+        }
+        #d3{
+            width: 1000px;
+            position: fixed;
+            top: 200px;
+        }
+    </style>
 </head>
 <body>
-<form action="settwage1.do" method="post">
-    <table>
-        <tr>
-            <td>基本工资</td>
-            <td>${sessionScope.wage.w_bawage}</td>
-        </tr>
-        <tr>
-            <td>绩效工资</td>
-            <td>
-                <input name="w_performance">
-            </td>
-        </tr>
-        <tr>
-            <td>社保</td>
-            <td>${sessionScope.wage.w_social}</td>
-        </tr>
-        <tr>
-            <td>奖惩工资</td>
-            <td>${sessionScope.wage.w_reandpun}</td>
-        </tr>
-        <tr>
-            <td>操作</td>
-            <td>
-                <input type="submit" value="生成工资单">
-            </td>
-        </tr>
-    </table>
-</form>
-
+<div id="d1">
+    <div id="d2" align="center">
+        <table>
+            <tr>
+                <td><a href="adminsaverecrui.do">查看发布的招聘信息</a></td>
+                <td><a href="adminsaveresume.do">查看接收的简历</a></td>
+                <td><a href="savedepartment.do">查看各部门信息</a></td>
+                <td><a href="adsavetrain.do">安排培训事宜</a></td>
+                <td><a href="adsavedissents.do">查看奖惩异议信息</a> </td>
+            </tr>
+        </table>
+    </div>
+    <div id="d3">
+        <form action="settwage1.do" method="post">
+            <table>
+                <tr>
+                    <td>基本工资</td>
+                    <td>${sessionScope.wage.w_bawage}</td>
+                </tr>
+                <tr>
+                    <td>绩效工资</td>
+                    <td>
+                        <input name="w_performance">
+                    </td>
+                </tr>
+                <tr>
+                    <td>社保</td>
+                    <td>${sessionScope.wage.w_social}</td>
+                </tr>
+                <tr>
+                    <td>奖惩工资</td>
+                    <td>${sessionScope.wage.w_reandpun}</td>
+                </tr>
+                <tr>
+                    <td>操作</td>
+                    <td>
+                        <input type="submit" value="生成工资单">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+</div>
 </body>
 </html>

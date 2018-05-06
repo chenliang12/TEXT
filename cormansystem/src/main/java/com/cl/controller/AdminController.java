@@ -213,16 +213,14 @@ public class AdminController {
                 String prompt="该部门下目前有人就职，无法删除";
                 session.setAttribute("prompt",prompt);
                 return "promptinterface";//跳转错误界面
-            }
-            if (recruitmentService.getRecruitmentByjob(postitions1.getP_position())==null){
+            } else  if (recruitmentService.getRecruitmentByjob(postitions1.getP_position())!=null){
                 String prompt="该部门下有职位的招聘信息，请先删除掉招聘信息";
                 session.setAttribute("prompt",prompt);
                 return "promptinterface";//跳转到提示有招聘信息没有删除
+            }else {
+                postitionesService.deletePostitions(postitions1);
             }
         }
-        Postitions postitions1=new Postitions();
-        postitions1.setDepartment(department);
-        postitionesService.deletePostitions(postitions1);
         departmentService.deleteDepartment(department);
         return savedepartment(session);
     }
@@ -230,7 +228,7 @@ public class AdminController {
     public String deletepos(HttpServletRequest request,HttpSession session)throws Exception{
         int id= Integer.parseInt(request.getParameter("id"));
         Postitions postitions=postitionesService.getPostitionsbyid(id);
-        if (recruitmentService.getRecruitmentByjob(postitions.getP_position())==null){
+        if (recruitmentService.getRecruitmentByjob(postitions.getP_position())!=null){
             String prompt="该职位的招聘信息，请先删除掉招聘信息";
             session.setAttribute("prompt",prompt);
             return "promptinterface";//跳转到提示有招聘信息没有删除
@@ -275,14 +273,19 @@ public class AdminController {
        return adsavetrain(session);
     }
     @RequestMapping("adsavereandpun.do")//查看奖惩
-    public String adsavereandpun(HttpSession session)throws Exception{
-        List<Reandpun> reandpuns=reandpunService.getReandpun();
+    public String adsavereandpun(HttpSession session,HttpServletRequest request)throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        List<Reandpun> reandpuns=reandpunService.getReandpunByuid(id);
+        List<Reandpun> reandpuns1=new ArrayList<>();
         if (reandpuns!=null&&reandpuns.size()!=0){
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
             for (Reandpun reandpun:reandpuns){
-                reandpun.setDate(sdf.format(reandpun.getRe_date()));
+                if (reandpun.getRe_state().equals("未结算")){
+                    reandpun.setDate(sdf.format(reandpun.getRe_date()));
+                    reandpuns1.add(reandpun);
+                }
             }
-            session.setAttribute("reandpuns",reandpuns);
+            session.setAttribute("reandpuns",reandpuns1);
             return "adsavereandpun";
         }else {
             String prompt="目前没有奖惩记录";
@@ -290,6 +293,28 @@ public class AdminController {
             return "promptinterface";//返回提示空界面
         }
     }
+    @RequestMapping("adsavereandpun1.do")
+    public String adsavereandpun1(HttpSession session,HttpServletRequest request)throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        List<Reandpun> reandpuns=reandpunService.getReandpunByuid(id);
+        List<Reandpun> reandpuns1=new ArrayList<>();
+        if (reandpuns!=null&&reandpuns.size()!=0){
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            for (Reandpun reandpun:reandpuns){
+                if (reandpun.getRe_state().equals("已结算")){
+                    reandpun.setDate(sdf.format(reandpun.getRe_date()));
+                    reandpuns1.add(reandpun);
+                }
+            }
+            session.setAttribute("reandpuns",reandpuns1);
+            return "adsavereandpun";
+        }else {
+            String prompt="目前没有奖惩记录";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";//返回提示空界面
+        }
+    }
+
     @RequestMapping("adaddreandpun.do")//增加奖惩
     public String adaddreandpun(HttpSession session, HttpServletRequest request)throws Exception{
         int i= Integer.parseInt(request.getParameter("name"));
@@ -313,7 +338,7 @@ public class AdminController {
             reandpun.setEmployee(postitions1.getEmployee());
             reandpun.setRe_date(date);
             reandpunService.addReandpun(reandpun);
-            return adsavereandpun(session);
+            return adsavereandpun(session,request);
         }
         String prompt="您输入的职位或者人员不存在，请检查后重新输入";
         session.setAttribute("prompt",prompt);
@@ -347,7 +372,7 @@ public class AdminController {
         }
         reandpun.setRe_explanation(explanation);
         reandpunService.updateReandpun(reandpun);
-        return adsavereandpun(session);
+        return adsavereandpun(session,request);
     }
     @RequestMapping("adminsaverecrui.do")
     public String adminsaverecrui(HttpSession session) throws Exception{
@@ -453,9 +478,16 @@ public class AdminController {
             employeeService.updateEmployeebystate(employee);
         }else if (employee.getE_state().equals("正式工")){
             employee.setE_state("已辞退");
-            Reandpun reandpun=reandpunService.getReandpunByeid(id);
-            reandpun.setRe_state("已辞退");
-            reandpunService.updateReandpunBystate(reandpun);//修改掉奖惩记录
+            List<Reandpun> reandpun=reandpunService.getReandpunByeid(id);
+            for (Reandpun reandpun1:reandpun){
+                reandpun1.setRe_state("已辞退");
+                reandpunService.updateReandpunBystate(reandpun1);//修改掉奖惩记录
+            }
+            List<Dissent> dissents=dissentService.getDissentbyeid(id);
+            for (Dissent dissent:dissents){
+                dissent.setD_state("已辞退");
+               dissentService.updateDissent(dissent);//修改掉奖惩异议记录
+            }
             User user1=employee.getUser();
             user1.setAuthority(1);
             Delivery delivery=new Delivery();
@@ -463,8 +495,7 @@ public class AdminController {
             deliveryService.deleteDelivery(delivery);//删除投递记录
             userService.updateUser(user1);//修改账号权限
             User user=new User();
-            int num=-1;
-            user.setU_id(num);
+            user.setU_id(0);
             Postitions postitions=postitionesService.getPostitonsByuid(employee.getUser().getU_id());
             Employee employee1=new Employee();
             employee1.setE_id(0);
@@ -539,15 +570,42 @@ public class AdminController {
         session.setAttribute("wage",wage);
         return "adsavewage";
     }
-    @RequestMapping("adsavedissents.do")
+    @RequestMapping("adsavedissents.do")//查看奖惩
     public String adsavedissents(HttpSession session) throws Exception{
         List<Dissent> dissents=dissentService.getDissents();
+        List<Dissent> dissents1=new ArrayList<>();
         if(dissents.size()!=0&&dissents!=null){
             SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
             for (Dissent dissent:dissents){
                 dissent.getReandpun().setDate(sdf1.format(dissent.getReandpun().getRe_date()));
+                if (dissent.getD_state().equals("已辞退")){
+
+                }else if (dissent.getD_state().equals("未解决")){
+                    dissents1.add(dissent);
+                }
             }
-            session.setAttribute("dissents",dissents);
+            session.setAttribute("dissents",dissents1);
+            return "adsavedissents";
+        }
+        String prompt="目前没有提交的疑问";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";
+    }
+    @RequestMapping("adsavedissents1.do")//查看奖惩
+    public String adsavedissents1(HttpSession session) throws Exception{
+        List<Dissent> dissents=dissentService.getDissents();
+        List<Dissent> dissents1=new ArrayList<>();
+        if(dissents.size()!=0&&dissents!=null){
+            SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+            for (Dissent dissent:dissents){
+                dissent.getReandpun().setDate(sdf1.format(dissent.getReandpun().getRe_date()));
+                if (dissent.getD_state().equals("已辞退")){
+
+                }else if (dissent.getD_state().equals("已解决")){
+                    dissents1.add(dissent);
+                }
+            }
+            session.setAttribute("dissents",dissents1);
             return "adsavedissents";
         }
         String prompt="目前没有提交的疑问";

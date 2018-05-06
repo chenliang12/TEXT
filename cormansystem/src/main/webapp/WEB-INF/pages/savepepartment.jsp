@@ -45,7 +45,6 @@
                 <td><a href="adminsaveresume.do">查看接收的简历</a></td>
                 <td><a href="savedepartment.do">查看各部门信息</a></td>
                 <td><a href="adsavetrain.do">安排培训事宜</a></td>
-                <td><a href="adsavereandpun.do">管理员工奖惩信息</a></td>
                 <td><a href="adsavedissents.do">查看奖惩异议信息</a> </td>
             </tr>
         </table>

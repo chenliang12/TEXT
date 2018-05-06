@@ -16,7 +16,7 @@
     <title>标题</title>
 </head>
 <body>
-<div id="d1">
+<div>
         姓名：<a>${sessionScope.resume.r_name}</a><br>
         年龄：<a>${sessionScope.resume.r_age}</a><br>
         籍贯：<a>${sessionScope.resume.r_origin}</a><br>

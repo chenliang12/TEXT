@@ -34,6 +34,7 @@
             <id column="re_id" property="re_id"/>
             <result column="re_date" property="re_date"/>
             <result column="re_explanation" property="re_explanation"/>
+            <result column="re_state" property="re_state"/>
         </collection>
         <collection property="employee" column="d_employee" ofType="Employee">
             <id column="e_id" property="e_id"/>

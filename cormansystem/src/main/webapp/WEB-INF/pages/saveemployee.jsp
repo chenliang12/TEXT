@@ -117,6 +117,10 @@
                 <td>查看薪资记录</td>
                 <td><a href="savewage.do?id=${sessionScope.employee.e_id}">查询</a></td>
             </tr>
+            <tr>
+                <td>查看奖惩记录</td>
+                <td><a href="adsavereandpun.do?id=${sessionScope.employee.e_id}">查询</a></td>
+            </tr>
         </table>
     </div>
 </div>

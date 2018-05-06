@@ -115,7 +115,7 @@ public class EmployeeController {
         }
         String prompt="目前公司还没有创建部门";
         session.setAttribute("prompt",prompt);
-        return "promptinterface";//返回一个错误界面
+        return "empromptinterface";//返回一个错误界面
     }
     @RequestMapping("saveempes.do")//员工查询职位信息
     public String saveempes(HttpSession session,HttpServletRequest request)throws Exception{
@@ -136,7 +136,7 @@ public class EmployeeController {
         }
         String prompt="目前该部门还没有创建职位";
         session.setAttribute("prompt",prompt);
-        return "promptinterface";//返回一个没有职位的显示网址
+        return "empromptinterface";//返回一个没有职位的显示网址
     }
     @RequestMapping("saveempess.do")
     public String saveempess(HttpSession session,HttpServletRequest request)throws Exception{
@@ -156,7 +156,7 @@ public class EmployeeController {
        }else {
            String prompt="目前暂无培训内容";
            session.setAttribute("prompt",prompt);
-           return "promptinterface";//返回提示暂无培训内容
+           return "empromptinterface";//返回提示暂无培训内容
        }
     }
     @RequestMapping("emsavereandpun.do")
@@ -175,7 +175,7 @@ public class EmployeeController {
         }
         String prompt="目前暂无奖惩记录";
         session.setAttribute("prompt",prompt);
-        return "promptinterface";//返回空
+        return "empromptinterface";//返回空
     }
     @RequestMapping("statetime.do")
     public String statetime(HttpSession session)throws Exception{
@@ -214,7 +214,7 @@ public class EmployeeController {
                 attendanceService.addAttendance(attendance);//添加当天打卡时间
                 String prompt="您已迟到10分钟以上，记为旷工，如有疑问请联系管理员";
                 session.setAttribute("prompt",prompt);
-                return "promptinterface"; //跳转提示已经计算矿工
+                return "empromptinterface"; //跳转提示已经计算矿工
             }else if(date.getTime()-date1.getTime()>0){
                 attendance.setA_state("迟到");//打卡状态
                 reandpun.setRe_punishment(20);
@@ -229,18 +229,18 @@ public class EmployeeController {
                 attendanceService.addAttendance(attendance);//添加当天打卡时间
                 String prompt="您已迟到，如有疑问请联系管理员";
                 session.setAttribute("prompt",prompt);
-                return "promptinterface"; //跳转提示已经计算迟到
+                return "empromptinterface"; //跳转提示已经计算迟到
             }else {
                 attendance.setA_state("正常");//打卡状态
                 attendanceService.addAttendance(attendance);//添加当天打卡时间
                 String prompt="恭喜您成功签到";
                 session.setAttribute("prompt",prompt);
-                return "promptinterface"; //跳转提示恭喜成功打卡
+                return "empromptinterface"; //跳转提示恭喜成功打卡
             }
         }else {
             String prompt="您当日已经签过到了，请忽重复签到";
             session.setAttribute("prompt",prompt);
-            return "promptinterface";//跳转已经打过上班卡了
+            return "empromptinterface";//跳转已经打过上班卡了
         }
     }
     @RequestMapping("offtime.do")
@@ -293,7 +293,7 @@ public class EmployeeController {
                 attendanceService.updateAttendance(attendance1);//添加当天打卡时间
                 String prompt="您早退10分钟以上，记为旷工，如有疑问请联系管理员";
                 session.setAttribute("prompt",prompt);
-                return "promptinterface"; //跳转提示已经计算矿工
+                return "empromptinterface"; //跳转提示已经计算矿工
             }else if(date1.getTime()-date.getTime()>0){
                 if(attendance1.getA_state().equals("正常")) {
                     attendance1.setA_state("早退");//打卡状态
@@ -308,7 +308,7 @@ public class EmployeeController {
                     attendanceService.updateAttendance(attendance1);
                     String prompt="您早退打卡，如有疑问请联系管理员";
                     session.setAttribute("prompt",prompt);
-                    return "promptinterface";
+                    return "empromptinterface";
                 }else {//如果白天已经记了迟到，修改惩罚表状态
                     attendance1.setA_state("矿工");//打卡状态
                     reandpun.setEmployee(employee);
@@ -330,7 +330,7 @@ public class EmployeeController {
                     attendanceService.updateAttendance(attendance1);
                     String prompt="您早退，加上白天迟到，已经记为矿工，如有疑问请联系管理员";
                     session.setAttribute("prompt",prompt);
-                    return "promptinterface";
+                    return "empromptinterface";
             }else if (date.getTime()-date1.getTime()>3600000){
                 if(attendance1.getA_state().equals("正常")) {
                     attendance1.setA_state("加班");//打卡状态
@@ -347,27 +347,27 @@ public class EmployeeController {
                     attendanceService.updateAttendance(attendance1);
                     String prompt="已登记加班"+num+"小时";
                     session.setAttribute("prompt",prompt);
-                    return "promptinterface";
+                    return "empromptinterface";
                 }else {
                     String prompt="上班打卡迟到，不计入加班工时";
                     session.setAttribute("prompt",prompt);
-                    return "promptinterface";
+                    return "empromptinterface";
                 }
             }else {
                 attendance.setA_state("正常");//打卡状态
                 attendanceService.updateAttendance(attendance1);//添加当天打卡时间
                 String prompt="恭喜您成功签到";
                 session.setAttribute("prompt",prompt);
-                return "promptinterface";  //跳转提示恭喜成功打卡
+                return "empromptinterface";  //跳转提示恭喜成功打卡
             }
         }else if (attendance1==null){
             String prompt="您上班签到还没有打";
             session.setAttribute("prompt",prompt);
-            return "promptinterface";//跳转上班卡没有打
+            return "empromptinterface";//跳转上班卡没有打
         }else {
             String prompt="您下班卡已经打过了，请互重复打卡";
             session.setAttribute("prompt",prompt);
-            return "promptinterface";//跳转提示下班卡已经打过了
+            return "empromptinterface";//跳转提示下班卡已经打过了
         }
     }
     @RequestMapping("saveattendance.do")
@@ -434,7 +434,7 @@ public class EmployeeController {
         dissentService.addDissent(dissent);
         String prompt="已经提交，可以在首页进入查看页面，查看处理进度";
         session.setAttribute("prompt",prompt);
-        return "promptinterface";
+        return "empromptinterface";
     }
     @RequestMapping("emsavedissent.do")
     public String emsavedissent(HttpSession session) throws Exception{
@@ -451,6 +451,6 @@ public class EmployeeController {
         }
         String prompt="目前没有异常记录";
         session.setAttribute("prompt",prompt);
-        return "promptinterface";
+        return "empromptinterface";
     }
 }

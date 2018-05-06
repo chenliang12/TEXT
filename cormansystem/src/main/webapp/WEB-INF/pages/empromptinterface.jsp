@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: one
-  Date: 2018/4/24
-  Time: 19:24
+  Date: 2018/5/6
+  Time: 8:33
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -15,6 +15,9 @@
     <base href="<%=basePath%>"/>
     <title>标题</title>
     <style>
+        .t{
+            width: 300px;
+        }
         #d1{
             width: 1000px;
             height: 10000px;
@@ -40,26 +43,19 @@
     <div id="d2" align="center">
         <table>
             <tr>
-                <td><a href="adminsaverecrui.do">查看发布的招聘信息</a></td>
-                <td><a href="adminsaveresume.do">查看接收的简历</a></td>
-                <td><a href="savedepartment.do">查看各部门信息</a></td>
-                <td><a href="adsavetrain.do">安排培训事宜</a></td>
-                <td><a href="adsavedissents.do">查看奖惩异议信息</a> </td>
+                <td><a href="saveemploy.do">查看个人信息</a></td>
+                <td><a href="saveemps.do">查看其他员工信息</a></td>
+                <td><a href="emsavetrain.do">查看培训信息</a></td>
+                <td><a href="emsavereandpun.do">查看个人奖惩记录</a></td>
+                <td><a href="emsavewages.do">查看个人薪资记录</a></td>
+                <td><a href="attendance.do">签到</a></td>
+                <td><a href="emsavedissent.do">查看奖惩异议处理进度</a></td>
             </tr>
         </table>
     </div>
     <div id="d3">
-        <form method="post" action="adaddreandpun.do">
-            奖惩金额：<input name="money">
-            理由：<input name="explanation">
-            奖惩对象：<input name="ename">
-            所在职位：<input name="postition">
-            奖励：<input type="radio" name="name" value="1">
-            处罚：<input type="radio" name="name" value="0">
-            <input type="submit" value="提交">
-        </form>
+        ${sessionScope.prompt}
     </div>
-</div>
 </div>
 </body>
 </html>

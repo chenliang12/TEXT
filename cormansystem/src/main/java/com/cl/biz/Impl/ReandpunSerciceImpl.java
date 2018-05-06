@@ -62,7 +62,7 @@ public class ReandpunSerciceImpl implements ReandpunService {
     }
 
     @Override
-    public Reandpun getReandpunByeid(int id) {
+    public List<Reandpun> getReandpunByeid(int id) {
         return reandpunMapper.getReandpunByeid(id);
     }
 
