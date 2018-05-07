@@ -317,7 +317,11 @@ public class AdminController {
 
     @RequestMapping("adaddreandpun.do")//增加奖惩
     public String adaddreandpun(HttpSession session, HttpServletRequest request)throws Exception{
-        int i= Integer.parseInt(request.getParameter("name"));
+        String i= request.getParameter("name");
+        if (i==null){
+            return "addreandpun";
+        }
+        int num= Integer.parseInt(i);
         int money= Integer.parseInt(request.getParameter("money"));
         String ename=request.getParameter("ename");
         String postitions=request.getParameter("postition");
@@ -326,7 +330,7 @@ public class AdminController {
         Date date=new Date();
         if (postitions1.getEmployee().getE_name().equals(ename)){
             Reandpun reandpun=new Reandpun();
-            if (i==1){
+            if (num==1){
                 reandpun.setRe_reward(money);
                 reandpun.setRe_punishment(0);
             }else {

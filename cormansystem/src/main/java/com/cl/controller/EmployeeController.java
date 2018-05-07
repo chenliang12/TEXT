@@ -4,9 +4,12 @@ import com.cl.biz.*;
 import com.cl.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,8 +53,6 @@ public class EmployeeController {
                session.setAttribute("user",user1);
                List<Recruitment> recruitments=recruitmentService.getRecruitment();
                session.setAttribute("recruitments",recruitments);
-               Resume resume=resumeService.getResumebyuid(user1.getU_id());
-               session.setAttribute("resume",resume);
                return "success";
            }else if(user1.getAuthority()==2){
                session.setAttribute("user",user1);
@@ -75,18 +76,13 @@ public class EmployeeController {
             return "adduser";
         }
     }
-    @RequestMapping("checkname.do")//注册账号验证ajax
-    private String checkname(String uname)throws Exception{
-        User user=new User();
-        user.setUname(uname);
-        System.out.println("进来了");
-        return "没问题";
-        /*if (userService.getUserbyname(user)==null){
-            return "用户名可用";
+    @RequestMapping("checknames.do")//注册账号验证ajax
+    public  @ResponseBody int checkname(String name, HttpServletResponse response)throws Exception{
+        if (userService.getUserbyname(name)!=null){
+            return 1;
         }else {
-
-        }*/
-
+           return 2;
+        }
     }
     @RequestMapping("saveemploy.do")
     public String saveemploy(HttpSession session) throws Exception{
@@ -381,9 +377,15 @@ public class EmployeeController {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
         SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
         for (Attendance attendance:attendances){
-            attendance.setDate(sdf1.format(attendance.getA_date()));
-            attendance.setStarttime(sdf.format(attendance.getA_starttime()));
-            attendance.setOfftime(sdf.format(attendance.getA_offtime()));
+            if (attendance.getA_date()!=null){
+                attendance.setDate(sdf1.format(attendance.getA_date()));
+            }
+            if (attendance.getA_starttime()!=null){
+                attendance.setStarttime(sdf.format(attendance.getA_starttime()));
+            }
+           if (attendance.getA_offtime()!=null){
+               attendance.setOfftime(sdf.format(attendance.getA_offtime()));
+           }
         }
         session.setAttribute("attendances",attendances);
         List years=new ArrayList();

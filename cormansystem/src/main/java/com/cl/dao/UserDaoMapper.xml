@@ -16,7 +16,7 @@
         SELECT * FROM U_USER WHERE UNAME=#{uname} AND UPASS=#{upass}
     </select>
     <select id="getUserbyname" resultType="com.cl.model.User">
-        SELECT *FROM U_USER WHERE  UNAME=#{uname}
+        SELECT * FROM U_USER WHERE  UNAME=#{uname}
     </select>
     <select id="getUserByid" resultType="com.cl.model.User">
         SELECT * FROM U_USER WHERE U_ID=#{id}

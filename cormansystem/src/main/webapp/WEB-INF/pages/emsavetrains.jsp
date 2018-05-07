@@ -37,10 +37,17 @@
             position: fixed;
             top: 200px;
         }
+        #d5{
+            background:url("images/bg3.jpg") top center no-repeat;
+            height: 150px;
+        }
     </style>
 </head>
 <body>
 <div id="d1">
+    <div id="d5">
+
+    </div>
     <div id="d2" align="center">
         <table>
             <tr>
@@ -55,30 +62,24 @@
         </table>
     </div>
     <div id="d3">
+        <table border="1">
+            <tr>
+                <td>培训主题</td>
+                <td>培训内容</td>
+                <td>培训地址</td>
+                <td>培训时间</td>
+                <td>培训进度</td>
+            </tr>
         <c:forEach items="${sessionScope.trains}" var="train">
-            <table border="1">
                 <tr>
-                    <td>培训主题</td>
                     <td>${train.t_title}</td>
-                </tr>
-                <tr>
-                    <td>培训内容</td>
                     <td>${train.t_content}</td>
-                </tr>
-                <tr>
-                    <td>培训地址</td>
                     <td>${train.t_address}</td>
-                </tr>
-                <tr>
-                    <td>培训时间</td>
                     <td>${train.t_date}</td>
-                </tr>
-                <tr>
-                    <td>培训进度</td>
                     <td>${train.t_state}</td>
                 </tr>
-            </table>
         </c:forEach>
+        </table>
     </div>
 </div>
 </body>

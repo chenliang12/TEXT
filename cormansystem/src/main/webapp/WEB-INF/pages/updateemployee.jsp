@@ -30,13 +30,16 @@
         function checkphone() {
             var check=false;
             var phone=document.getElementById("in2").value;
-            if (phone.length==0){
-                document.getElementById("s2").innerHTML="此选项不能为空";
-                document.getElementById("s2").style.color='red';
-                check=false;
+            if (phone.length==0) {
+                document.getElementById("s2").innerHTML = "此选项不能为空";
+                document.getElementById("s2").style.color = 'red';
+                check = false;
+            } else if (0<phone.length<11){
+                document.getElementById("s2").innerHTML = "手机号码不得少于11位数";
+                document.getElementById("s2").style.color = 'red';
             }else {
-                check=true;
-            }
+                    check=true
+            };
             return check;
         }
         function check() {
@@ -63,11 +66,17 @@
             width: 1000px;
             position: fixed;
             top: 200px;
-        }
+        }  #d5{
+               background:url("images/bg3.jpg") top center no-repeat;
+               height: 150px;
+           }
     </style>
 </head>
 <body>
 <div id="d1">
+    <div id="d5">
+
+    </div>
     <div id="d2" align="center">
         <table>
             <tr>
@@ -90,7 +99,7 @@
                 </tr>
                 <tr>
                     <td>年龄</td>
-                    <td><input id="in1" name="e_age" value="${sessionScope.employee.e_age}" onchange="checkage()"></td>
+                    <td><input id="in1" name="e_age" value="${sessionScope.employee.e_age}" onchange="checkage()" maxlength="3" onkeyup="value=value.replace(/[^\d]/g,'')"></td>
                     <td><span id="s1"></span></td>
                 </tr>
                 <tr>
@@ -103,7 +112,7 @@
                 </tr>
                 <tr>
                     <td>手机号码</td>
-                    <td><input id="in2" name="e_phone" value="${sessionScope.employee.e_phone}" onchange="checkphone()"></td>
+                    <td><input id="in2" name="e_phone" value="${sessionScope.employee.e_phone}" onchange="checkphone()" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"></td>
                     <td><span id="s2"></span></td>
                 </tr>
                 <tr><!--date日期转化年月日-->

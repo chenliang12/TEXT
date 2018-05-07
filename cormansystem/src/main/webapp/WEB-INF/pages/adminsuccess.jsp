@@ -28,10 +28,17 @@
             position: fixed;
             top: 150px;
         }
+        #d5{
+            background:url("images/bg3.jpg") top center no-repeat;
+            height: 150px;
+        }
     </style>
 </head>
 <body>
 <div id="d1">
+    <div id="d5">
+
+    </div>
     <div id="d3">
         <div id="d2" align="center">
             <table>

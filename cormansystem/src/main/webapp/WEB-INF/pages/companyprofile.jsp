@@ -1,12 +1,12 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: one
-  Date: 2018/4/24
-  Time: 9:52
+  Date: 2018/5/7
+  Time: 9:44
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -16,9 +16,6 @@
     <base href="<%=basePath%>"/>
     <title>标题</title>
     <style>
-        .t{
-            width: 300px;
-        }
         #d1{
             width: 1000px;
             height: 10000px;
@@ -51,28 +48,21 @@
     <div id="d2" align="center">
         <table>
             <tr>
-                <td><a href="saveemploy.do">查看个人信息</a></td>
-                <td><a href="saveemps.do">查看其他员工信息</a></td>
-                <td><a href="emsavetrain.do">查看培训信息</a></td>
-                <td><a href="emsavereandpun.do">查看个人奖惩记录</a></td>
-                <td><a href="emsavewages.do">查看个人薪资记录</a></td>
-                <td><a href="attendance.do">签到</a></td>
-                <td><a href="emsavedissent.do">查看奖惩异议处理进度</a></td>
+                <td><a href="saveresume.do">查看简历</a></td>
+                <td><a href="resumestate.do">查看投递状态</a></td>
+                <td><a href="companyprofile.do">公司简介</a></td>
+                <td><a href="business.do">公司产品展示</a></td>
             </tr>
         </table>
     </div>
     <div id="d3">
-        <table border="1">
-            <tr>
-                <td colspan="${sessionScope.size}" align="center">公司部门</td>
-            </tr>
-            <tr>
-                <c:forEach items="${sessionScope.department}" var="de">
-                    <td><a href="saveempes.do?id=${de.d_id}">${de.d_depat}</a></td>
-                </c:forEach>
-            </tr>
-        </table>
+       <p> 安徽省宁国市梅然农产品有限公司成立于2006年。坐落在中国山核桃之乡，
+           中国元竹之乡产区的万家镇，是一家专业从事皖南土特产品收购，
+           加工，销售的农业产业化企业。公司现拥有优质原料基地3万余亩，
+           厂区占地面积1.5万平方米，标准化车间5千平方米，全套不锈钢设备。
+           年加工山核桃300吨，元竹笋干100吨。公司注册商标“梅然"......</p>
     </div>
+</div>
 </div>
 </body>
 </html>

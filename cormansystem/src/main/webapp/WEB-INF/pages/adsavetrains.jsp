@@ -34,10 +34,17 @@
             position: fixed;
             top: 200px;
         }
+        #d5{
+            background:url("images/bg3.jpg") top center no-repeat;
+            height: 150px;
+        }
     </style>
 </head>
 <body>
 <div id="d1">
+    <div id="d5">
+
+    </div>
     <div id="d2" align="center">
         <table>
             <tr>
@@ -59,6 +66,7 @@
                 <td>培训时间</td>
                 <td>培训进度</td>
                 <td>培训部门</td>
+                <td>操作</td>
             </tr>
         <c:forEach items="${sessionScope.trains}" var="train">
                 <tr>
@@ -68,18 +76,15 @@
                     <td>${train.t_date}</td>
                     <td>${train.t_state}</td>
                     <td>${train.department.d_depat}</td>
+                    <td>
+            <c:if test="${train.t_state=='未培训'}">
+                <form action="updatetrain.do" method="post">
+                    <input type="hidden" name="id" value="${train.t_id}">
+                    <input type="submit" value="完结培训">
+                </form>
+            </c:if>
+                    </td>
                 </tr>
-                <c:if test="${train.t_state=='未培训'}">
-                    <tr>
-                        <td>操作</td>
-                        <td>
-                            <form action="updatetrain.do" method="post">
-                                <input type="hidden" name="id" value="${train.t_id}">
-                                <input type="submit" value="完结培训">
-                            </form>
-                        </td>
-                    </tr>
-                </c:if>
         </c:forEach>
         </table>
     </div>
