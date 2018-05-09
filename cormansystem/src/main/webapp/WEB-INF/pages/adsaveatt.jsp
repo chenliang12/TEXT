@@ -1,12 +1,12 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: one
-  Date: 2018/4/27
-  Time: 13:34
+  Date: 2018/5/7
+  Time: 13:07
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -15,7 +15,6 @@
 <head>
     <base href="<%=basePath%>"/>
     <title>标题</title>
-    <script src="js/jquery-3.1.0.js"></script>
     <style>
         .t{
             width: 300px;
@@ -42,6 +41,9 @@
             background:url("images/bg3.jpg") top center no-repeat;
             height: 150px;
         }
+        td{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -52,26 +54,24 @@
     <div id="d2" align="center">
         <table>
             <tr>
-                <td><a href="saveemploy.do">查看个人信息</a></td>
-                <td><a href="saveemps.do">查看其他员工信息</a></td>
-                <td><a href="emsavetrain.do">查看培训信息</a></td>
-                <td><a href="emsavereandpun.do">查看个人奖惩记录</a></td>
-                <td><a href="emsavewages.do">查看个人薪资记录</a></td>
-                <td><a href="attendance.do">签到</a></td>
-                <td><a href="emsavedissent.do">查看奖惩异议处理进度</a></td>
+                <td><a href="adminsaverecrui.do">查看发布的招聘信息</a></td>
+                <td><a href="adminsaveresume.do">查看接收的简历</a></td>
+                <td><a href="savedepartment.do">查看各部门信息</a></td>
+                <td><a href="adsavetrain.do">安排培训事宜</a></td>
+                <td><a href="adsavedissents.do">查看奖惩异议信息</a> </td>
             </tr>
         </table>
     </div>
     <div id="d3">
         <div>
-            <form action="saveattendance1.do" method="post">
+            <form action="saveatt1.do" method="post">
                 年份：
                 <select name="year">
                     <option value="0">请选择</option>
                     <c:forEach items="${sessionScope.years}" var="depart">
                         <option>${depart}</option>
                     </c:forEach>
-                </select><br/>
+                </select>
                 月份：
                 <select name="month">
                     <option value="0">请选择</option>
@@ -87,13 +87,13 @@
                     <option>10</option>
                     <option>11</option>
                     <option>12</option>
-                </select><br/>
+                </select>
                 <input type="hidden" name="num" value="1">
                 <input type="submit" value="查询该月记录">
             </form>
         </div>
         <div>
-            <table border="1">
+            <table border="1" width="1000px">
                 <tr>
                     <td>日期</td>
                     <td>上班时间</td>
@@ -110,7 +110,7 @@
                 </c:forEach>
             </table>
             <c:forEach items="${sessionScope.sizes}" var="size">
-                <a href="emsaveatt2.do?num=${size}">${size}</a>
+               <a href="saveatt2.do?num=${size}">${size}</a>
             </c:forEach>
         </div>
     </div>

@@ -14,16 +14,16 @@
     </delete>
     <select id="getDissentbyeid" resultMap="dissandre">
        SELECT * FROM D_DISSENT dd,R_REANDPUN rr,E_EMPLOYEE ee
-       where rr.RE_EMPLOYEE_ID=dd.D_EMPLOYEE_ID and ee.E_ID=dd.D_EMPLOYEE_ID
+       where rr.RE_ID=dd.D_REANDPUN_ID and ee.E_ID=dd.D_EMPLOYEE_ID
        AND  dd.D_EMPLOYEE_ID=#{id}
     </select>
     <select id="getDissents" resultMap="dissandre">
       SELECT * FROM D_DISSENT dd,R_REANDPUN rr,E_EMPLOYEE ee
-       where rr.RE_EMPLOYEE_ID=dd.D_EMPLOYEE_ID and ee.E_ID=dd.D_EMPLOYEE_ID
+       where rr.RE_ID=dd.D_REANDPUN_ID and ee.E_ID=dd.D_EMPLOYEE_ID
     </select>
     <select id="getDissentByid" resultMap="dissandre">
         SELECT * FROM D_DISSENT dd,R_REANDPUN rr,E_EMPLOYEE ee
-       where rr.RE_EMPLOYEE_ID=dd.D_EMPLOYEE_ID and ee.E_ID=dd.D_EMPLOYEE_ID
+       where rr.RE_ID=dd.D_REANDPUN_ID and ee.E_ID=dd.D_EMPLOYEE_ID
        AND  dd.D_ID=#{id}
     </select>
     <resultMap id="dissandre" type="Dissent">

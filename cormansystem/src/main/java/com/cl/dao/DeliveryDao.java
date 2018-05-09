@@ -1,6 +1,7 @@
 package com.cl.dao;
 
 import com.cl.model.Delivery;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface DeliveryDao {
     boolean addDelivery(Delivery delivery);
     boolean updateDelivery(Delivery delivery);
     boolean deleteDelivery(Delivery delivery);
+    Delivery getDeliveryByuidandreid(int uid);
 }

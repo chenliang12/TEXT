@@ -38,6 +38,12 @@
             background:url("images/bg3.jpg") top center no-repeat;
             height: 150px;
         }
+        #t1{
+            font-size: 30px;
+        }
+        td{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -57,9 +63,9 @@
         </table>
     </div>
     <div id="d3">
-        <table border="1">
+        <table border="1" width="1000px">
             <tr>
-                <td colspan="${sessionScope.size}" align="center">公司部门</td>
+                <td colspan="${sessionScope.size}" id="t1">公司部门</td>
             </tr>
             <tr>
                 <c:forEach items="${sessionScope.department}" var="de">

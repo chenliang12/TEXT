@@ -13,4 +13,5 @@ public interface RecruitmentService {
     boolean updateRecruitment(Recruitment recruitment);
     boolean deleteRecruitment(Recruitment recruitment);
     Recruitment getRecruitmentByjob(String job);
+    Recruitment getRecruitmentByid(int id);
 }

@@ -36,10 +36,14 @@
             width: 1000px;
             position: fixed;
             top: 200px;
-        }  #d5{
+        }
+        #d5{
                background:url("images/bg3.jpg") top center no-repeat;
                height: 150px;
-           }
+        }
+        td{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -50,6 +54,7 @@
     <div id="d2" align="center">
         <table>
             <tr>
+                <td><a href="success.do">首页</a> </td>
                 <td><a href="saveresume.do">查看简历</a></td>
                 <td><a href="resumestate.do">查看投递状态</a></td>
                 <td><a href="companyprofile.do">公司简介</a></td>
@@ -61,38 +66,26 @@
         <c:if test="${sessionScope.recruitments==null}">
             <p>目前没有状态信息</p>
         </c:if>
+        <table border="1" width="1000px">
+            <tr>
+                <td>职位</td>
+                <td>基本工资</td>
+                <td>工作要求</td>
+                <td>待遇</td>
+                <td>工作地点</td>
+                <td>状态</td>
+                <td>发布时间</td>
+                <td>投递</td>
+            </tr>
         <c:forEach items="${sessionScope.recruitments}" var="recruitment">
-            <table border="1">
                 <tr>
-                    <td>职位</td>
                     <td class="t">${recruitment.r_job}</td>
-                </tr>
-                <tr>
-                    <td>基本工资</td>
                     <td class="t">${recruitment.r_wage}</td>
-                </tr>
-                <tr>
-                    <td>工作要求</td>
                     <td class="t">${recruitment.r_demand}</td>
-                </tr>
-                <tr>
-                    <td>待遇</td>
                     <td class="t">${recruitment.r_treatment}</td>
-                </tr>
-                <tr>
-                    <td>工作地点</td>
                     <td class="t">${recruitment.r_workplace}</td>
-                </tr>
-                <tr>
-                    <td>状态</td>
                     <td class="t">${recruitment.r_state}</td>
-                </tr>
-                <tr>
-                    <td>发布时间</td>
-                    <td class="t">${recruitment.r_createtime}</td>
-                </tr>
-                <tr>
-                    <td>发布时间</td>
+                    <td class="t">${recruitment.createtime}</td>
                     <td class="t">
                         <form method="post" action="choosere.do">
                             <input type="hidden" name="id" value="${recruitment.r_id}">
@@ -100,8 +93,8 @@
                         </form>
                     </td>
                 </tr>
-            </table>
         </c:forEach>
+        </table>
     </div>
 </div>
 </div>

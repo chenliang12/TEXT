@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: one
@@ -147,7 +148,12 @@
                 </tr>
                 <tr>
                     <td>培训部门</td>
-                    <td><input id="in5" name="depname" onchange="checkdepname()"></td>
+                    <td> <select id="in5" name="depname" onchange="checkdepname()">
+                        <option value="0">请选择</option>
+                        <c:forEach items="${sessionScope.departments}" var="depart">
+                            <option value="${depart.d_depat}">${depart.d_depat}</option>
+                        </c:forEach>
+                    </select><br/></td>
                     <td><span id="s5"></span></td>
                 </tr>
             </table>

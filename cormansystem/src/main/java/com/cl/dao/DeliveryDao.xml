@@ -27,6 +27,9 @@
      R_RESUME re WHERE r.R_ID=de.DE_RECRUI_ID and us.U_ID=de.DE_USER_ID AND
      po.P_ID=de.DE_POS_ID AND re.R_ID=de.DE_RESUME_ID AND de.DE_USER_ID=#{id}
     </select>
+    <select id="getDeliveryByuidandreid" resultType="com.cl.model.Delivery">
+        SELECT * FROM D_DELIVERY WHERE  de_user_id=#{uid}
+    </select>
     <resultMap id="deliverymap" type="Delivery">
         <id column="de_id" property="de_id"/>
         <result property="de_state" column="de_state"/>

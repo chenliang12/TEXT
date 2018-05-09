@@ -75,8 +75,8 @@
            font-size: 15px;
        }
         .in1{
-            height: 100px;
-            width: 200px;
+            height: 200px;
+            width: 300px;
         }
        #d1{
            width: 1000px;
@@ -128,12 +128,12 @@
                 </tr>
                 <tr>
                     <td>工作要求：</td>
-                    <td><input id="in2" class="in1" name="r_demand" maxlength="100" onchange="checkdemend()"></td>
+                    <td><textarea   rows="5" cols="40" id="in2" class="in1" name="r_demand" maxlength="100" onchange="checkdemend()"></textarea></td>
                     <td><span id="s2" class="p1">//最多只能输入100个汉字</span></td>
                 </tr>
                 <tr>
                     <td>待遇：</td>
-                    <td><input  id="in3" class="in1" name="r_treatment" maxlength="100" onchange="checktreatment()"></td>
+                    <td><textarea   rows="5" cols="40" id="in3" class="in1" name="r_treatment" maxlength="100" onchange="checktreatment()"></textarea></td>
                     <td><span id="s3" class="p1">//最多只能输入100个汉字</span></td>
                 </tr>
                 <tr>

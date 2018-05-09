@@ -40,6 +40,10 @@
             background:url("images/bg3.jpg") top center no-repeat;
             height: 150px;
         }
+        #d3{
+            position: fixed;
+            left: 700px;
+        }
     </style>
 </head>
 <body>
@@ -50,6 +54,7 @@
     <div id="d2" align="center">
         <table>
             <tr>
+                <td><a href="succes.do?touristr=3">查看公司信息</a></td>
                 <td><a href="saveemploy.do">查看个人信息</a></td>
                 <td><a href="saveemps.do">查看其他员工信息</a></td>
                 <td><a href="emsavetrain.do">查看培训信息</a></td>
@@ -61,7 +66,7 @@
         </table>
     </div>
     <div id="d3">
-        <table border="1">
+        <table border="1" width="500px">
             <tr>
                 <td>姓名</td>
                 <td>${sessionScope.employee.e_name}</td>
@@ -94,8 +99,11 @@
                 <td>离职原因</td>
                 <td>${sessionScope.employee.e_reason}</td>
             </tr>
+            <tr>
+                <td>修改信息</td>
+                <td><a href="updateemploy.do">修改信息</a></td>
+            </tr>
         </table>
-        <a href="updateemploy.do">修改信息</a>
     </div>
 </div>
 </body>

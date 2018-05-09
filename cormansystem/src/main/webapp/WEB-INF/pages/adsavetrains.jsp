@@ -58,7 +58,7 @@
     </div>
     <div id="d3">
         <a href="addtrains.do">添加培训计划</a>
-        <table border="1">
+        <table border="1" width="1000px">
             <tr>
                 <td>培训主题</td>
                 <td>培训内容</td>
@@ -67,6 +67,7 @@
                 <td>培训进度</td>
                 <td>培训部门</td>
                 <td>操作</td>
+                <td>删除</td>
             </tr>
         <c:forEach items="${sessionScope.trains}" var="train">
                 <tr>
@@ -83,6 +84,14 @@
                     <input type="submit" value="完结培训">
                 </form>
             </c:if>
+                    </td>
+                    <td>
+                        <c:if test="${train.t_state=='未培训'}">
+                            <form action="deletetrain.do" method="post">
+                                <input type="hidden" name="id" value="${train.t_id}">
+                                <input type="submit" value="删除培训">
+                            </form>
+                        </c:if>
                     </td>
                 </tr>
         </c:forEach>

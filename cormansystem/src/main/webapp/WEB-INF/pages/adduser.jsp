@@ -17,7 +17,7 @@
     <script src="js/jquery-3.1.0.js"></script>
     <script>
         $(function () {
-            $("#name").blur(function () {
+            $("#in1").blur(function () {
                 $.ajax({
                     type:"post",
                     url:"checknames.do",
@@ -66,7 +66,7 @@
     <style>
         #d1{
             height: 600px;
-            width:  500px;
+            width:  600px;
             position: fixed;
             left: 1000px;
             top: 200px;
@@ -93,7 +93,7 @@
     <fieldset>
         <legend class="a1">注册界面</legend>
         <form action="adduser.do" method="post" onsubmit="check()">
-            <a class="a1"> 账号：</a> <input id="in1" class="in1" id="name" name="name" onchange="checkn()"><span id="sp1"></span><br>
+            <a class="a1"> 账号：</a> <input id="in1" class="in1" name="name" onchange="checkn()"><span id="sp1"></span><br>
             <a class="a1">密码：</a> <input  id="in2" class="in1" name="upass" maxlength="10" onchange="checkp()"><span id="sp2">//密码不能超过10位数</span><br>
             <input class="in2" type="submit" value="注册">
         </form>

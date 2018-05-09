@@ -46,6 +46,8 @@ public class AdminController {
    private WageService wageService;
    @Autowired
    private DissentService dissentService;
+   @Autowired
+   private ResumeService resumeService;
     @RequestMapping("adminsaveresume.do")
     public String adminsaveresume(HttpSession session) throws Exception{
         List<Delivery> deliveries=deliveryService.getDelivery();
@@ -83,12 +85,15 @@ public class AdminController {
             return"adsaveresume";
         }else if(state.equals("已通知面试")){
             Delivery delivery1=deliveryService.getDeliveryByid(id);
+            Recruitment recruitment=delivery1.getRecruitment();
+            recruitmentService.deleteRecruitment(recruitment);
             Postitions postitions=new Postitions();
             postitions.setUser(delivery1.getUser());
             postitions.setP_position(delivery1.getRecruitment().getR_job());
             delivery.setDe_state("已录用");
             User user=userService.getUserByid(delivery1.getUser().getU_id());
             user.setAuthority(2);
+            userService.updateUser(user);
             Employee employee=new Employee();
             Date date=new Date();
             employee.setE_age(delivery1.getResume().getR_age());
@@ -272,6 +277,13 @@ public class AdminController {
        trainService.updateTrain(train);
        return adsavetrain(session);
     }
+    @RequestMapping("deletetrain.do")
+    public String deletetrain(HttpSession session,HttpServletRequest request) throws Exception{
+        int id= Integer.parseInt(request.getParameter("id"));
+        Train train=trainService.getTrainByid(id);
+        trainService.deleteTrain(train);
+        return adsavetrain(session);
+    }
     @RequestMapping("adsavereandpun.do")//查看奖惩
     public String adsavereandpun(HttpSession session,HttpServletRequest request)throws Exception{
         int id= Integer.parseInt(request.getParameter("id"));
@@ -435,43 +447,149 @@ public class AdminController {
         int pos= Integer.parseInt(request.getParameter("posid"));
         int eid= Integer.parseInt(request.getParameter("eid"));
         Employee employee=employeeService.getEmployeeByid(eid);
-        System.out.println(employee);
-        Postitions postition=postitionesService.getPostitonsByuid(employee.getUser().getU_id());
-        User user=new User();
-        user.setU_id(0);
-        postition.setUser(user);
-        Employee employee1=new Employee();
-        employee1.setE_id(0);
-        postition.setEmployee(employee1);
-        postitionesService.updatePostitionsByuande(postition);
-        Postitions postition1=postitionesService.getPostitionsbyid(pos);
-        postition1.setEmployee(employee);
-        postition1.setUser(employee.getUser());
-        postitionesService.updatePostitionsByuande(postition1);
-        return savedepartment(session);
+        Postitions postitions=postitionesService.getPostitionsbyid(pos);
+        if (postitions.getEmployee().getE_name().equals("无人任职")){
+            Postitions postition=postitionesService.getPostitonsByuid(employee.getUser().getU_id());
+            User user=new User();
+            user.setU_id(0);
+            postition.setUser(user);
+            Employee employee1=new Employee();
+            employee1.setE_id(0);
+            postition.setEmployee(employee1);
+            postitionesService.updatePostitionsByuande(postition);
+            Postitions postition1=postitionesService.getPostitionsbyid(pos);
+            postition1.setEmployee(employee);
+            postition1.setUser(employee.getUser());
+            postitionesService.updatePostitionsByuande(postition1);
+            return savedepartment(session);
+        }
+        String prompt="该职位目前有人无法进行换岗操作";
+        session.setAttribute("prompt",prompt);
+        return "promptinterface";
     }
     @RequestMapping("saveatt.do")
     public String  saveatt(HttpSession session,HttpServletRequest request) throws Exception{
+        int num= Integer.parseInt(request.getParameter("num"));
         int id= Integer.parseInt(request.getParameter("id"));
         Employee employee=employeeService.getEmployeeByid(id);
+        session.setAttribute("employee",employee);
         Calendar cal=Calendar.getInstance();
         int year=cal.get(Calendar.YEAR);
         int month=cal.get(Calendar.MONTH)+1;
         List<Attendance> attendances=attendanceService.getAttendance(year,month,employee.getUser().getU_id());
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        for (Attendance attendance:attendances){
-            attendance.setDate(sdf.format(attendance.getA_date()));
-            attendance.setOfftime(sdf.format(attendance.getA_offtime()));
-            attendance.setStarttime(sdf.format(attendance.getA_starttime()));
-        }
-        session.setAttribute("attendances",attendances);
+        int i=(num-1)*5;
+        List<Attendance> attendances1=new ArrayList<>();
+            for (Attendance attendance:attendances){
+                if (attendance.getA_offtime()!=null){
+                    attendance.setOfftime(sdf.format(attendance.getA_offtime()));
+                }
+
+                if (attendance.getA_starttime()!=null){
+                    attendance.setStarttime(sdf.format(attendance.getA_starttime()));
+                }
+                if (attendance.getA_date()!=null){
+                    attendance.setDate(sdf.format(attendance.getA_date()));
+                }
+
+            }
+            session.setAttribute("lsitatt",attendances);
+            if (attendances.size()-(num*5)>=0){
+                for (;i<num*5;i++){
+                    attendances1.add(attendances.get(i));
+                }
+            }else {
+                for (;i<attendances.size();i++){
+                    attendances1.add(attendances.get(i));
+                }
+            }
+        session.setAttribute("attendances",attendances1);
         List years=new ArrayList();
-        for (int i=0;i<20;i++){
+        for (int x=0;x<20;x++){
             years.add(year);
             year=year-1;
         }
+        int lenth=attendances.size()/5;
+        if (attendances.size()%5!=0){
+            lenth=lenth+1;
+        }
+        List lenths=new ArrayList();
+        for (int y=1;y<=lenth;y++){
+            lenths.add(y);
+        }
+        session.setAttribute("sizes",lenths);
         session.setAttribute("years",years);
-        return "emsaveatt";
+        return "adsaveatt";
+    }
+    @RequestMapping("saveatt2.do")
+    public String saveatt2(HttpServletRequest request,HttpSession session)throws Exception{
+        List<Attendance> attendances= (List<Attendance>) session.getAttribute("lsitatt");
+        int num= Integer.parseInt(request.getParameter("num"));
+        int i=(num-1)*5;
+        List<Attendance> attendances1=new ArrayList<>();
+        session.setAttribute("lsitatt",attendances);
+        if (attendances.size()-(num*5)>=0){
+            for (;i<num*5;i++){
+                attendances1.add(attendances.get(i));
+            }
+        }else {
+            for (;i<attendances.size();i++){
+                attendances1.add(attendances.get(i));
+            }
+        }
+        session.setAttribute("attendances",attendances1);
+        int lenth=attendances.size()/5;
+        if (attendances.size()%5!=0){
+            lenth=lenth+1;
+        }
+        List lenths=new ArrayList();
+        for (int y=1;y<=lenth;y++){
+            lenths.add(y);
+        }
+        session.setAttribute("sizes",lenths);
+        return "adsaveatt";
+    }
+    @RequestMapping("saveatt1.do")
+    public String saveattendance1(HttpSession session,int year,int month,HttpServletRequest request) throws Exception{
+        Employee employee= (Employee) session.getAttribute("employee");
+        List<Attendance> attendances=attendanceService.getAttendance(year,month,employee.getE_id());
+        session.setAttribute("lsitatt",attendances);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+        for (Attendance attendance:attendances){
+            if (attendance.getA_date()!=null){
+                attendance.setDate(sdf1.format(attendance.getA_date()));
+            }
+            if (attendance.getA_offtime()!=null){
+                attendance.setOfftime(sdf.format(attendance.getA_offtime()));
+            }
+            if (attendance.getA_starttime()!=null){
+                attendance.setStarttime(sdf.format(attendance.getA_starttime()));
+            }
+        }
+        int num= Integer.parseInt(request.getParameter("num"));
+        int i=(num-1)*5;
+        List<Attendance> attendances1=new ArrayList<>();
+        if (attendances.size()-(num*5)>=0){
+            for (;i<num*5;i++){
+                attendances1.add(attendances.get(i));
+            }
+        }else {
+            for (;i<attendances.size();i++){
+                attendances1.add(attendances.get(i));
+            }
+        }
+        session.setAttribute("attendances",attendances1);
+        int lenth=attendances.size()/5;
+        if (attendances.size()%5!=0){
+            lenth=lenth+1;
+        }
+        List lenths=new ArrayList();
+        for (int y=1;y<=lenth;y++){
+            lenths.add(y);
+        }
+        session.setAttribute("sizes",lenths);
+        return "adsaveatt";
     }
     @RequestMapping("upemployee.do")//员工升职，辞退操作
     public String upemployee(HttpSession session,HttpServletRequest request) throws Exception {
@@ -496,15 +614,18 @@ public class AdminController {
             user1.setAuthority(1);
             Delivery delivery=new Delivery();
             delivery.setUser(user1);
-            deliveryService.deleteDelivery(delivery);//删除投递记录
+            delivery.setDe_state("已辞退");
+            deliveryService.updateDelivery(delivery);//删除投递记录
             userService.updateUser(user1);//修改账号权限
             User user=new User();
-            user.setU_id(0);
+            user.setU_id(-1);
             Postitions postitions=postitionesService.getPostitonsByuid(employee.getUser().getU_id());
             Employee employee1=new Employee();
             employee1.setE_id(0);
             postitions.setEmployee(employee1);
-            postitions.setUser(user);
+            User user2=new User();
+            user2.setU_id(0);
+            postitions.setUser(user2);
             postitionesService.updatePostitions(postitions);//消除职位信息
             employee.setUser(user);
             employeeService.updateEmployeebystate(employee);//消除账号和员工表的联系
@@ -526,7 +647,7 @@ public class AdminController {
         }
         if (month==0){
             month=12;
-        }
+        }//当前月份为1的时候，取得的月份为0，转换成12月份
         List<Reandpun> reandpuns=reandpunService.getReandpunBydate(year,month,id);
         int num=0;
         for (Reandpun reandpun:reandpuns){
@@ -534,9 +655,26 @@ public class AdminController {
                 num=num+reandpun.getRe_reward()-reandpun.getRe_punishment();
             }
         }
+        List<Attendance> attendances=attendanceService.getAttendance(year,month,id);//统计考勤超过22天 算加班，没过22天算缺勤
+        int days=0;
+        for (Attendance attendance:attendances){
+            if (attendance.getA_offtime()!=null){
+               days=days+1;
+            }
+        }
+        cal.setTime(employee.getE_createtime());
+        int year1=cal.get(Calendar.YEAR);
+        int month1=cal.get(Calendar.MONTH);
+        if (year==year1&&month==month1){//比较入职时间，确保上个月员工是否在职
+            String prompt="该员工上个月还没有入职，无法结算";
+            session.setAttribute("prompt",prompt);
+            return "promptinterface";
+        }
         Postitions postitions=postitionesService.getPostitonsByuid(id);
+        int num1=(days-22)*(postitions.getP_wage()/22);
+        session.setAttribute("num1",num1);
         Wage wage=new Wage();
-        wage.setW_reandpun(num);
+        wage.setW_reandpun(num+num1);
         wage.setEmployee(employee);
         wage.setW_bawage(postitions.getP_wage());
         wage.setW_social(postitions.getP_wage()*0.15);
@@ -550,6 +688,33 @@ public class AdminController {
         int performance= Integer.parseInt(request.getParameter("w_performance"));
         Wage wage= (Wage) session.getAttribute("wage");
         wage.setW_performance(performance);
+        int num= (int) session.getAttribute("num1");
+        Reandpun reandpun1=new Reandpun();
+        Calendar cal=Calendar.getInstance();
+        int year=cal.get(Calendar.YEAR);
+        int month=cal.get(Calendar.MONTH)+1;//获取上个月的年月
+        Date date=new Date();
+        if (num<0){
+            reandpun1.setRe_reward(0);
+            reandpun1.setRe_punishment(-num);
+            reandpun1.setRe_state("已结算");
+            reandpun1.setRe_month(month);
+            reandpun1.setRe_year(year);
+            reandpun1.setRe_explanation("上月打卡没有满22天");
+            reandpun1.setEmployee(wage.getEmployee());
+            reandpun1.setRe_date(date);
+            reandpunService.addReandpun(reandpun1);
+        }else if (num>0){
+            reandpun1.setRe_reward(num);
+            reandpun1.setRe_punishment(0);
+            reandpun1.setRe_state("已结算");
+            reandpun1.setRe_month(month);
+            reandpun1.setRe_year(year);
+            reandpun1.setRe_explanation("上月打卡超过22天计算加班");
+            reandpun1.setEmployee(wage.getEmployee());
+            reandpun1.setRe_date(date);
+            reandpunService.addReandpun(reandpun1);
+        }
         List<Reandpun> reandpuns=reandpunService.getReandpunBydate(wage.getW_year(),wage.getW_month(),wage.getEmployee().getE_id());
         for (Reandpun reandpun:reandpuns){
             if (reandpun.getRe_state().equals("有异议")){
@@ -578,6 +743,7 @@ public class AdminController {
     public String adsavedissents(HttpSession session) throws Exception{
         List<Dissent> dissents=dissentService.getDissents();
         List<Dissent> dissents1=new ArrayList<>();
+        session.setAttribute("state",1);
         if(dissents.size()!=0&&dissents!=null){
             SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
             for (Dissent dissent:dissents){
@@ -599,6 +765,7 @@ public class AdminController {
     public String adsavedissents1(HttpSession session) throws Exception{
         List<Dissent> dissents=dissentService.getDissents();
         List<Dissent> dissents1=new ArrayList<>();
+        session.setAttribute("state",2);
         if(dissents.size()!=0&&dissents!=null){
             SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
             for (Dissent dissent:dissents){
@@ -621,14 +788,17 @@ public class AdminController {
         int num= Integer.parseInt(request.getParameter("num"));
         int id= Integer.parseInt(request.getParameter("id"));
         Dissent dissent=dissentService.getDissentByid(id);
+        Reandpun reandpun=dissent.getReandpun();
         if (num==1){
             dissent.setD_state("已解决");
-            Reandpun reandpun=dissent.getReandpun();
             dissentService.updateDissent(dissent);
-            reandpunService.deleteReandpun(reandpun);//同意解决，奖励做删除处理
+            reandpun.setRe_state("已作废");
+            reandpunService.updateReandpunBystate(reandpun);//同意解决，奖励做删除处理
             return adsavedissents(session);
         }else {
+            reandpun.setRe_state("未结算");
             dissent.setD_state("驳回");
+            reandpunService.updateReandpunBystate(reandpun);
             dissentService.updateDissent(dissent);
             return adsavedissents(session);
         }

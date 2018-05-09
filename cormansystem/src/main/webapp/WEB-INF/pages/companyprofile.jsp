@@ -48,6 +48,7 @@
     <div id="d2" align="center">
         <table>
             <tr>
+                <td><a href="success.do">首页</a> </td>
                 <td><a href="saveresume.do">查看简历</a></td>
                 <td><a href="resumestate.do">查看投递状态</a></td>
                 <td><a href="companyprofile.do">公司简介</a></td>

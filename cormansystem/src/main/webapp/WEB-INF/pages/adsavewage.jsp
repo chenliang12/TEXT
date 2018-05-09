@@ -38,6 +38,9 @@
             background:url("images/bg3.jpg") top center no-repeat;
             height: 150px;
         }
+        td{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +60,7 @@
         </table>
     </div>
     <div id="d3">
-        <table border="1">
+        <table border="1" width="1000px">
             <tr>
                 <td>基本工资</td>
                 <td>绩效工资</td>

@@ -44,4 +44,9 @@ public class DeliverServiceImpl implements DeliveryService {
     public boolean deleteDelivery(Delivery delivery) {
         return deliveryDao.deleteDelivery(delivery);
     }
+
+    @Override
+    public Delivery getDeliveryByuidandreid(int uid) {
+        return deliveryDao.getDeliveryByuidandreid(uid);
+    }
 }

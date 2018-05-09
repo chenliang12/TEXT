@@ -55,7 +55,6 @@
                 <td><a href="adminsaveresume.do">查看接收的简历</a></td>
                 <td><a href="savedepartment.do">查看各部门信息</a></td>
                 <td><a href="adsavetrain.do">安排培训事宜</a></td>
-                <td><a href="adsavereandpun.do">管理员工奖惩信息</a></td>
                 <td><a href="adsavedissents.do">查看奖惩异议信息</a> </td>
             </tr>
         </table>
@@ -103,18 +102,12 @@
                     </c:if></td>
             </tr>
             <tr>
-                <td>离职原因</td>
-                <td>${sessionScope.employee.e_reason}
-
-                </td>
-            </tr>
-            <tr>
                 <td>人事调动</td>
                 <td><a href="moveofpersonnel.do?id=${sessionScope.employee.e_id}">员工调动安排</a></td>
             </tr>
             <tr>
                 <td>查看打卡记录</td>
-                <td><a href="saveatt.do?id=${sessionScope.employee.e_id}">查看员工打卡记录</a></td>
+                <td><a href="saveatt.do?id=${sessionScope.employee.e_id}&&num=1">查看员工打卡记录</a></td>
             </tr>
             <tr>
                 <td>薪资结算</td>

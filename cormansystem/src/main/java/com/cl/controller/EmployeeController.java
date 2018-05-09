@@ -51,7 +51,12 @@ public class EmployeeController {
            User user1=userService.getUser(user);
            if (user1.getAuthority()==1){
                session.setAttribute("user",user1);
+               SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd ");
                List<Recruitment> recruitments=recruitmentService.getRecruitment();
+               for(Recruitment recruitment:recruitments){
+                   recruitment.setCreatetime(sdf.format(recruitment.getR_createtime()));
+               }
+               session.setAttribute("touristr",2);
                session.setAttribute("recruitments",recruitments);
                return "success";
            }else if(user1.getAuthority()==2){
@@ -67,7 +72,9 @@ public class EmployeeController {
     }
 
     @RequestMapping("adduser.do")//注册账号
-    public  String adduser(User user)throws Exception{
+    public  String adduser(User user,HttpServletRequest request)throws Exception{
+        String name=request.getParameter("name");
+        user.setUname(name);
         if (userService.getUserbyname(user.getUname())==null){
             user.setAuthority(1);
             userService.addUser(user);
@@ -191,7 +198,7 @@ public class EmployeeController {
         Date date2=sdf1.parse(time1);
         attendance.setA_date(date2);//存入打开的日期
         attendance.setEmployee(employee);
-        Attendance attendance1=attendanceService.getAttendanceByuidanddate(user.getU_id(),date2);
+        Attendance attendance1=attendanceService.getAttendanceByuidanddate(employee.getE_id(),date2);
         if (attendance1==null){
             attendance.setA_starttime(date);//存入打卡的具体时间
             attendance.setA_year(year);
@@ -254,7 +261,7 @@ public class EmployeeController {
         Date date2=sdf1.parse(time1);
         attendance.setA_date(date2);//存入打开的日期
         attendance.setEmployee(employee);
-        Attendance attendance1=attendanceService.getAttendanceByuidanddate(user.getU_id(),date2);
+        Attendance attendance1=attendanceService.getAttendanceByuidanddate(employee.getE_id(),date2);
         if (attendance1!=null&&attendance1.getA_offtime()==null){//检测是否打了上班卡
             attendance1.setA_offtime(date);//存入打卡的具体时间
             if (date1.getTime()-date.getTime()>600000){//检测是否提前10分钟之前下的班
@@ -367,15 +374,19 @@ public class EmployeeController {
         }
     }
     @RequestMapping("saveattendance.do")
-    public String saveattendance(HttpSession session)throws Exception{
+    public String saveattendance(HttpSession session,HttpServletRequest request)throws Exception{
         User user= (User) session.getAttribute("user");
+        int num= Integer.parseInt(request.getParameter("num"));
         Employee employee=employeeService.getEmployeeByuid(user.getU_id());
+        session.setAttribute("employee",employee);
         Calendar cal=Calendar.getInstance();
         int year=cal.get(Calendar.YEAR);
         int month=cal.get(Calendar.MONTH)+1;
+        int i=(num-1)*5;
         List<Attendance> attendances=attendanceService.getAttendance(year,month,employee.getE_id());
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
         SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+        List<Attendance> attendances1=new ArrayList<>();
         for (Attendance attendance:attendances){
             if (attendance.getA_date()!=null){
                 attendance.setDate(sdf1.format(attendance.getA_date()));
@@ -387,28 +398,102 @@ public class EmployeeController {
                attendance.setOfftime(sdf.format(attendance.getA_offtime()));
            }
         }
-        session.setAttribute("attendances",attendances);
+        session.setAttribute("lsitatt",attendances);
+        if (attendances.size()-(num*5)>=0){
+            for (;i<num*5;i++){
+                attendances1.add(attendances.get(i));
+            }
+        }else {
+            for (;i<attendances.size();i++){
+                attendances1.add(attendances.get(i));
+            }
+        }
+        session.setAttribute("attendances",attendances1);
         List years=new ArrayList();
-        for (int i=0;i<20;i++){
+        for (int x=0;x<20;x++){
             years.add(year);
             year=year-1;
         }
+        int lenth=attendances.size()/5;
+        if (attendances.size()%5!=0){
+            lenth=lenth+1;
+        }
+        List lenths=new ArrayList();
+        for (int y=1;y<=lenth;y++){
+            lenths.add(y);
+        }
+        session.setAttribute("sizes",lenths);
         session.setAttribute("years",years);
-        session.setAttribute("employee",employee);
+        return "emsaveatt";
+    }
+    @RequestMapping("emsaveatt2.do")
+    public String saveatt2(HttpServletRequest request,HttpSession session)throws Exception{
+        List<Attendance> attendances= (List<Attendance>) session.getAttribute("lsitatt");
+        int num= Integer.parseInt(request.getParameter("num"));
+        int i=(num-1)*5;
+        List<Attendance> attendances1=new ArrayList<>();
+        session.setAttribute("lsitatt",attendances);
+        if (attendances.size()-(num*5)>=0){
+            for (;i<num*5;i++){
+                attendances1.add(attendances.get(i));
+            }
+        }else {
+            for (;i<attendances.size();i++){
+                attendances1.add(attendances.get(i));
+            }
+        }
+        session.setAttribute("attendances",attendances1);
+        int lenth=attendances.size()/5;
+        if (attendances.size()%5!=0){
+            lenth=lenth+1;
+        }
+        List lenths=new ArrayList();
+        for (int y=1;y<=lenth;y++){
+            lenths.add(y);
+        }
+        session.setAttribute("sizes",lenths);
         return "emsaveatt";
     }
     @RequestMapping("saveattendance1.do")
-    public String saveattendance1(HttpSession session,int year,int month) throws Exception{
+    public String saveattendance1(HttpSession session,int year,int month,HttpServletRequest request) throws Exception{
         Employee employee= (Employee) session.getAttribute("employee");
         List<Attendance> attendances=attendanceService.getAttendance(year,month,employee.getE_id());
+        session.setAttribute("lsitatt",attendances);
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
         SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
         for (Attendance attendance:attendances){
-            attendance.setDate(sdf1.format(attendance.getA_date()));
-            attendance.setStarttime(sdf.format(attendance.getA_starttime()));
-            attendance.setOfftime(sdf.format(attendance.getA_offtime()));
+            if (attendance.getA_date()!=null){
+                attendance.setDate(sdf1.format(attendance.getA_date()));
+            }
+            if (attendance.getA_offtime()!=null){
+                attendance.setOfftime(sdf.format(attendance.getA_offtime()));
+            }
+            if (attendance.getA_starttime()!=null){
+                attendance.setStarttime(sdf.format(attendance.getA_starttime()));
+            }
         }
-        session.setAttribute("attendances",attendances);
+        int num= Integer.parseInt(request.getParameter("num"));
+        int i=(num-1)*5;
+        List<Attendance> attendances1=new ArrayList<>();
+        if (attendances.size()-(num*5)>=0){
+            for (;i<num*5;i++){
+                attendances1.add(attendances.get(i));
+            }
+        }else {
+            for (;i<attendances.size();i++){
+                attendances1.add(attendances.get(i));
+            }
+        }
+        session.setAttribute("attendances",attendances1);
+        int lenth=attendances.size()/5;
+        if (attendances.size()%5!=0){
+            lenth=lenth+1;
+        }
+        List lenths=new ArrayList();
+        for (int y=1;y<=lenth;y++){
+            lenths.add(y);
+        }
+        session.setAttribute("sizes",lenths);
         return "emsaveatt";
     }
     @RequestMapping("emsavewages.do")

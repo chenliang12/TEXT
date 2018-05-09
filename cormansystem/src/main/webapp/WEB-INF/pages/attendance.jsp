@@ -14,10 +14,55 @@
 <head>
     <base href="<%=basePath%>"/>
     <title>标题</title>
+    <style>
+        #d1{
+            width: 1000px;
+            height: 10000px;
+            position: fixed;
+            background-color:bisque;
+            left: 450px;
+        }
+        #d2{
+            width: 1000px;
+            background-color:chartreuse;
+            position: fixed;
+            top: 150px;
+        }
+        #d3{
+            width: 1000px;
+            position: fixed;
+            top: 200px;
+        }
+        #d5{
+            background:url("images/bg3.jpg") top center no-repeat;
+            height: 150px;
+        }
+    </style>
 </head>
 <body>
-<a href="statetime.do">上班打卡</a>
-<a href="offtime.do">下班打卡</a>
-<a href="saveattendance.do">查看打卡记录</a>
+<div id="d1">
+    <div id="d5">
+
+    </div>
+    <div id="d2" align="center">
+        <table>
+            <tr>
+                <td><a href="saveemploy.do">查看个人信息</a></td>
+                <td><a href="saveemps.do">查看其他员工信息</a></td>
+                <td><a href="emsavetrain.do">查看培训信息</a></td>
+                <td><a href="emsavereandpun.do">查看个人奖惩记录</a></td>
+                <td><a href="emsavewages.do">查看个人薪资记录</a></td>
+                <td><a href="attendance.do">签到</a></td>
+                <td><a href="emsavedissent.do">查看奖惩异议处理进度</a></td>
+            </tr>
+        </table>
+    </div>
+    <div id="d3">
+        <a href="statetime.do">上班打卡</a>
+        <a href="offtime.do">下班打卡</a>
+        <a href="saveattendance.do?num=1">查看打卡记录</a>
+    </div>
+</div>
+</div>
 </body>
 </html>

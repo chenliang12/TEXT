@@ -36,6 +36,10 @@
             width: 1000px;
             position: fixed;
             top: 200px;
+            font-size: 40px;
+            text-align: center;
+            color: red;
+            left: 450px;
         }
         #d5{
             background:url("images/bg3.jpg") top center no-repeat;

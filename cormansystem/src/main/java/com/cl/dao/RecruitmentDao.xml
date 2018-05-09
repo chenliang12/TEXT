@@ -17,4 +17,7 @@
     <select id="getRecruitmentByjob" resultType="com.cl.model.Recruitment">
         SELECT * FROM R_RECRUITMENT WHERE R_JOB=#{job}
     </select>
+    <select id="getRecruitmentByid" resultType="com.cl.model.Recruitment">
+           SELECT * FROM R_RECRUITMENT WHERE R_ID=#{r_id}
+    </select>
 </mapper>

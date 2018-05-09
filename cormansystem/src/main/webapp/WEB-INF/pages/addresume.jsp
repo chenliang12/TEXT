@@ -164,10 +164,24 @@
             }
             return check;
         }
+        function checksex() {
+            var check=false;
+            var sex=document.getElementById("in11").value;
+            if (sex.length==0){
+                document.getElementById("s11").innerHTML="此选项不能为空";
+                document.getElementById("s11").style.color='red';
+                check=false;
+            }else {
+                document.getElementById("s11").innerHTML="✔";
+                document.getElementById("s11").style.color='green';
+                check=true;
+            }
+            return check;
+        }
         function check() {
             var chec=checkage()&&checkphone()&&checkaddress()&&checkcampus()
                 &&checkemail()&&checkjobs()&&checkname()&&checkorigin()&&checkfamily()
-                &&checkevaluation()
+                &&checkevaluation()&&checksex()
             return chec;
         }
 
@@ -195,6 +209,10 @@
             background:url("images/bg3.jpg") top center no-repeat;
             height: 150px;
         }
+        .t1{
+            height: 200px;
+            width:300px;
+        }
     </style>
 </head>
 <body>
@@ -216,16 +234,17 @@
         <div id="d4">
             <form method="post" action="addresume.do" onsubmit="return check()">
                 姓名：<input id="in1" name="r_name"  onchange="checkname()"><span id="s1"></span><br>
-                年龄：<input id="in2"name="r_age" onchange="checkage()"><span id="s2"></span><br>
-                籍贯：<input id="in3"name="r_origin"  onchange="checkorigin()"><span id="s3"></span><br>
-                民族：<input id="in4"name="r_family"  onchange="checkfamily()"><span id="s4"></span><br>
-                手机号码：<input id="in5"name="r_phone"  onchange="checkphone()" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"
+                性别：<input id="in11" name="r_sex"  onchange="checksex()" maxlength="2"><span id="s11"></span><br>
+                年龄：<input id="in2" name="r_age" onchange="checkage()" onkeyup="value=value.replace(/[^\d]/g,'')"><span id="s2"></span><br>
+                籍贯：<input id="in3" name="r_origin"  onchange="checkorigin()" maxlength="5"><span id="s3"></span><br>
+                民族：<input id="in4" name="r_family"  onchange="checkfamily()" maxlength="10"><span id="s4"></span><br>
+                手机号码：<input id="in5" name="r_phone"  onchange="checkphone()" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"
             ><span id="s5"></span><br>
-                电子邮箱：<input id="in6"name="r_email"  onchange="checkemail()"><span id="s6"></span><br>
-                地址：<input id="in7"name="r_address"  onchange="checkaddress()"><span id="s7"></span><br>
-                毕业院校：<input id="in8"name="r_campus"  onchange="checkcampus()"><span id="s8"></span><br>
-                工作经历：<input id="in9"name="r_jobs" onchange="checkjobs()"><span id="s9"></span><br>
-                个人评价：<input id="in0"name="r_evaluation"  onchange="checkevaluation()"><span id="s0"></span><br>
+                电子邮箱：<input id="in6" name="r_email"  onchange="checkemail()"><span id="s6"></span><br>
+                地址：<input id="in7" name="r_address"  onchange="checkaddress()" maxlength="50"><span id="s7"></span><br>
+                毕业院校：<input id="in8" name="r_campus"  onchange="checkcampus()" maxlength="20"><span id="s8"></span><br>
+                工作经历：<textarea class="t1"  rows="5" cols="40" id="in9" name="r_jobs" onchange="checkjobs()" maxlength="100"></textarea><span id="s9">不得超过100个字</span><br>
+                个人评价：<textarea class="t1"  rows="5" cols="40" id="in0" name="r_evaluation" onchange="checkevaluation()" maxlength="100"></textarea><span id="s0">不得超过100个字</span><br>
                 <input type="submit" value="创建简历">
             </form>
         </div>

@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cl.dao.ResumeDao">
     <insert id="addResume">
+        INSERT INTO R_RESUME(R_PHONE,R_ORIGIN,R_JOBS,R_FAMILY,R_EVALUATION,R_EMAIL,R_CAMPUS,R_ADDRESS
+        ,R_AGE,R_NAME,R_SEX,R_USER_ID) VALUES (#{r_phone},#{r_origin},#{r_jobs},#{r_family},#{r_evaluation}
+        ,#{r_email},#{r_campus},#{r_address},#{r_age},#{r_name},#{r_sex},#{user.u_id})
 
     </insert>
     <update id="updateResume">
@@ -11,7 +14,7 @@
         R_ORIGIN=#{r_origin},R_PHONE=#{r_phone} WHERE R_USER_ID=#{user.u_id}
     </update>
     <delete id="deleteResume">
-
+       DELETE  FROM R_RESUME WHERE R_ID=#{r_id}
     </delete>
     <select id="getResumebyuid" resultType="com.cl.model.Resume">
         SELECT * FROM R_RESUME WHERE R_USER_ID=#{id}

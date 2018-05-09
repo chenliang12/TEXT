@@ -43,7 +43,6 @@
 <body>
 <div id="d1">
     <div id="d5">
-
     </div>
     <div id="d2" align="center">
         <table>
@@ -59,7 +58,7 @@
     <div id="d3">
         <a href="adsavedissents1.do">查看已解决信息</a>
         <a href="adsavedissents.do">查看未解决信息</a>
-        <table border="1">
+        <table border="1" width="1000px">
             <tr>
                 <td>编号</td>
                 <td>奖惩记录编号</td>
@@ -68,7 +67,9 @@
                 <td>奖惩记录原因</td>
                 <td>异议内容</td>
                 <td>状态</td>
-                <td>操作</td>
+                <c:if test="${sessionScope.state==1}">
+                    <td>操作</td>
+                </c:if>
             </tr>
             <c:forEach items="${sessionScope.dissents}" var="dissent">
                 <tr>
@@ -79,20 +80,22 @@
                     <td>${dissent.reandpun.re_explanation}</td>
                     <td>${dissent.d_reason}</td>
                     <td>${dissent.d_state}</td>
-                    <td>
-                        <form action="updatedissents.do" method="post">
-                            <input type="hidden" value="1" name="num">
-                            <input type="hidden" value="${dissent.d_id}" name="id">
-                            <input type="submit" value="同意修改">
-                        </form>
-                    </td>
-                    <td>
-                        <form action="updatedissents.do" method="post">
-                            <input type="hidden" value="0" name="num">
-                            <input type="hidden" value="${dissent.d_id}" name="id">
-                            <input type="submit" value="驳回">
-                        </form>
-                    </td>
+                    <c:if test="${sessionScope.state==1}">
+                        <td>
+                            <form action="updatedissents.do" method="post">
+                                <input type="hidden" value="1" name="num">
+                                <input type="hidden" value="${dissent.d_id}" name="id">
+                                <input type="submit" value="同意修改">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="updatedissents.do" method="post">
+                                <input type="hidden" value="0" name="num">
+                                <input type="hidden" value="${dissent.d_id}" name="id">
+                                <input type="submit" value="驳回">
+                            </form>
+                        </td>
+                    </c:if>
                 </tr>
             </c:forEach>
         </table>

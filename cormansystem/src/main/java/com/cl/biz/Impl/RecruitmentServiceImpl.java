@@ -41,4 +41,9 @@ public class RecruitmentServiceImpl implements RecruitmentService{
     public Recruitment getRecruitmentByjob(String job) {
         return recruitmentDao.getRecruitmentByjob(job);
     }
+
+    @Override
+    public Recruitment getRecruitmentByid(int id) {
+        return recruitmentDao.getRecruitmentByid(id);
+    }
 }
